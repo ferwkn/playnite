@@ -1,0 +1,1702 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Playnite Gallery</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; color: white; background: #000; font-family: system-ui, sans-serif; }
+    .toolbar { position: sticky; z-index: 2; top: 0; display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 18px; background: rgba(0, 0, 0, .9); backdrop-filter: blur(12px); }
+    button, input { min-height: 42px; border: 1px solid #202024; border-radius: 7px; color: #c9c9ce; background: rgba(18, 18, 20, .72); font: inherit; }
+    button { padding: 9px 14px; cursor: pointer; }
+    .search-box { position: relative; flex: 1 1 240px; min-width: 160px; }
+    .search-box input { width: 100%; padding: 9px 42px 9px 12px; }
+    .clear-search { position: absolute; top: 50%; right: 5px; display: none; width: 32px; min-height: 32px; padding: 0; border: 0; border-radius: 50%; color: #57575d; background: #18181c; transform: translateY(-50%); }
+    .clear-search::before, .clear-search::after { position: absolute; top: 50%; left: 50%; width: 12px; height: 1px; content: ''; background: currentColor; transform-origin: center; }
+    .clear-search::before { transform: translate(-50%, -50%) rotate(45deg); }
+    .clear-search::after { transform: translate(-50%, -50%) rotate(-45deg); }
+    .clear-search:hover, .clear-search:focus-visible { color: #85858d; background: #202025; }
+    .clear-search.visible { display: flex; }
+    input::placeholder { color: #707078; }
+    button:hover, button:focus-visible, button[aria-pressed="true"], input:focus-visible { border-color: #484850; color: white; background: #18181c; outline: none; }
+    main, .platform-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 22px; padding: 22px; }
+    .platform-group { grid-column: 1 / -1; }
+    .platform-group h2 { margin: 10px 0 0; font-size: 20px; }
+    .platform-group .platform-grid { padding: 14px 0 6px; }
+    .cover { position: relative; z-index: 0; margin: 0; overflow: hidden; border-radius: 14px; background: #080808; aspect-ratio: 2 / 3; outline: none; isolation: isolate; transition: transform 220ms ease, box-shadow 220ms ease; }
+    .cover img { width: 100%; height: 100%; display: block; object-fit: cover; transition: transform 220ms ease; }
+    .cover figcaption { position: absolute; inset: 0; display: flex; align-items: end; padding: 18px 14px; color: white; font: 600 15px/1.2 system-ui, sans-serif; background: linear-gradient(to bottom, transparent 45%, rgba(0, 0, 0, .78) 100%); opacity: 0; transition: opacity 180ms ease; }
+    .cover:not(.suppressed):hover, .cover.active, .cover:focus-visible { z-index: 1; transform: translateY(-5px) scale(1.04); box-shadow: 0 14px 30px rgba(0, 0, 0, .55); }
+    .cover:not(.suppressed):hover img, .cover.active img, .cover:focus-visible img { transform: scale(1.025); }
+    .cover:not(.suppressed):hover figcaption, .cover.active figcaption, .cover:focus-visible figcaption { opacity: 1; }
+    .cover:focus-visible { box-shadow: 0 0 0 3px white; }
+    .empty { grid-column: 1 / -1; padding: 50px 18px; color: #aaaab2; text-align: center; }
+    @media (max-width: 600px) {
+      .toolbar { padding: 10px; }
+      button { flex: 1 1 auto; padding-inline: 10px; }
+      .search-box { flex-basis: 100%; order: -1; }
+      main, .platform-grid { grid-template-columns: repeat(auto-fill, minmax(105px, 1fr)); gap: 14px; padding: 14px; }
+      .platform-group .platform-grid { padding: 10px 0 4px; }
+      .platform-group h2 { font-size: 17px; }
+      .cover { border-radius: 10px; }
+      .cover figcaption { padding: 12px 9px; font-size: 13px; }
+    }
+    @media (prefers-reduced-motion: reduce) { .cover, .cover img, .cover figcaption { transition: none; } }
+  </style>
+</head>
+<body>
+  <nav class="toolbar" aria-label="Gallery controls">
+    <div class="search-box">
+      <input id="search" type="search" placeholder="Search all 382 games..." aria-label="Search games by name">
+      <button id="clear-search" class="clear-search" type="button" aria-label="Clear search" title="Clear search"></button>
+    </div>
+    <button id="sort-name" type="button">Name: A-Z</button>
+    <button id="sort-playtime" type="button">Playtime: high-low</button>
+    <button id="sort-last-played" type="button">Last played: recent</button>
+    <button id="group-platform" type="button" aria-pressed="false">Group by platform</button>
+  </nav>
+  <main id="gallery">
+    <figure class="cover" tabindex="0" data-name="13 Sentinels: Aegis Rim" data-sort-name="13 Sentinels: Aegis Rim" data-playtime="151568" data-last-played="638995089295820000" data-platform="Nintendo Switch" aria-label="13 Sentinels: Aegis Rim, played 42h 6m, platform Nintendo Switch">
+      <img src="covers/1b0321d1dc6c4127842748cd3a0986f1.webp" alt="13 Sentinels: Aegis Rim" loading="lazy" decoding="async">
+      <figcaption>42h 6m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Absolum" data-sort-name="Absolum" data-playtime="1878" data-last-played="639144826172500000" data-platform="PC (Windows)" aria-label="Absolum, played 0h 31m, platform PC (Windows)">
+      <img src="covers/9235044227b0403eab6f805d2f410a61.webp" alt="Absolum" loading="lazy" decoding="async">
+      <figcaption>0h 31m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="AI Limit" data-sort-name="AI Limit" data-playtime="87803" data-last-played="639104223896990000" data-platform="PC (Windows)" aria-label="AI Limit, played 24h 23m, platform PC (Windows)">
+      <img src="covers/e3fefacdfdef40d196fd2cb79619aed2.webp" alt="AI Limit" loading="lazy" decoding="async">
+      <figcaption>24h 23m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Alabaster Dawn" data-sort-name="Alabaster Dawn" data-playtime="447" data-last-played="639144888888810000" data-platform="PC (Windows)" aria-label="Alabaster Dawn, played 0h 7m, platform PC (Windows)">
+      <img src="covers/9c794817d3ba4354a7061691a3c86753.webp" alt="Alabaster Dawn" loading="lazy" decoding="async">
+      <figcaption>0h 7m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Alice Escaped!" data-sort-name="Alice Escaped!" data-playtime="0" data-last-played="638775035556160000" data-platform="PC (Windows)" aria-label="Alice Escaped!, played 0h 0m, platform PC (Windows)">
+      <img src="covers/cd20771a820e48029a9029253f3df280.webp" alt="Alice Escaped!" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Animal Crossing New Horizons" data-sort-name="Animal Crossing New Horizons" data-playtime="39689" data-last-played="638376343492940000" data-platform="Nintendo Switch" aria-label="Animal Crossing New Horizons, played 11h 1m, platform Nintendo Switch">
+      <img src="covers/a6ba312ac1a94b7eb77d28586284e51b.webp" alt="Animal Crossing New Horizons" loading="lazy" decoding="async">
+      <figcaption>11h 1m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Ariana and the Elder Codex" data-sort-name="Ariana and the Elder Codex" data-playtime="460" data-last-played="639169107356880000" data-platform="PC (Windows)" aria-label="Ariana and the Elder Codex, played 0h 7m, platform PC (Windows)">
+      <img src="covers/03279e6338b444d5ab7df095b0426eda.webp" alt="Ariana and the Elder Codex" loading="lazy" decoding="async">
+      <figcaption>0h 7m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Armored Core VI: Fires of Rubicon " data-sort-name="Armored Core 06" data-playtime="161640" data-last-played="638309258820000000" data-platform="PC (Windows)" aria-label="Armored Core VI: Fires of Rubicon , played 44h 54m, platform PC (Windows)">
+      <img src="covers/1f59ed592851477fb9a136537e5c3bf7.webp" alt="Armored Core VI: Fires of Rubicon " loading="lazy" decoding="async">
+      <figcaption>44h 54m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Art of Rally" data-sort-name="Art of Rally" data-playtime="2180" data-last-played="638793215280760000" data-platform="PC (Windows)" aria-label="Art of Rally, played 0h 36m, platform PC (Windows)">
+      <img src="covers/c4f51e2c737545b3be36fa99cb39efcd.webp" alt="Art of Rally" loading="lazy" decoding="async">
+      <figcaption>0h 36m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Assetto Corsa" data-sort-name="Assetto Corsa" data-playtime="107040" data-last-played="639060261690000000" data-platform="PC (Windows)" aria-label="Assetto Corsa, played 29h 44m, platform PC (Windows)">
+      <img src="covers/a71e332ec4ed4fb28d536b253803e88f.webp" alt="Assetto Corsa" loading="lazy" decoding="async">
+      <figcaption>29h 44m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Assetto Corsa Rally" data-sort-name="Assetto Corsa Rally" data-playtime="17082" data-last-played="639137967999710000" data-platform="PC (Windows)" aria-label="Assetto Corsa Rally, played 4h 44m, platform PC (Windows)">
+      <img src="covers/9b447e6e176f494cb07b15f709ac434a.webp" alt="Assetto Corsa Rally" loading="lazy" decoding="async">
+      <figcaption>4h 44m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Astlibra Revision" data-sort-name="Astlibra Revision" data-playtime="0" data-last-played="638720443614940000" data-platform="PC (Windows)" aria-label="Astlibra Revision, played 0h 0m, platform PC (Windows)">
+      <img src="covers/568ae018535a4c25b4a5c7f20a207d5a.webp" alt="Astlibra Revision" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Astria Ascending" data-sort-name="Astria Ascending" data-playtime="6081" data-last-played="638620247325660000" data-platform="PC (Windows)" aria-label="Astria Ascending, played 1h 41m, platform PC (Windows)">
+      <img src="covers/73313d554a20431cab69496b1356d68c.webp" alt="Astria Ascending" loading="lazy" decoding="async">
+      <figcaption>1h 41m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Atelier Marie Remake: The Alchemist of Salburg" data-sort-name="Atelier Marie Remake: The Alchemist of Salburg" data-playtime="8677" data-last-played="638522538868440000" data-platform="PC (Windows)" aria-label="Atelier Marie Remake: The Alchemist of Salburg, played 2h 24m, platform PC (Windows)">
+      <img src="covers/baabec50c2b446358b7bf96d87002d27.webp" alt="Atelier Marie Remake: The Alchemist of Salburg" loading="lazy" decoding="async">
+      <figcaption>2h 24m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Atelier Ryza: Ever Darkness &amp; the Secret Hideout DX" data-sort-name="Atelier Ryza 01" data-playtime="0" data-last-played="639010491729800000" data-platform="PC (Windows)" aria-label="Atelier Ryza: Ever Darkness &amp; the Secret Hideout DX, played 0h 0m, platform PC (Windows)">
+      <img src="covers/fe6e140b08074860952468e3f7602a6f.webp" alt="Atelier Ryza: Ever Darkness &amp; the Secret Hideout DX" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Atelier Ryza 2: Lost Legends &amp; the Secret Fairy DX" data-sort-name="Atelier Ryza 02" data-playtime="0" data-last-played="638986771506380000" data-platform="PC (Windows)" aria-label="Atelier Ryza 2: Lost Legends &amp; the Secret Fairy DX, played 0h 0m, platform PC (Windows)">
+      <img src="covers/8134679d60d64ff9b91d4162f2704d94.webp" alt="Atelier Ryza 2: Lost Legends &amp; the Secret Fairy DX" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Atelier Ryza 3: Alchemist of the End &amp; the Secret Key DX" data-sort-name="Atelier Ryza 03" data-playtime="0" data-last-played="638986772875950000" data-platform="PC (Windows)" aria-label="Atelier Ryza 3: Alchemist of the End &amp; the Secret Key DX, played 0h 0m, platform PC (Windows)">
+      <img src="covers/e9f69235c393431789461830d6469b65.webp" alt="Atelier Ryza 3: Alchemist of the End &amp; the Secret Key DX" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Atelier Sophie: The Alchemist of the Mysterious Book DX" data-sort-name="Atelier Sophie 01" data-playtime="591" data-last-played="638891763875220000" data-platform="PC (Windows)" aria-label="Atelier Sophie: The Alchemist of the Mysterious Book DX, played 0h 9m, platform PC (Windows)">
+      <img src="covers/acf2a126b9f7445b9ee98f3d15e35502.webp" alt="Atelier Sophie: The Alchemist of the Mysterious Book DX" loading="lazy" decoding="async">
+      <figcaption>0h 9m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Atelier Sophie 2: The Alchemist of the Mysterious Dream" data-sort-name="Atelier Sophie 02 TAotMD" data-playtime="0" data-last-played="638891759177870000" data-platform="PC (Windows)" aria-label="Atelier Sophie 2: The Alchemist of the Mysterious Dream, played 0h 0m, platform PC (Windows)">
+      <img src="covers/1a602f73924d4d46af59f024bd02d096.webp" alt="Atelier Sophie 2: The Alchemist of the Mysterious Dream" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Atelier Yumia: The Alchemist of Memories &amp; the Envisioned Land" data-sort-name="Atelier Yumia: The Alchemist of Memories &amp; the Envisioned Land" data-playtime="7272" data-last-played="639061946254120000" data-platform="PC (Windows)" aria-label="Atelier Yumia: The Alchemist of Memories &amp; the Envisioned Land, played 2h 1m, platform PC (Windows)">
+      <img src="covers/d6fef2bb4bf34be0a7d7e5acfd48dc09.webp" alt="Atelier Yumia: The Alchemist of Memories &amp; the Envisioned Land" loading="lazy" decoding="async">
+      <figcaption>2h 1m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Automobilista 2" data-sort-name="Automobilista 02" data-playtime="140640" data-last-played="639164536140000000" data-platform="PC (Windows)" aria-label="Automobilista 2, played 39h 4m, platform PC (Windows)">
+      <img src="covers/09ade01ec2964365a8005313b2732a06.webp" alt="Automobilista 2" loading="lazy" decoding="async">
+      <figcaption>39h 4m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Balatro" data-sort-name="Balatro" data-playtime="12817" data-last-played="638793873884410000" data-platform="PC (Windows)" aria-label="Balatro, played 3h 33m, platform PC (Windows)">
+      <img src="covers/00846d4ced46473fb6cf6f802d39b9d5.webp" alt="Balatro" loading="lazy" decoding="async">
+      <figcaption>3h 33m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Baldur&#39;s Gate 3" data-sort-name="Baldur&#39;s Gate 03" data-playtime="31736" data-last-played="638418723943490000" data-platform="PC (Windows)" aria-label="Baldur&#39;s Gate 3, played 8h 48m, platform PC (Windows)">
+      <img src="covers/3e61f89ab30e426da6a970ba973e4d85.webp" alt="Baldur&#39;s Gate 3" loading="lazy" decoding="async">
+      <figcaption>8h 48m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Banner of the Maid" data-sort-name="Banner of the Maid" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Banner of the Maid, played 0h 0m, platform PC (Windows)">
+      <img src="covers/839c7930fbaf4527a001a8768c6d0b50.webp" alt="Banner of the Maid" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Bastion" data-sort-name="Bastion" data-playtime="2160" data-last-played="635101920170000000" data-platform="PC (Windows)" aria-label="Bastion, played 0h 36m, platform PC (Windows)">
+      <img src="covers/6a0114ff27da4381ae60e756b15972d5.webp" alt="Bastion" loading="lazy" decoding="async">
+      <figcaption>0h 36m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Bayonetta" data-sort-name="Bayonetta 01" data-playtime="2227" data-last-played="638493176255490000" data-platform="Nintendo Switch" aria-label="Bayonetta, played 0h 37m, platform Nintendo Switch">
+      <img src="covers/d0df7b07f8e2499c91aa052ab119c4d1.webp" alt="Bayonetta" loading="lazy" decoding="async">
+      <figcaption>0h 37m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Bayonetta 2" data-sort-name="Bayonetta 02" data-playtime="0" data-last-played="638492448262250000" data-platform="Nintendo Switch" aria-label="Bayonetta 2, played 0h 0m, platform Nintendo Switch">
+      <img src="covers/6752572c3fa9454c88c13b5c19d44a4d.webp" alt="Bayonetta 2" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Bayonetta 3" data-sort-name="Bayonetta 03" data-playtime="0" data-last-played="638492449168690000" data-platform="Nintendo Switch" aria-label="Bayonetta 3, played 0h 0m, platform Nintendo Switch">
+      <img src="covers/54e73fe92cce437388bc2408f8a6c851.webp" alt="Bayonetta 3" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Bear and Breakfast" data-sort-name="Bear and Breakfast" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Bear and Breakfast, played 0h 0m, platform PC (Windows)">
+      <img src="covers/433e45b6b255468789de906247afb647.webp" alt="Bear and Breakfast" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Black Myth: Wukong" data-sort-name="Black Myth: Wukong" data-playtime="2688" data-last-played="639130162631320000" data-platform="PC (Windows)" aria-label="Black Myth: Wukong, played 0h 44m, platform PC (Windows)">
+      <img src="covers/a837bb22bedc4fd3a20a9b908651f51b.webp" alt="Black Myth: Wukong" loading="lazy" decoding="async">
+      <figcaption>0h 44m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Bloodstained: Ritual of the Night" data-sort-name="Bloodstained: Ritual of the Night" data-playtime="115140" data-last-played="639024013713540000" data-platform="PC (Windows)" aria-label="Bloodstained: Ritual of the Night, played 31h 59m, platform PC (Windows)">
+      <img src="covers/93aee38a95ff46d7b92aeabc561c0863.webp" alt="Bloodstained: Ritual of the Night" loading="lazy" decoding="async">
+      <figcaption>31h 59m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Bloomtown: A Different Story" data-sort-name="Bloomtown: A Different Story" data-playtime="156" data-last-played="638793232943270000" data-platform="PC (Windows)" aria-label="Bloomtown: A Different Story, played 0h 2m, platform PC (Windows)">
+      <img src="covers/cb9a3dbda5e14093837771a759ea6f3a.webp" alt="Bloomtown: A Different Story" loading="lazy" decoding="async">
+      <figcaption>0h 2m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Bravely Default Flying Fairy HD Remaster " data-sort-name="Bravely Default 01" data-playtime="0" data-last-played="639105065931020000" data-platform="PC (Windows)" aria-label="Bravely Default Flying Fairy HD Remaster , played 0h 0m, platform PC (Windows)">
+      <img src="covers/45486fc8668b4f68afd30dbf522f5744.webp" alt="Bravely Default Flying Fairy HD Remaster " loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Bravely Default II" data-sort-name="Bravely Default 02" data-playtime="0" data-last-played="638893424684690000" data-platform="PC (Windows)" aria-label="Bravely Default II, played 0h 0m, platform PC (Windows)">
+      <img src="covers/f350e36e28a8499da52347f2aa0eda68.webp" alt="Bravely Default II" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Breath of Fire IV" data-sort-name="Breath of Fire 04" data-playtime="0" data-last-played="638826026603110000" data-platform="PC (Windows)" aria-label="Breath of Fire IV, played 0h 0m, platform PC (Windows)">
+      <img src="covers/f9233a4e2df14b3ea32070a4900f56ca.webp" alt="Breath of Fire IV" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Cadence of Hyrule - Crypt of the NecroDancer Featuring The Legend of Zelda" data-sort-name="Cadence of Hyrule - Crypt of the NecroDancer Featuring The Legend of Zelda" data-playtime="0" data-last-played="638793233952690000" data-platform="Nintendo Switch" aria-label="Cadence of Hyrule - Crypt of the NecroDancer Featuring The Legend of Zelda, played 0h 0m, platform Nintendo Switch">
+      <img src="covers/3e6f5e4ef73f45d792a5f6886bd706fd.webp" alt="Cadence of Hyrule - Crypt of the NecroDancer Featuring The Legend of Zelda" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Calamity Angels: Special Delivery" data-sort-name="Calamity Angels: Special Delivery" data-playtime="0" data-last-played="639120634836340000" data-platform="PC (Windows)" aria-label="Calamity Angels: Special Delivery, played 0h 0m, platform PC (Windows)">
+      <img src="covers/29f231ba85fa4103ad91b1f7032f1ed1.webp" alt="Calamity Angels: Special Delivery" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="The Callisto Protocol" data-sort-name="Callisto Protocol" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="The Callisto Protocol, played 0h 0m, platform PC (Windows)">
+      <img src="covers/5c23afab07da49769a1ef93a18e059d1.webp" alt="The Callisto Protocol" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Captain Toad: Treasure Tracker" data-sort-name="Captain Toad: Treasure Tracker" data-playtime="0" data-last-played="0" data-platform="Nintendo Switch" aria-label="Captain Toad: Treasure Tracker, played 0h 0m, platform Nintendo Switch">
+      <img src="covers/4be9c4ab647f4696bccfa22fe33510aa.webp" alt="Captain Toad: Treasure Tracker" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Captain Tsubasa - Rise of New Champions" data-sort-name="Captain Tsubasa - Rise of New Champions" data-playtime="117840" data-last-played="638075109530000000" data-platform="PC (Windows)" aria-label="Captain Tsubasa - Rise of New Champions, played 32h 44m, platform PC (Windows)">
+      <img src="covers/1500439db3a7495790ec9f350b8f1654.webp" alt="Captain Tsubasa - Rise of New Champions" loading="lazy" decoding="async">
+      <figcaption>32h 44m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Cast n Chill" data-sort-name="Cast n Chill" data-playtime="0" data-last-played="639042851888240000" data-platform="PC (Windows)" aria-label="Cast n Chill, played 0h 0m, platform PC (Windows)">
+      <img src="covers/06c53485d5b54116abc24b0efbc1bb39.webp" alt="Cast n Chill" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Castlevania Dominus Collection" data-sort-name="Castlevania Dominus Collection" data-playtime="0" data-last-played="639026344824830000" data-platform="PC (Windows)" aria-label="Castlevania Dominus Collection, played 0h 0m, platform PC (Windows)">
+      <img src="covers/3c7a591e1176465295d3fc71522c711a.webp" alt="Castlevania Dominus Collection" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Celeste" data-sort-name="Celeste" data-playtime="0" data-last-played="638952834161620000" data-platform="PC (Windows)" aria-label="Celeste, played 0h 0m, platform PC (Windows)">
+      <img src="covers/dfa148ce55704305bb46cc6ddf40b750.webp" alt="Celeste" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Clair Obscur: Expedition 33" data-sort-name="Clair Obscur: Expedition 33" data-playtime="317250" data-last-played="639017824335900000" data-platform="PC (Windows)" aria-label="Clair Obscur: Expedition 33, played 88h 7m, platform PC (Windows)">
+      <img src="covers/a7e0c7e8bafd4df7a3e655f10e163749.webp" alt="Clair Obscur: Expedition 33" loading="lazy" decoding="async">
+      <figcaption>88h 7m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="CODE VEIN" data-sort-name="CODE VEIN" data-playtime="7140" data-last-played="639084417300000000" data-platform="PC (Windows)" aria-label="CODE VEIN, played 1h 59m, platform PC (Windows)">
+      <img src="covers/bd5cef909f4441bf9a4ffe5e628344e4.webp" alt="CODE VEIN" loading="lazy" decoding="async">
+      <figcaption>1h 59m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Cozy Caravan" data-sort-name="Cozy Caravan" data-playtime="0" data-last-played="638940723559020000" data-platform="PC (Windows)" aria-label="Cozy Caravan, played 0h 0m, platform PC (Windows)">
+      <img src="covers/3115953af7cd4381851b8153bc1bc37c.webp" alt="Cozy Caravan" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="The Crew 2" data-sort-name="Crew 02" data-playtime="60" data-last-played="638620223460000000" data-platform="PC (Windows)" aria-label="The Crew 2, played 0h 1m, platform PC (Windows)">
+      <img src="covers/72672546ad04422fa8fc7e3adfd5b073.webp" alt="The Crew 2" loading="lazy" decoding="async">
+      <figcaption>0h 1m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Crimson Desert" data-sort-name="Crimson Desert" data-playtime="914" data-last-played="639100775804350000" data-platform="PC (Windows)" aria-label="Crimson Desert, played 0h 15m, platform PC (Windows)">
+      <img src="covers/3bcbf8f1bfaa4787b277f245ebedc324.webp" alt="Crimson Desert" loading="lazy" decoding="async">
+      <figcaption>0h 15m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Cronos: The New Dawn" data-sort-name="Cronos: The New Dawn" data-playtime="2346" data-last-played="638973751409700000" data-platform="PC (Windows)" aria-label="Cronos: The New Dawn, played 0h 39m, platform PC (Windows)">
+      <img src="covers/c55facba7496414a9b9706f6568677dc.webp" alt="Cronos: The New Dawn" loading="lazy" decoding="async">
+      <figcaption>0h 39m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Crymachina" data-sort-name="Crymachina" data-playtime="7469" data-last-played="638719810429650000" data-platform="PC (Windows)" aria-label="Crymachina, played 2h 4m, platform PC (Windows)">
+      <img src="covers/899bd298669c4672a503e3b4ec924a14.webp" alt="Crymachina" loading="lazy" decoding="async">
+      <figcaption>2h 4m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Crypt of the NecroDancer" data-sort-name="Crypt of the NecroDancer" data-playtime="0" data-last-played="638793234723180000" data-platform="PC (Windows)" aria-label="Crypt of the NecroDancer, played 0h 0m, platform PC (Windows)">
+      <img src="covers/0f84275e925c4e7c8fc5c80c1a670097.webp" alt="Crypt of the NecroDancer" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Cuisineer" data-sort-name="Cuisineer" data-playtime="29100" data-last-played="638775074310000000" data-platform="PC (Windows)" aria-label="Cuisineer, played 8h 5m, platform PC (Windows)">
+      <img src="covers/ecd6edf8a38648ff95bfbc817bce8f9c.webp" alt="Cuisineer" loading="lazy" decoding="async">
+      <figcaption>8h 5m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Cult of the Lamb" data-sort-name="Cult of the Lamb" data-playtime="0" data-last-played="638411766337750000" data-platform="PC (Windows)" aria-label="Cult of the Lamb, played 0h 0m, platform PC (Windows)">
+      <img src="covers/37c6bdcbb3cf4ecfa0404a872e3568bb.webp" alt="Cult of the Lamb" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Cuphead" data-sort-name="Cuphead" data-playtime="516" data-last-played="638373130564590000" data-platform="PC (Windows)" aria-label="Cuphead, played 0h 8m, platform PC (Windows)">
+      <img src="covers/302c3e53f6424fa2b9499619deb4533f.webp" alt="Cuphead" loading="lazy" decoding="async">
+      <figcaption>0h 8m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Cursed to Golf" data-sort-name="Cursed to Golf" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Cursed to Golf, played 0h 0m, platform PC (Windows)">
+      <img src="covers/4749420f39114dec91c81dd7d5f60b03.webp" alt="Cursed to Golf" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Cyberpunk 2077" data-sort-name="Cyberpunk 2077" data-playtime="20539" data-last-played="638738622460550000" data-platform="PC (Windows)" aria-label="Cyberpunk 2077, played 5h 42m, platform PC (Windows)">
+      <img src="covers/8d6a3e7b2fd947cc9c1012caa4961973.webp" alt="Cyberpunk 2077" loading="lazy" decoding="async">
+      <figcaption>5h 42m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Daemon X Machina" data-sort-name="Daemon X Machina" data-playtime="0" data-last-played="638792331280740000" data-platform="PC (Windows)" aria-label="Daemon X Machina, played 0h 0m, platform PC (Windows)">
+      <img src="covers/fdac7ca7dfb448aa897a6c9867c36ffa.webp" alt="Daemon X Machina" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Daemon x Machina: Titanic Scion" data-sort-name="Daemon x Machina: Titanic Scion" data-playtime="2370" data-last-played="638951857548120000" data-platform="PC (Windows)" aria-label="Daemon x Machina: Titanic Scion, played 0h 39m, platform PC (Windows)">
+      <img src="covers/1192bc4de4c54cf1bdadf8edf1771910.webp" alt="Daemon x Machina: Titanic Scion" loading="lazy" decoding="async">
+      <figcaption>0h 39m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Dark Souls Remastered" data-sort-name="DARK SOULS 01" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Dark Souls Remastered, played 0h 0m, platform PC (Windows)">
+      <img src="covers/79b76a3e9d9143e982b56a98b89a89d9.webp" alt="Dark Souls Remastered" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Dark Souls II: Scholar of the First Sin" data-sort-name="DARK SOULS 02" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Dark Souls II: Scholar of the First Sin, played 0h 0m, platform PC (Windows)">
+      <img src="covers/3c8931487bd745e8b46268ba90383bf2.webp" alt="Dark Souls II: Scholar of the First Sin" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="DARK SOULS III" data-sort-name="DARK SOULS 03" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="DARK SOULS III, played 0h 0m, platform PC (Windows)">
+      <img src="covers/6921589848cd4bf69fdee15d2c29ed46.webp" alt="DARK SOULS III" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Dead Cells" data-sort-name="Dead Cells" data-playtime="0" data-last-played="638775074474280000" data-platform="PC (Windows)" aria-label="Dead Cells, played 0h 0m, platform PC (Windows)">
+      <img src="covers/84fd7fefe3784e2581dcc6c8a6a14c24.webp" alt="Dead Cells" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Dead Space (2023)" data-sort-name="Dead Space (2023)" data-playtime="1066" data-last-played="639039448231540000" data-platform="PC (Windows)" aria-label="Dead Space (2023), played 0h 17m, platform PC (Windows)">
+      <img src="covers/59a9f8fec30f46f3a930cb85617529be.webp" alt="Dead Space (2023)" loading="lazy" decoding="async">
+      <figcaption>0h 17m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Death Stranding Director&#39;s Cut" data-sort-name="Death Stranding 01" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Death Stranding Director&#39;s Cut, played 0h 0m, platform PC (Windows)">
+      <img src="covers/b63d7f4ecd2c47caa027923e94e1f03b.webp" alt="Death Stranding Director&#39;s Cut" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Death Stranding 2: On the Beach " data-sort-name="Death Stranding 02" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Death Stranding 2: On the Beach , played 0h 0m, platform PC (Windows)">
+      <img src="covers/a2193b45cea147c4aed5a78756e7cdd6.webp" alt="Death Stranding 2: On the Beach " loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Demon Slayer -Kimetsu no Yaiba- The Hinokami Chronicles" data-sort-name="Demon Slayer -Kimetsu no Yaiba- The Hinokami Chronicles" data-playtime="78720" data-last-played="638181505890000000" data-platform="PC (Windows)" aria-label="Demon Slayer -Kimetsu no Yaiba- The Hinokami Chronicles, played 21h 52m, platform PC (Windows)">
+      <img src="covers/f5c9a7492b574243a0ae4310af937366.webp" alt="Demon Slayer -Kimetsu no Yaiba- The Hinokami Chronicles" loading="lazy" decoding="async">
+      <figcaption>21h 52m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Demon&#39;s Souls" data-sort-name="Demon&#39;s Souls" data-playtime="0" data-last-played="0" data-platform="Sony PlayStation 3" aria-label="Demon&#39;s Souls, played 0h 0m, platform Sony PlayStation 3">
+      <img src="covers/696be5dbd37247a8b0bebedd26f92b07.webp" alt="Demon&#39;s Souls" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="The DioField Chronicle" data-sort-name="DioField Chronicle" data-playtime="782" data-last-played="638585839428650000" data-platform="PC (Windows)" aria-label="The DioField Chronicle, played 0h 13m, platform PC (Windows)">
+      <img src="covers/c2ca327b43274de99966a31e4fd0c6ba.webp" alt="The DioField Chronicle" loading="lazy" decoding="async">
+      <figcaption>0h 13m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Dispatch" data-sort-name="Dispatch" data-playtime="878" data-last-played="639083520682480000" data-platform="PC (Windows)" aria-label="Dispatch, played 0h 14m, platform PC (Windows)">
+      <img src="covers/5d3482158158420686b54e09cad08e22.webp" alt="Dispatch" loading="lazy" decoding="async">
+      <figcaption>0h 14m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="DNF Duel" data-sort-name="DNF Duel" data-playtime="8990" data-last-played="638962515636060000" data-platform="PC (Windows)" aria-label="DNF Duel, played 2h 29m, platform PC (Windows)">
+      <img src="covers/804873590ddf4c9aaf165db2b1355492.webp" alt="DNF Duel" loading="lazy" decoding="async">
+      <figcaption>2h 29m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Doki Doki Literature Club" data-sort-name="Doki Doki Literature Club" data-playtime="6000" data-last-played="636509485430000000" data-platform="PC (Windows)" aria-label="Doki Doki Literature Club, played 1h 40m, platform PC (Windows)">
+      <img src="covers/68093cbb7d0b4988b61fb5895359d17e.webp" alt="Doki Doki Literature Club" loading="lazy" decoding="async">
+      <figcaption>1h 40m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Donkey Kong Country Tropical Freeze" data-sort-name="Donkey Kong Country Tropical Freeze" data-playtime="0" data-last-played="638481262012890000" data-platform="Nintendo Switch" aria-label="Donkey Kong Country Tropical Freeze, played 0h 0m, platform Nintendo Switch">
+      <img src="covers/20c2afb2587841d9bcdc3a5575bc1e25.webp" alt="Donkey Kong Country Tropical Freeze" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Dragon Age: Inquisition" data-sort-name="Dragon Age: Inquisition" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Dragon Age: Inquisition, played 0h 0m, platform PC (Windows)">
+      <img src="covers/0191be9b2c814c50ba5b8b5a79e890f0.webp" alt="Dragon Age: Inquisition" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="DRAGON BALL FighterZ" data-sort-name="DRAGON BALL FighterZ" data-playtime="82380" data-last-played="638208958640000000" data-platform="PC (Windows)" aria-label="DRAGON BALL FighterZ, played 22h 53m, platform PC (Windows)">
+      <img src="covers/e73c1701980e4473a3f784870b44a9c8.webp" alt="DRAGON BALL FighterZ" loading="lazy" decoding="async">
+      <figcaption>22h 53m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="DRAGON BALL Z: KAKAROT" data-sort-name="DRAGON BALL Z: KAKAROT" data-playtime="181140" data-last-played="639144865360000000" data-platform="PC (Windows)" aria-label="DRAGON BALL Z: KAKAROT, played 50h 19m, platform PC (Windows)">
+      <img src="covers/6c8bad591ba14364a08cf3fa73736195.webp" alt="DRAGON BALL Z: KAKAROT" loading="lazy" decoding="async">
+      <figcaption>50h 19m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Dragon Ball: Sparking! Zero" data-sort-name="Dragon Ball: Sparking! Zero" data-playtime="53667" data-last-played="639129249217590000" data-platform="PC (Windows)" aria-label="Dragon Ball: Sparking! Zero, played 14h 54m, platform PC (Windows)">
+      <img src="covers/bc6c8bca7f1743f7834994968933bdd3.webp" alt="Dragon Ball: Sparking! Zero" loading="lazy" decoding="async">
+      <figcaption>14h 54m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Dragon Quest I &amp; II HD-2D Remake" data-sort-name="Dragon Quest 01 and 02" data-playtime="0" data-last-played="639086927529810000" data-platform="PC (Windows)" aria-label="Dragon Quest I &amp; II HD-2D Remake, played 0h 0m, platform PC (Windows)">
+      <img src="covers/cb41b8a556a44160b70b5f8aba398fa8.webp" alt="Dragon Quest I &amp; II HD-2D Remake" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="DRAGON QUEST III HD-2D Remake" data-sort-name="DRAGON QUEST 03" data-playtime="0" data-last-played="638890018173010000" data-platform="PC (Windows)" aria-label="DRAGON QUEST III HD-2D Remake, played 0h 0m, platform PC (Windows)">
+      <img src="covers/7e5563c3ed9045489d4b53a353649e52.webp" alt="DRAGON QUEST III HD-2D Remake" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Dragon Quest VII Reimagined" data-sort-name="Dragon Quest 07 Reimagined" data-playtime="0" data-last-played="639104240269030000" data-platform="PC (Windows)" aria-label="Dragon Quest VII Reimagined, played 0h 0m, platform PC (Windows)">
+      <img src="covers/22284167a55841999f47c2d7cf97387b.webp" alt="Dragon Quest VII Reimagined" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Dragon Quest XI S - Definitive Edition" data-sort-name="Dragon Quest 11 S" data-playtime="0" data-last-played="638418313745640000" data-platform="PC (Windows)" aria-label="Dragon Quest XI S - Definitive Edition, played 0h 0m, platform PC (Windows)">
+      <img src="covers/1073bd233936412ba543917ee5a7c600.webp" alt="Dragon Quest XI S - Definitive Edition" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Dragon Quest Treasures" data-sort-name="Dragon Quest Treasures" data-playtime="0" data-last-played="638500398644310000" data-platform="PC (Windows)" aria-label="Dragon Quest Treasures, played 0h 0m, platform PC (Windows)">
+      <img src="covers/b6f4c378fd8f43289ce7d8a2eac6ff0e.webp" alt="Dragon Quest Treasures" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Dragon&#39;s Crown" data-sort-name="Dragon&#39;s Crown" data-playtime="0" data-last-played="638368183413840000" data-platform="Sony PlayStation 3" aria-label="Dragon&#39;s Crown, played 0h 0m, platform Sony PlayStation 3">
+      <img src="covers/dc46eeba2a6f4ba38fd25d005fc49b21.webp" alt="Dragon&#39;s Crown" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Dragon&#39;s Dogma 2" data-sort-name="Dragon&#39;s Dogma 02" data-playtime="0" data-last-played="639129305051380000" data-platform="PC (Windows)" aria-label="Dragon&#39;s Dogma 2, played 0h 0m, platform PC (Windows)">
+      <img src="covers/425f953a63924b14972f84a11fdd183a.webp" alt="Dragon&#39;s Dogma 2" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Dragon&#39;s Dogma: Dark Arisen" data-sort-name="Dragon&#39;s Dogma: Dark Arisen" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Dragon&#39;s Dogma: Dark Arisen, played 0h 0m, platform PC (Windows)">
+      <img src="covers/34198d50f19d4704b84372fdee2f7451.webp" alt="Dragon&#39;s Dogma: Dark Arisen" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Dungeon Defenders" data-sort-name="Dungeon Defenders" data-playtime="727620" data-last-played="636326231300000000" data-platform="PC (Windows)" aria-label="Dungeon Defenders, played 202h 7m, platform PC (Windows)">
+      <img src="covers/83a37f54f82a426d85fa70e9d42b130c.webp" alt="Dungeon Defenders" loading="lazy" decoding="async">
+      <figcaption>202h 7m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Dynasty Warriors: Origins " data-sort-name="Dynasty Warriors: Origins " data-playtime="14600" data-last-played="638757518951860000" data-platform="PC (Windows)" aria-label="Dynasty Warriors: Origins , played 4h 3m, platform PC (Windows)">
+      <img src="covers/80116ecc0c8e4a4d86c63b8d36140269.webp" alt="Dynasty Warriors: Origins " loading="lazy" decoding="async">
+      <figcaption>4h 3m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Eastern Exorcist" data-sort-name="Eastern Exorcist" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Eastern Exorcist, played 0h 0m, platform PC (Windows)">
+      <img src="covers/96fced01995a4368b935d6142adcb59b.webp" alt="Eastern Exorcist" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Eastward" data-sort-name="Eastward" data-playtime="0" data-last-played="638349552385890000" data-platform="PC (Windows)" aria-label="Eastward, played 0h 0m, platform PC (Windows)">
+      <img src="covers/6d900d8d05ee4c0bbc896cb5e4d9446c.webp" alt="Eastward" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Eiyuden Chronicle: Hundred Heroes" data-sort-name="Eiyuden Chronicle: Hundred Heroes" data-playtime="0" data-last-played="638775119500810000" data-platform="PC (Windows)" aria-label="Eiyuden Chronicle: Hundred Heroes, played 0h 0m, platform PC (Windows)">
+      <img src="covers/140b94debff84ddab8e8b8b42e9fd303.webp" alt="Eiyuden Chronicle: Hundred Heroes" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Elden Ring" data-sort-name="Elden Ring" data-playtime="559080" data-last-played="639018594940000000" data-platform="PC (Windows)" aria-label="Elden Ring, played 155h 18m, platform PC (Windows)">
+      <img src="covers/c99ffef336304f44bcb5de1319842002.webp" alt="Elden Ring" loading="lazy" decoding="async">
+      <figcaption>155h 18m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Ender Lilies: Quietus of the Knights" data-sort-name="Ender Lilies: Quietus of the Knights" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Ender Lilies: Quietus of the Knights, played 0h 0m, platform PC (Windows)">
+      <img src="covers/61b02482bc82462db3ea48a240a8de52.webp" alt="Ender Lilies: Quietus of the Knights" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Ender Magnolia: Bloom in the Mist" data-sort-name="Ender Magnolia: Bloom in the Mist" data-playtime="0" data-last-played="638790495925230000" data-platform="PC (Windows)" aria-label="Ender Magnolia: Bloom in the Mist, played 0h 0m, platform PC (Windows)">
+      <img src="covers/fbf98b91ed6e4e37a40506958c04b575.webp" alt="Ender Magnolia: Bloom in the Mist" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Enshrouded" data-sort-name="Enshrouded" data-playtime="240240" data-last-played="638774820260000000" data-platform="PC (Windows)" aria-label="Enshrouded, played 66h 44m, platform PC (Windows)">
+      <img src="covers/b9d9165ac0654ab186d499513b98cb46.webp" alt="Enshrouded" loading="lazy" decoding="async">
+      <figcaption>66h 44m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Eternights" data-sort-name="Eternights" data-playtime="47674" data-last-played="638638287033220000" data-platform="PC (Windows)" aria-label="Eternights, played 13h 14m, platform PC (Windows)">
+      <img src="covers/d622317b07c74b12ba1e7acc1b6a04fb.webp" alt="Eternights" loading="lazy" decoding="async">
+      <figcaption>13h 14m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Everybody&#39;s Golf: Hot Shots" data-sort-name="Everybody&#39;s Golf: Hot Shots" data-playtime="4497" data-last-played="639054626281730000" data-platform="PC (Windows)" aria-label="Everybody&#39;s Golf: Hot Shots, played 1h 14m, platform PC (Windows)">
+      <img src="covers/cb20be7e6fef4f68a99f4117c5b1bf50.webp" alt="Everybody&#39;s Golf: Hot Shots" loading="lazy" decoding="async">
+      <figcaption>1h 14m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Factorio" data-sort-name="Factorio" data-playtime="0" data-last-played="638793241514370000" data-platform="PC (Windows)" aria-label="Factorio, played 0h 0m, platform PC (Windows)">
+      <img src="covers/f2ed69cb68c540b8b4631a612058f7f0.webp" alt="Factorio" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Fantasy Life i: The Girl Who Steals Time" data-sort-name="Fantasy Life i: The Girl Who Steals Time" data-playtime="113827" data-last-played="639037715337050000" data-platform="PC (Windows)" aria-label="Fantasy Life i: The Girl Who Steals Time, played 31h 37m, platform PC (Windows)">
+      <img src="covers/5782d65990024178aa70cfc58b5bd8a9.webp" alt="Fantasy Life i: The Girl Who Steals Time" loading="lazy" decoding="async">
+      <figcaption>31h 37m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Farthest Frontier" data-sort-name="Farthest Frontier" data-playtime="2798" data-last-played="638498435903820000" data-platform="PC (Windows)" aria-label="Farthest Frontier, played 0h 46m, platform PC (Windows)">
+      <img src="covers/c882c3b7c7b04222a34756a35cb4b461.webp" alt="Farthest Frontier" loading="lazy" decoding="async">
+      <figcaption>0h 46m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Fate/Extella: Link" data-sort-name="Fate/Extella: Link" data-playtime="9428" data-last-played="638556471282080000" data-platform="PC (Windows)" aria-label="Fate/Extella: Link, played 2h 37m, platform PC (Windows)">
+      <img src="covers/ba95f00846704742a9bfe061e685a562.webp" alt="Fate/Extella: Link" loading="lazy" decoding="async">
+      <figcaption>2h 37m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Fate/Samurai Remnant" data-sort-name="Fate/Samurai Remnant" data-playtime="7160" data-last-played="638480325217060000" data-platform="PC (Windows)" aria-label="Fate/Samurai Remnant, played 1h 59m, platform PC (Windows)">
+      <img src="covers/62ed62adbf7f4265bd3e5a5064d8e078.webp" alt="Fate/Samurai Remnant" loading="lazy" decoding="async">
+      <figcaption>1h 59m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Fayburrow" data-sort-name="Fayburrow" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Fayburrow, played 0h 0m, platform PC (Windows)">
+      <img src="covers/cb7423f0f2a140678befebef2bdb6816.webp" alt="Fayburrow" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="FEZ" data-sort-name="FEZ" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="FEZ, played 0h 0m, platform PC (Windows)">
+      <img src="covers/44c23d58998d4f3c8df6ef4a197fd8f3.webp" alt="FEZ" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Final Fantasy" data-sort-name="FINAL FANTASY 01" data-playtime="0" data-last-played="638473512117470000" data-platform="PC (Windows)" aria-label="Final Fantasy, played 0h 0m, platform PC (Windows)">
+      <img src="covers/20b2ff913aae4c228768123f66949d9d.webp" alt="Final Fantasy" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Final Fantasy II" data-sort-name="FINAL FANTASY 02" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Final Fantasy II, played 0h 0m, platform PC (Windows)">
+      <img src="covers/2216382c7290424089a60c5702f3be8a.webp" alt="Final Fantasy II" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Final Fantasy III" data-sort-name="FINAL FANTASY 03" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Final Fantasy III, played 0h 0m, platform PC (Windows)">
+      <img src="covers/fd3077a5f90f4187987b692ec6e3feff.webp" alt="Final Fantasy III" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Final Fantasy IV" data-sort-name="FINAL FANTASY 04" data-playtime="0" data-last-played="638388768985620000" data-platform="PC (Windows)" aria-label="Final Fantasy IV, played 0h 0m, platform PC (Windows)">
+      <img src="covers/b65ad35536d14323955eeb2f2d7c42d8.webp" alt="Final Fantasy IV" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Final Fantasy V (2021)" data-sort-name="FINAL FANTASY 05" data-playtime="0" data-last-played="638388770109590000" data-platform="PC (Windows)" aria-label="Final Fantasy V (2021), played 0h 0m, platform PC (Windows)">
+      <img src="covers/588790b756c04d6d8c23c2e01d2e0e7c.webp" alt="Final Fantasy V (2021)" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Final Fantasy VI (2022)" data-sort-name="FINAL FANTASY 06" data-playtime="0" data-last-played="638388771768350000" data-platform="PC (Windows)" aria-label="Final Fantasy VI (2022), played 0h 0m, platform PC (Windows)">
+      <img src="covers/60eb68f2d40c415fa1070eea83e425a9.webp" alt="Final Fantasy VI (2022)" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Final Fantasy VII" data-sort-name="Final Fantasy 07" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Final Fantasy VII, played 0h 0m, platform PC (Windows)">
+      <img src="covers/234e2a12acff465fb898f691e996f8f1.webp" alt="Final Fantasy VII" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Crisis Core: Final Fantasy VII Reunion" data-sort-name="Final Fantasy 07 Crisis Core Reunion" data-playtime="2002" data-last-played="638480561378440000" data-platform="PC (Windows)" aria-label="Crisis Core: Final Fantasy VII Reunion, played 0h 33m, platform PC (Windows)">
+      <img src="covers/5a6d73443bfb4ac5a07f29df4d5677d0.webp" alt="Crisis Core: Final Fantasy VII Reunion" loading="lazy" decoding="async">
+      <figcaption>0h 33m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Final Fantasy VII Remake Intergrade " data-sort-name="Final Fantasy 07 Remake 01" data-playtime="252360" data-last-played="638265368730000000" data-platform="PC (Windows)" aria-label="Final Fantasy VII Remake Intergrade , played 70h 6m, platform PC (Windows)">
+      <img src="covers/d926d58647ce446a8eb8b6ce38b73304.webp" alt="Final Fantasy VII Remake Intergrade " loading="lazy" decoding="async">
+      <figcaption>70h 6m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Final Fantasy VII Rebirth" data-sort-name="Final Fantasy 07 Remake 02" data-playtime="13641" data-last-played="638806867632460000" data-platform="PC (Windows)" aria-label="Final Fantasy VII Rebirth, played 3h 47m, platform PC (Windows)">
+      <img src="covers/ecde6522dda745e381f41e9e4bd9ab80.webp" alt="Final Fantasy VII Rebirth" loading="lazy" decoding="async">
+      <figcaption>3h 47m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Final Fantasy VIII" data-sort-name="Final Fantasy 08" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Final Fantasy VIII, played 0h 0m, platform PC (Windows)">
+      <img src="covers/ed6fa885d01e4a86849e663709aa5c38.webp" alt="Final Fantasy VIII" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Final Fantasy X/X-2 HD Remaster" data-sort-name="FINAL FANTASY 10" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Final Fantasy X/X-2 HD Remaster, played 0h 0m, platform PC (Windows)">
+      <img src="covers/f2028e9fe7144fc7a2ce8afccf046f6f.webp" alt="Final Fantasy X/X-2 HD Remaster" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Final Fantasy XII: The Zodiac Age" data-sort-name="FINAL FANTASY 12 THE ZODIAC AGE" data-playtime="0" data-last-played="638388581748370000" data-platform="PC (Windows)" aria-label="Final Fantasy XII: The Zodiac Age, played 0h 0m, platform PC (Windows)">
+      <img src="covers/775158c788b542869782ad865a98b47a.webp" alt="Final Fantasy XII: The Zodiac Age" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Final Fantasy XIII" data-sort-name="Final Fantasy 13" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Final Fantasy XIII, played 0h 0m, platform PC (Windows)">
+      <img src="covers/4b6e91849a0d4f31b03d64defd03a1ca.webp" alt="Final Fantasy XIII" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Final Fantasy XIV Online" data-sort-name="Final Fantasy 14" data-playtime="3089900" data-last-played="0" data-platform="PC (Windows)" aria-label="Final Fantasy XIV Online, played 858h 18m, platform PC (Windows)">
+      <img src="covers/cac4dac0946b40ab9ae5c5bcaa2a28ea.webp" alt="Final Fantasy XIV Online" loading="lazy" decoding="async">
+      <figcaption>858h 18m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Final Fantasy XV " data-sort-name="Final Fantasy 15" data-playtime="104880" data-last-played="638053376550000000" data-platform="PC (Windows)" aria-label="Final Fantasy XV , played 29h 8m, platform PC (Windows)">
+      <img src="covers/7ff2182cc2ef4679b2d1b61deed845ce.webp" alt="Final Fantasy XV " loading="lazy" decoding="async">
+      <figcaption>29h 8m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Final Fantasy XVI" data-sort-name="Final Fantasy 16" data-playtime="230654" data-last-played="638805948993300000" data-platform="PC (Windows)" aria-label="Final Fantasy XVI, played 64h 4m, platform PC (Windows)">
+      <img src="covers/5fb5bc1550794623876d724c7c861bfd.webp" alt="Final Fantasy XVI" loading="lazy" decoding="async">
+      <figcaption>64h 4m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Final Fantasy Tactics - The Ivalice Chronicles" data-sort-name="Final Fantasy Tactics - The Ivalice Chronicles" data-playtime="0" data-last-played="639112861472110000" data-platform="PC (Windows)" aria-label="Final Fantasy Tactics - The Ivalice Chronicles, played 0h 0m, platform PC (Windows)">
+      <img src="covers/42e90ff5fa5a45b9b40233a97dca7500.webp" alt="Final Fantasy Tactics - The Ivalice Chronicles" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Fire Emblem Engage" data-sort-name="Fire Emblem Engage" data-playtime="11364" data-last-played="638595958748870000" data-platform="Nintendo Switch" aria-label="Fire Emblem Engage, played 3h 9m, platform Nintendo Switch">
+      <img src="covers/55f81c44d9aa44578bbf21e8adfb6383.webp" alt="Fire Emblem Engage" loading="lazy" decoding="async">
+      <figcaption>3h 9m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Fire Emblem: Three Houses" data-sort-name="Fire Emblem: Three Houses" data-playtime="10946" data-last-played="638565764728360000" data-platform="Nintendo Switch" aria-label="Fire Emblem: Three Houses, played 3h 2m, platform Nintendo Switch">
+      <img src="covers/3445157db46247b1b15b856e6c1c0ce0.webp" alt="Fire Emblem: Three Houses" loading="lazy" decoding="async">
+      <figcaption>3h 2m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="The First Berserker: Khazan" data-sort-name="First Berserker: Khazan" data-playtime="0" data-last-played="639108331471590000" data-platform="PC (Windows)" aria-label="The First Berserker: Khazan, played 0h 0m, platform PC (Windows)">
+      <img src="covers/00b1df6616804795a535ae7267ebb9d8.webp" alt="The First Berserker: Khazan" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Fortnite" data-sort-name="Fortnite" data-playtime="17300" data-last-played="638992811076540000" data-platform="PC (Windows)" aria-label="Fortnite, played 4h 48m, platform PC (Windows)">
+      <img src="covers/d25a95e61aa4498e80efd475ddbc8d70.webp" alt="Fortnite" loading="lazy" decoding="async">
+      <figcaption>4h 48m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Forza Horizon 6" data-sort-name="Forza Horizon 06" data-playtime="26318" data-last-played="639156980550170000" data-platform="PC (Windows)" aria-label="Forza Horizon 6, played 7h 18m, platform PC (Windows)">
+      <img src="covers/a74a4081451c4ce4bf9c70b736cd7027.webp" alt="Forza Horizon 6" loading="lazy" decoding="async">
+      <figcaption>7h 18m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Foundation" data-sort-name="Foundation" data-playtime="23577" data-last-played="638750651632410000" data-platform="PC (Windows)" aria-label="Foundation, played 6h 32m, platform PC (Windows)">
+      <img src="covers/0e5621a79be64c6aacf15268989a54de.webp" alt="Foundation" loading="lazy" decoding="async">
+      <figcaption>6h 32m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Freedom Wars Remastered" data-sort-name="Freedom Wars Remastered" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Freedom Wars Remastered, played 0h 0m, platform PC (Windows)">
+      <img src="covers/f823643bb5c24489947b5aa955d530a8.webp" alt="Freedom Wars Remastered" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Frostpunk" data-sort-name="Frostpunk" data-playtime="24900" data-last-played="637867050910000000" data-platform="PC (Windows)" aria-label="Frostpunk, played 6h 55m, platform PC (Windows)">
+      <img src="covers/af4680a44ea643639fba8eb98230b28b.webp" alt="Frostpunk" loading="lazy" decoding="async">
+      <figcaption>6h 55m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="FTL: Faster Than Light" data-sort-name="FTL: Faster Than Light" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="FTL: Faster Than Light, played 0h 0m, platform PC (Windows)">
+      <img src="covers/6ce7963edba54b9f8a1e563fb5d566b8.webp" alt="FTL: Faster Than Light" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Full metal schoolgirl" data-sort-name="Full metal schoolgirl" data-playtime="0" data-last-played="639069328419170000" data-platform="PC (Windows)" aria-label="Full metal schoolgirl, played 0h 0m, platform PC (Windows)">
+      <img src="covers/50eb898521d540a2945dd554b9ffcffe.webp" alt="Full metal schoolgirl" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Garden of Witches" data-sort-name="Garden of Witches" data-playtime="0" data-last-played="639084328306660000" data-platform="PC (Windows)" aria-label="Garden of Witches, played 0h 0m, platform PC (Windows)">
+      <img src="covers/6c19662586cf4e519f26a9a27923bb36.webp" alt="Garden of Witches" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Garden Story" data-sort-name="Garden Story" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Garden Story, played 0h 0m, platform PC (Windows)">
+      <img src="covers/3a8e9d33470b460f91ba3a5f70859b1c.webp" alt="Garden Story" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Genshin Impact" data-sort-name="Genshin Impact" data-playtime="17173804" data-last-played="638860365915580000" data-platform="PC (Windows)" aria-label="Genshin Impact, played 4770h 30m, platform PC (Windows)">
+      <img src="covers/b6fe6edf93364ba0ad89e98a89f9f708.webp" alt="Genshin Impact" loading="lazy" decoding="async">
+      <figcaption>4770h 30m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Ghost of Tsushima: Director&#39;s Cut" data-sort-name="Ghost of Tsushima: Director&#39;s Cut" data-playtime="8763" data-last-played="638540847766240000" data-platform="PC (Windows)" aria-label="Ghost of Tsushima: Director&#39;s Cut, played 2h 26m, platform PC (Windows)">
+      <img src="covers/2d3847556fdc4f7b8a990285827c0b43.webp" alt="Ghost of Tsushima: Director&#39;s Cut" loading="lazy" decoding="async">
+      <figcaption>2h 26m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Ghostrunner" data-sort-name="Ghostrunner" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Ghostrunner, played 0h 0m, platform PC (Windows)">
+      <img src="covers/e799d561a71549f7a76ba8b8bf67baa4.webp" alt="Ghostrunner" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Ghostwire: Tokyo" data-sort-name="Ghostwire: Tokyo" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Ghostwire: Tokyo, played 0h 0m, platform PC (Windows)">
+      <img src="covers/f363cb0fd9fe439fa5095cc325906760.webp" alt="Ghostwire: Tokyo" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Glimmer In Mirror" data-sort-name="Glimmer In Mirror" data-playtime="0" data-last-played="638952817332320000" data-platform="PC (Windows)" aria-label="Glimmer In Mirror, played 0h 0m, platform PC (Windows)">
+      <img src="covers/73d5a264533345f99ce45afb2337f473.webp" alt="Glimmer In Mirror" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Granblue Fantasy Versus: Rising" data-sort-name="Granblue Fantasy Versus: Rising" data-playtime="686580" data-last-played="639081763910000000" data-platform="PC (Windows)" aria-label="Granblue Fantasy Versus: Rising, played 190h 43m, platform PC (Windows)">
+      <img src="covers/993d19badbe94b89be5bbe9fd41c9c23.webp" alt="Granblue Fantasy Versus: Rising" loading="lazy" decoding="async">
+      <figcaption>190h 43m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Granblue Fantasy: Relink" data-sort-name="Granblue Fantasy: Relink" data-playtime="1045620" data-last-played="638730835110000000" data-platform="PC (Windows)" aria-label="Granblue Fantasy: Relink, played 290h 27m, platform PC (Windows)">
+      <img src="covers/6ff0db49210f4526acb872b58440c559.webp" alt="Granblue Fantasy: Relink" loading="lazy" decoding="async">
+      <figcaption>290h 27m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Grand Kingdom" data-sort-name="Grand Kingdom" data-playtime="0" data-last-played="638363875337860000" data-platform="Sony PlayStation Vita" aria-label="Grand Kingdom, played 0h 0m, platform Sony PlayStation Vita">
+      <img src="covers/2bbe88d8f10143a4a21404c8c134ede4.webp" alt="Grand Kingdom" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Gravity Circuit" data-sort-name="Gravity Circuit" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Gravity Circuit, played 0h 0m, platform PC (Windows)">
+      <img src="covers/8caebc14ce3341ebac89d6b7f0c26f68.webp" alt="Gravity Circuit" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="The Great Villainess: Strategy of Lily" data-sort-name="Great Villainess Strategy of Lily" data-playtime="103437" data-last-played="638972891246670000" data-platform="PC (Windows)" aria-label="The Great Villainess: Strategy of Lily, played 28h 43m, platform PC (Windows)">
+      <img src="covers/4863eb50071343eca549f1707e636a92.webp" alt="The Great Villainess: Strategy of Lily" loading="lazy" decoding="async">
+      <figcaption>28h 43m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="GrimGrimoire OnceMore" data-sort-name="GrimGrimoire OnceMore" data-playtime="34145" data-last-played="638363600195260000" data-platform="Nintendo Switch" aria-label="GrimGrimoire OnceMore, played 9h 29m, platform Nintendo Switch">
+      <img src="covers/19d3b58761be4f5dbce15cf03b6082f8.webp" alt="GrimGrimoire OnceMore" loading="lazy" decoding="async">
+      <figcaption>9h 29m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Guilty Gear Strive" data-sort-name="Guilty Gear Strive" data-playtime="102240" data-last-played="639128482360000000" data-platform="PC (Windows)" aria-label="Guilty Gear Strive, played 28h 24m, platform PC (Windows)">
+      <img src="covers/a2339620dbda47e8a57eda7d4d97f9e2.webp" alt="Guilty Gear Strive" loading="lazy" decoding="async">
+      <figcaption>28h 24m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Hades" data-sort-name="Hades" data-playtime="37260" data-last-played="638774855050000000" data-platform="PC (Windows)" aria-label="Hades, played 10h 21m, platform PC (Windows)">
+      <img src="covers/385313bacbc543859bc3989af6acc3ef.webp" alt="Hades" loading="lazy" decoding="async">
+      <figcaption>10h 21m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Hades II" data-sort-name="Hades 02" data-playtime="2059" data-last-played="638985917620060000" data-platform="PC (Windows)" aria-label="Hades II, played 0h 34m, platform PC (Windows)">
+      <img src="covers/d4797c7152dd4a899fe1adda79a13cdc.webp" alt="Hades II" loading="lazy" decoding="async">
+      <figcaption>0h 34m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Hatsune Miku: Project DIVA Mega Mix+" data-sort-name="Hatsune Miku: Project DIVA Mega Mix+" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Hatsune Miku: Project DIVA Mega Mix+, played 0h 0m, platform PC (Windows)">
+      <img src="covers/047961add95b4ae5b2dc8906e77ec8fa.webp" alt="Hatsune Miku: Project DIVA Mega Mix+" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Heroes of Might and Magic: Olden Era" data-sort-name="Heroes of Might and Magic: Olden Era" data-playtime="11640" data-last-played="639160000930000000" data-platform="PC (Windows)" aria-label="Heroes of Might and Magic: Olden Era, played 3h 14m, platform PC (Windows)">
+      <img src="covers/c3fa5ffca26e4e8492bfd3b1a6fa67f1.webp" alt="Heroes of Might and Magic: Olden Era" loading="lazy" decoding="async">
+      <figcaption>3h 14m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Hi-Fi Rush" data-sort-name="Hi-Fi Rush" data-playtime="1129" data-last-played="639062813877100000" data-platform="PC (Windows)" aria-label="Hi-Fi Rush, played 0h 18m, platform PC (Windows)">
+      <img src="covers/ac145c896d9147b68a2de9e2e5cf2137.webp" alt="Hi-Fi Rush" loading="lazy" decoding="async">
+      <figcaption>0h 18m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Hogwarts Legacy" data-sort-name="Hogwarts Legacy" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Hogwarts Legacy, played 0h 0m, platform PC (Windows)">
+      <img src="covers/43f096f9408649a495250279777c87b1.webp" alt="Hogwarts Legacy" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Hollow Knight" data-sort-name="Hollow Knight" data-playtime="62280" data-last-played="638296218660000000" data-platform="PC (Windows)" aria-label="Hollow Knight, played 17h 18m, platform PC (Windows)">
+      <img src="covers/578b14d386b048c5a28f79fbc844ac5e.webp" alt="Hollow Knight" loading="lazy" decoding="async">
+      <figcaption>17h 18m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Hollow Knight: Silksong" data-sort-name="Hollow Knight: Silksong" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Hollow Knight: Silksong, played 0h 0m, platform PC (Windows)">
+      <img src="covers/507f7c4bec8f40f198b10615a5993e43.webp" alt="Hollow Knight: Silksong" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Homura Hime" data-sort-name="Homura Hime" data-playtime="901" data-last-played="639083527174180000" data-platform="PC (Windows)" aria-label="Homura Hime, played 0h 15m, platform PC (Windows)">
+      <img src="covers/5f5c417f7d9f47efa1ddea329bc9ab80.webp" alt="Homura Hime" loading="lazy" decoding="async">
+      <figcaption>0h 15m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Horizon Chase Turbo" data-sort-name="Horizon Chase 01" data-playtime="3521" data-last-played="638793841781740000" data-platform="PC (Windows)" aria-label="Horizon Chase Turbo, played 0h 58m, platform PC (Windows)">
+      <img src="covers/796bf7af912a42ab988d7ddc86eaabc9.webp" alt="Horizon Chase Turbo" loading="lazy" decoding="async">
+      <figcaption>0h 58m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Horizon Chase 2" data-sort-name="Horizon Chase 02" data-playtime="0" data-last-played="638757607662690000" data-platform="PC (Windows)" aria-label="Horizon Chase 2, played 0h 0m, platform PC (Windows)">
+      <img src="covers/4ee8c5ca559b49e2aff9aa5dba3395c9.webp" alt="Horizon Chase 2" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Humankind" data-sort-name="Humankind" data-playtime="3551" data-last-played="638420604280170000" data-platform="PC (Windows)" aria-label="Humankind, played 0h 59m, platform PC (Windows)">
+      <img src="covers/c1bf411fc8d141beb7c5f7cf11e2a3ff.webp" alt="Humankind" loading="lazy" decoding="async">
+      <figcaption>0h 59m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="The Hundred Line: Last Defense Academy" data-sort-name="Hundred Line -Last Defense Academy-" data-playtime="0" data-last-played="638812281092250000" data-platform="PC (Windows)" aria-label="The Hundred Line: Last Defense Academy, played 0h 0m, platform PC (Windows)">
+      <img src="covers/34c6121cd9f94b10b318e6d1a6b9d799.webp" alt="The Hundred Line: Last Defense Academy" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Inazuma Eleven: Victory Road " data-sort-name="Inazuma Eleven: Victory Road " data-playtime="161027" data-last-played="639076562835670000" data-platform="PC (Windows)" aria-label="Inazuma Eleven: Victory Road , played 44h 43m, platform PC (Windows)">
+      <img src="covers/ce19f14a117b4e2f9eec9423dbdadb6f.webp" alt="Inazuma Eleven: Victory Road " loading="lazy" decoding="async">
+      <figcaption>44h 43m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Indivisible" data-sort-name="Indivisible" data-playtime="557" data-last-played="638775139484550000" data-platform="PC (Windows)" aria-label="Indivisible, played 0h 9m, platform PC (Windows)">
+      <img src="covers/2ce5dcc7c1094225b8d480b14f3322fd.webp" alt="Indivisible" loading="lazy" decoding="async">
+      <figcaption>0h 9m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Infinity Strash: Dragon Quest - The Adventure of Dai" data-sort-name="Infinity Strash: Dragon Quest - The Adventure of Dai" data-playtime="0" data-last-played="638480560438450000" data-platform="PC (Windows)" aria-label="Infinity Strash: Dragon Quest - The Adventure of Dai, played 0h 0m, platform PC (Windows)">
+      <img src="covers/3d5ab3655cf64e2b871b5068261d0f49.webp" alt="Infinity Strash: Dragon Quest - The Adventure of Dai" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="inZOI" data-sort-name="inZOI" data-playtime="0" data-last-played="638915081784730000" data-platform="PC (Windows)" aria-label="inZOI, played 0h 0m, platform PC (Windows)">
+      <img src="covers/b4104eb5a7cb407997e42056f79b146e.webp" alt="inZOI" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="007 First Light" data-sort-name="James Bond 001" data-playtime="577" data-last-played="639167360605410000" data-platform="PC (Windows)" aria-label="007 First Light, played 0h 9m, platform PC (Windows)">
+      <img src="covers/015eeedfb02e4bab8e68c9ad795cdff6.webp" alt="007 First Light" loading="lazy" decoding="async">
+      <figcaption>0h 9m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Jump Force" data-sort-name="Jump Force" data-playtime="9471" data-last-played="638480531817950000" data-platform="PC (Windows)" aria-label="Jump Force, played 2h 37m, platform PC (Windows)">
+      <img src="covers/241beee358d34c70b3a073fd3e210bf6.webp" alt="Jump Force" loading="lazy" decoding="async">
+      <figcaption>2h 37m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Kena: Bridge of Spirits" data-sort-name="Kena: Bridge of Spirits" data-playtime="0" data-last-played="638480558389930000" data-platform="PC (Windows)" aria-label="Kena: Bridge of Spirits, played 0h 0m, platform PC (Windows)">
+      <img src="covers/a62de169236a46e9856148b645f39bef.webp" alt="Kena: Bridge of Spirits" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="KILL la KILL IF" data-sort-name="KILL la KILL IF" data-playtime="0" data-last-played="638471836734160000" data-platform="PC (Windows)" aria-label="KILL la KILL IF, played 0h 0m, platform PC (Windows)">
+      <img src="covers/e9df187fdfad417a86d25cf1eac515e0.webp" alt="KILL la KILL IF" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="The King of Fighters XIII Global Match" data-sort-name="King of Fighters 13" data-playtime="0" data-last-played="638480568364600000" data-platform="PC (Windows)" aria-label="The King of Fighters XIII Global Match, played 0h 0m, platform PC (Windows)">
+      <img src="covers/100d2ebda0b74d419b3676846e8946da.webp" alt="The King of Fighters XIII Global Match" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Kingdom Come: Deliverance" data-sort-name="Kingdom Come: Deliverance" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Kingdom Come: Deliverance, played 0h 0m, platform PC (Windows)">
+      <img src="covers/b0942378deca44db81ad8df7796aa2da.webp" alt="Kingdom Come: Deliverance" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Kingdom Come: Deliverance II" data-sort-name="Kingdom Come: Deliverance 02" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Kingdom Come: Deliverance II, played 0h 0m, platform PC (Windows)">
+      <img src="covers/903046a769c14bf38358c1b52a2dc4e8.webp" alt="Kingdom Come: Deliverance II" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Kingdom Hearts HD 1.5 + 2.5 ReMIX " data-sort-name="KINGDOM HEARTS 01" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Kingdom Hearts HD 1.5 + 2.5 ReMIX , played 0h 0m, platform PC (Windows)">
+      <img src="covers/827d276c3196453db89eb72b208e78c4.webp" alt="Kingdom Hearts HD 1.5 + 2.5 ReMIX " loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Kingdom Hearts HD 2.8 Final Chapter Prologue " data-sort-name="KINGDOM HEARTS 02" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Kingdom Hearts HD 2.8 Final Chapter Prologue , played 0h 0m, platform PC (Windows)">
+      <img src="covers/577cafd340b84ef2a0784fe571b84588.webp" alt="Kingdom Hearts HD 2.8 Final Chapter Prologue " loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Kingdom Hearts III: Re Mind" data-sort-name="KINGDOM HEARTS 03" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Kingdom Hearts III: Re Mind, played 0h 0m, platform PC (Windows)">
+      <img src="covers/90c3403225a342dba228c783f5904b6b.webp" alt="Kingdom Hearts III: Re Mind" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="KINGDOM HEARTS Melody of Memory" data-sort-name="KINGDOM HEARTS 03.5" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="KINGDOM HEARTS Melody of Memory, played 0h 0m, platform PC (Windows)">
+      <img src="covers/b79a0523c4894d0eba8b881eab4a2f95.webp" alt="KINGDOM HEARTS Melody of Memory" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Kirby and the Forgotten Land" data-sort-name="Kirby and the Forgotten Land" data-playtime="0" data-last-played="638452528978700000" data-platform="Nintendo Switch" aria-label="Kirby and the Forgotten Land, played 0h 0m, platform Nintendo Switch">
+      <img src="covers/eebedbaf4fc24cbe8b2a2fb4f69acdcf.webp" alt="Kirby and the Forgotten Land" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Kirby&#39;s Return to Dream Land Deluxe" data-sort-name="Kirby&#39;s Return to Dream Land Deluxe" data-playtime="0" data-last-played="0" data-platform="Nintendo Switch" aria-label="Kirby&#39;s Return to Dream Land Deluxe, played 0h 0m, platform Nintendo Switch">
+      <img src="covers/077160f181974285ada0a880b10ce786.webp" alt="Kirby&#39;s Return to Dream Land Deluxe" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Kotama and Academy Citadel" data-sort-name="Kotama and Academy Citadel" data-playtime="0" data-last-played="639042080756540000" data-platform="PC (Windows)" aria-label="Kotama and Academy Citadel, played 0h 0m, platform PC (Windows)">
+      <img src="covers/b1db19ead47c4128a6b2dfece102e1af.webp" alt="Kotama and Academy Citadel" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Kunitsu-Gami: Path of the Goddess" data-sort-name="Kunitsu-Gami: Path of the Goddess" data-playtime="164857" data-last-played="638951759315220000" data-platform="PC (Windows)" aria-label="Kunitsu-Gami: Path of the Goddess, played 45h 47m, platform PC (Windows)">
+      <img src="covers/8633b5d0fe624a5cab3455d7b2ab8269.webp" alt="Kunitsu-Gami: Path of the Goddess" loading="lazy" decoding="async">
+      <figcaption>45h 47m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="L.A. Noire" data-sort-name="L.A. Noire" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="L.A. Noire, played 0h 0m, platform PC (Windows)">
+      <img src="covers/c29c9523ce234fa3b0153d909354efd2.webp" alt="L.A. Noire" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="The Legend of Zelda: Echoes of Wisdom" data-sort-name="Legend of Zelda Echoes of Wisdom" data-playtime="0" data-last-played="0" data-platform="Nintendo Switch" aria-label="The Legend of Zelda: Echoes of Wisdom, played 0h 0m, platform Nintendo Switch">
+      <img src="covers/0aa0d11057f848a8a5458c201b897bf1.webp" alt="The Legend of Zelda: Echoes of Wisdom" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="The Legend of Zelda: Link&#39;s Awakening" data-sort-name="Legend of Zelda Link&#39;s Awakening" data-playtime="0" data-last-played="638945303313100000" data-platform="Nintendo Switch" aria-label="The Legend of Zelda: Link&#39;s Awakening, played 0h 0m, platform Nintendo Switch">
+      <img src="covers/4526cd47ac9d4596b465d49af98c8f26.webp" alt="The Legend of Zelda: Link&#39;s Awakening" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="The Legend of Zelda: Breath of the Wild" data-sort-name="Legend of Zelda: Breath of the Wild" data-playtime="220947" data-last-played="638793106246350000" data-platform="Nintendo Wii U" aria-label="The Legend of Zelda: Breath of the Wild, played 61h 22m, platform Nintendo Wii U">
+      <img src="covers/56ad43746b0e45b4bc3d4618ca3ac967.webp" alt="The Legend of Zelda: Breath of the Wild" loading="lazy" decoding="async">
+      <figcaption>61h 22m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="The Legend of Zelda: Twilight Princess HD" data-sort-name="Legend of Zelda: Twilight Princess HD" data-playtime="0" data-last-played="0" data-platform="Nintendo Wii U" aria-label="The Legend of Zelda: Twilight Princess HD, played 0h 0m, platform Nintendo Wii U">
+      <img src="covers/dbea39d5d57046ab8914c810b4af8f8f.webp" alt="The Legend of Zelda: Twilight Princess HD" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="The Legend of Zelda: The Wind Waker HD" data-sort-name="Legend of Zelda: Wind Waker HD" data-playtime="0" data-last-played="638789829213410000" data-platform="Nintendo Wii U" aria-label="The Legend of Zelda: The Wind Waker HD, played 0h 0m, platform Nintendo Wii U">
+      <img src="covers/0bb68d29f9b0473082129f4cda466ba1.webp" alt="The Legend of Zelda: The Wind Waker HD" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Liar&#39;s Bar" data-sort-name="Liar&#39;s Bar" data-playtime="600" data-last-played="639145731120000000" data-platform="PC (Windows)" aria-label="Liar&#39;s Bar, played 0h 10m, platform PC (Windows)">
+      <img src="covers/c87b01cdc82f47d495ffd9dab6576cd8.webp" alt="Liar&#39;s Bar" loading="lazy" decoding="async">
+      <figcaption>0h 10m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Lies of P" data-sort-name="Lies of P" data-playtime="5763" data-last-played="638774685510990000" data-platform="PC (Windows)" aria-label="Lies of P, played 1h 36m, platform PC (Windows)">
+      <img src="covers/a8e5c060329d4cf9b00ea496b52f418e.webp" alt="Lies of P" loading="lazy" decoding="async">
+      <figcaption>1h 36m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Yakuza: Like a Dragon" data-sort-name="Like a Dragon 01" data-playtime="2396" data-last-played="638591930502470000" data-platform="PC (Windows)" aria-label="Yakuza: Like a Dragon, played 0h 39m, platform PC (Windows)">
+      <img src="covers/87d7c736a78a4e139d1b5d172e4ff26b.webp" alt="Yakuza: Like a Dragon" loading="lazy" decoding="async">
+      <figcaption>0h 39m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Like a Dragon: Infinite Wealth" data-sort-name="Like a Dragon 02" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Like a Dragon: Infinite Wealth, played 0h 0m, platform PC (Windows)">
+      <img src="covers/85f3d84b2bd343d79dbe11a32c464e13.webp" alt="Like a Dragon: Infinite Wealth" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Little Noah: Scion of Paradise" data-sort-name="Little Noah: Scion of Paradise" data-playtime="62340" data-last-played="638325825210000000" data-platform="PC (Windows)" aria-label="Little Noah: Scion of Paradise, played 17h 19m, platform PC (Windows)">
+      <img src="covers/498fc85c424e451a8b569b05b550d99e.webp" alt="Little Noah: Scion of Paradise" loading="lazy" decoding="async">
+      <figcaption>17h 19m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Little Witch in the Woods" data-sort-name="Little Witch in the Woods" data-playtime="0" data-last-played="638728927660440000" data-platform="PC (Windows)" aria-label="Little Witch in the Woods, played 0h 0m, platform PC (Windows)">
+      <img src="covers/d611a585969d49aa88d60c6a7b560005.webp" alt="Little Witch in the Woods" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Lords of the Fallen" data-sort-name="Lords of the Fallen" data-playtime="327480" data-last-played="639012508010000000" data-platform="PC (Windows)" aria-label="Lords of the Fallen, played 90h 58m, platform PC (Windows)">
+      <img src="covers/9ff514708ed74bc095f0a6e7424a56fe.webp" alt="Lords of the Fallen" loading="lazy" decoding="async">
+      <figcaption>90h 58m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Lost and Found Co." data-sort-name="Lost and Found Co." data-playtime="1946" data-last-played="639090468611440000" data-platform="PC (Windows)" aria-label="Lost and Found Co., played 0h 32m, platform PC (Windows)">
+      <img src="covers/73bd1835663c47f98dd7de937cac36a8.webp" alt="Lost and Found Co." loading="lazy" decoding="async">
+      <figcaption>0h 32m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Mado Monogatari: Fia and the Wondrous Academy" data-sort-name="Mado Monogatari: Fia and the Wondrous Academy" data-playtime="0" data-last-played="639116058881700000" data-platform="PC (Windows)" aria-label="Mado Monogatari: Fia and the Wondrous Academy, played 0h 0m, platform PC (Windows)">
+      <img src="covers/bee0673b46124b0eb806063237cb0fa4.webp" alt="Mado Monogatari: Fia and the Wondrous Academy" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Magicka" data-sort-name="Magicka" data-playtime="600" data-last-played="635101928740000000" data-platform="PC (Windows)" aria-label="Magicka, played 0h 10m, platform PC (Windows)">
+      <img src="covers/a019ad269e6a4f6cbf59aece46f40012.webp" alt="Magicka" loading="lazy" decoding="async">
+      <figcaption>0h 10m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Trials of Mana" data-sort-name="Mana 01" data-playtime="212460" data-last-played="638290320600000000" data-platform="PC (Windows)" aria-label="Trials of Mana, played 59h 1m, platform PC (Windows)">
+      <img src="covers/4b780156f6334396b6faba5f19a5df0f.webp" alt="Trials of Mana" loading="lazy" decoding="async">
+      <figcaption>59h 1m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Visions of Mana" data-sort-name="Mana 02" data-playtime="62994" data-last-played="639095588891040000" data-platform="PC (Windows)" aria-label="Visions of Mana, played 17h 29m, platform PC (Windows)">
+      <img src="covers/9472eee3cdb54d8abc42dfa2f196c1df.webp" alt="Visions of Mana" loading="lazy" decoding="async">
+      <figcaption>17h 29m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Mario Kart 8 Deluxe" data-sort-name="Mario Kart 08 Deluxe" data-playtime="2102" data-last-played="639037363818260000" data-platform="Nintendo Switch" aria-label="Mario Kart 8 Deluxe, played 0h 35m, platform Nintendo Switch">
+      <img src="covers/0ddc68c6e5924f6b8fae68a7a7d4055e.webp" alt="Mario Kart 8 Deluxe" loading="lazy" decoding="async">
+      <figcaption>0h 35m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Mario Strikers Battle League" data-sort-name="Mario Strikers Battle League" data-playtime="4063" data-last-played="638492570511710000" data-platform="Nintendo Switch" aria-label="Mario Strikers Battle League, played 1h 7m, platform Nintendo Switch">
+      <img src="covers/ca5c65c4706f4d4ebc7e57ee42f99b0e.webp" alt="Mario Strikers Battle League" loading="lazy" decoding="async">
+      <figcaption>1h 7m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Mario Tennis Aces" data-sort-name="Mario Tennis Aces" data-playtime="0" data-last-played="639037364295710000" data-platform="Nintendo Switch" aria-label="Mario Tennis Aces, played 0h 0m, platform Nintendo Switch">
+      <img src="covers/39350489452641588c849070e37e47e1.webp" alt="Mario Tennis Aces" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Mario vs. Donkey Kong" data-sort-name="Mario vs. Donkey Kong" data-playtime="0" data-last-played="638452533658580000" data-platform="Nintendo Switch" aria-label="Mario vs. Donkey Kong, played 0h 0m, platform Nintendo Switch">
+      <img src="covers/1be1ea0840f04d3c8dc23eba06169ba9.webp" alt="Mario vs. Donkey Kong" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Marvel Cosmic Invasion" data-sort-name="Marvel Cosmic Invasion" data-playtime="4360" data-last-played="639084309395970000" data-platform="PC (Windows)" aria-label="Marvel Cosmic Invasion, played 1h 12m, platform PC (Windows)">
+      <img src="covers/8e71efe468184e6f8c50842e6a19420a.webp" alt="Marvel Cosmic Invasion" loading="lazy" decoding="async">
+      <figcaption>1h 12m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Marvel&#39;s Guardians of the Galaxy" data-sort-name="Marvel&#39;s Guardians of the Galaxy" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Marvel&#39;s Guardians of the Galaxy, played 0h 0m, platform PC (Windows)">
+      <img src="covers/a8845a77702c47b49781ca7d76977858.webp" alt="Marvel&#39;s Guardians of the Galaxy" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Marvel&#39;s Spider-Man Remastered" data-sort-name="Marvel&#39;s Spider-Man 01" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Marvel&#39;s Spider-Man Remastered, played 0h 0m, platform PC (Windows)">
+      <img src="covers/809eb7e6848744fa9a795832268e4356.webp" alt="Marvel&#39;s Spider-Man Remastered" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Marvel&#39;s Spider-Man: Miles Morales" data-sort-name="Marvel&#39;s Spider-Man 01.5" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Marvel&#39;s Spider-Man: Miles Morales, played 0h 0m, platform PC (Windows)">
+      <img src="covers/d43304a75f4b4126b04c60c6b35a2fec.webp" alt="Marvel&#39;s Spider-Man: Miles Morales" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Marvel&#39;s Spider-Man 2" data-sort-name="Marvel&#39;s Spider-Man 02" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Marvel&#39;s Spider-Man 2, played 0h 0m, platform PC (Windows)">
+      <img src="covers/bed9bf3e0e734417b757cfa88b32d26b.webp" alt="Marvel&#39;s Spider-Man 2" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Megaton Musashi W: Wired" data-sort-name="Megaton Musashi W: Wired" data-playtime="0" data-last-played="638565881668360000" data-platform="PC (Windows)" aria-label="Megaton Musashi W: Wired, played 0h 0m, platform PC (Windows)">
+      <img src="covers/7827f1e934794171a913706c15e8864d.webp" alt="Megaton Musashi W: Wired" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="MELTY BLOOD: TYPE LUMINA" data-sort-name="MELTY BLOOD: TYPE LUMINA" data-playtime="25560" data-last-played="638126012450000000" data-platform="PC (Windows)" aria-label="MELTY BLOOD: TYPE LUMINA, played 7h 6m, platform PC (Windows)">
+      <img src="covers/a2927fb359634a55b44ff2fd24a92d20.webp" alt="MELTY BLOOD: TYPE LUMINA" loading="lazy" decoding="async">
+      <figcaption>7h 6m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Metal Gear &amp; Metal Gear 2: Solid Snake - Master Collection Version" data-sort-name="Metal Gear 01 and 02 Classic" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Metal Gear &amp; Metal Gear 2: Solid Snake - Master Collection Version, played 0h 0m, platform PC (Windows)">
+      <img src="covers/ede5e946072443059a028e9238e443bc.webp" alt="Metal Gear &amp; Metal Gear 2: Solid Snake - Master Collection Version" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Metal Gear Solid - Master Collection Version" data-sort-name="Metal Gear Solid 01" data-playtime="1460" data-last-played="639080038598210000" data-platform="PC (Windows)" aria-label="Metal Gear Solid - Master Collection Version, played 0h 24m, platform PC (Windows)">
+      <img src="covers/a1d04c237ca54fc68903b7993030a26d.webp" alt="Metal Gear Solid - Master Collection Version" loading="lazy" decoding="async">
+      <figcaption>0h 24m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Metal Gear Solid 2: Sons of Liberty - Master Collection Version" data-sort-name="Metal Gear Solid 02" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Metal Gear Solid 2: Sons of Liberty - Master Collection Version, played 0h 0m, platform PC (Windows)">
+      <img src="covers/f47868aefec14ef08d409a8325f08edd.webp" alt="Metal Gear Solid 2: Sons of Liberty - Master Collection Version" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Metal Gear Solid 3: Snake Eater - Master Collection Version" data-sort-name="Metal Gear Solid 03" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Metal Gear Solid 3: Snake Eater - Master Collection Version, played 0h 0m, platform PC (Windows)">
+      <img src="covers/c9dea72429d745a5b4f0ab49a8c06ac3.webp" alt="Metal Gear Solid 3: Snake Eater - Master Collection Version" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Metal Gear Solid V: Ground Zeroes" data-sort-name="Metal Gear Solid 05 A" data-playtime="4800" data-last-played="638053464080000000" data-platform="PC (Windows)" aria-label="Metal Gear Solid V: Ground Zeroes, played 1h 20m, platform PC (Windows)">
+      <img src="covers/b778cd6fc07b40c19302e9c7824197db.webp" alt="Metal Gear Solid V: Ground Zeroes" loading="lazy" decoding="async">
+      <figcaption>1h 20m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="METAL GEAR SOLID V: THE PHANTOM PAIN" data-sort-name="Metal Gear Solid 05 B" data-playtime="60" data-last-played="638340996790000000" data-platform="PC (Windows)" aria-label="METAL GEAR SOLID V: THE PHANTOM PAIN, played 0h 1m, platform PC (Windows)">
+      <img src="covers/f4c036bb3d1340929492cc17b9999ad1.webp" alt="METAL GEAR SOLID V: THE PHANTOM PAIN" loading="lazy" decoding="async">
+      <figcaption>0h 1m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Metal Gear Solid Δ: Snake Eater" data-sort-name="Metal Gear Solid Δ: Snake Eater" data-playtime="9233" data-last-played="638997103170140000" data-platform="PC (Windows)" aria-label="Metal Gear Solid Δ: Snake Eater, played 2h 33m, platform PC (Windows)">
+      <img src="covers/9a836b0a0adf4f0190bde426a906ea57.webp" alt="Metal Gear Solid Δ: Snake Eater" loading="lazy" decoding="async">
+      <figcaption>2h 33m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Metaphor: ReFantazio" data-sort-name="Metaphor: ReFantazio" data-playtime="338435" data-last-played="638718871698570000" data-platform="PC (Windows)" aria-label="Metaphor: ReFantazio, played 94h 0m, platform PC (Windows)">
+      <img src="covers/f08123f437b544cda5d3d996f94b9c37.webp" alt="Metaphor: ReFantazio" loading="lazy" decoding="async">
+      <figcaption>94h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Minos" data-sort-name="Minos" data-playtime="1614" data-last-played="639137933823390000" data-platform="PC (Windows)" aria-label="Minos, played 0h 26m, platform PC (Windows)">
+      <img src="covers/6ca76b95fd3d4e1782ace381fc9ce361.webp" alt="Minos" loading="lazy" decoding="async">
+      <figcaption>0h 26m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Mirror&#39;s Edge" data-sort-name="Mirror&#39;s Edge" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Mirror&#39;s Edge, played 0h 0m, platform PC (Windows)">
+      <img src="covers/a28378466254497b8a65c1ddf430a953.webp" alt="Mirror&#39;s Edge" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="MiSide" data-sort-name="MiSide" data-playtime="0" data-last-played="638890017748520000" data-platform="PC (Windows)" aria-label="MiSide, played 0h 0m, platform PC (Windows)">
+      <img src="covers/692d0654be0c423d8b8c028d7d1085eb.webp" alt="MiSide" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Monster Hunter Rise" data-sort-name="Monster Hunter Rise" data-playtime="14265" data-last-played="638503821553960000" data-platform="PC (Windows)" aria-label="Monster Hunter Rise, played 3h 57m, platform PC (Windows)">
+      <img src="covers/8b8e443b285741ccbefcf6dbb71120fa.webp" alt="Monster Hunter Rise" loading="lazy" decoding="async">
+      <figcaption>3h 57m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Mortal Shell" data-sort-name="Mortal Shell" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Mortal Shell, played 0h 0m, platform PC (Windows)">
+      <img src="covers/9c3927fa7def43b2a7ce869efd550b04.webp" alt="Mortal Shell" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Muramasa Rebirth" data-sort-name="Muramasa Rebirth" data-playtime="153" data-last-played="639144948544250000" data-platform="Sony PlayStation Vita" aria-label="Muramasa Rebirth, played 0h 2m, platform Sony PlayStation Vita">
+      <img src="covers/b5ea76ba00e1433b9be10f5239ee6b6d.webp" alt="Muramasa Rebirth" loading="lazy" decoding="async">
+      <figcaption>0h 2m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Muse Dash" data-sort-name="Muse Dash" data-playtime="13740" data-last-played="638959101420000000" data-platform="PC (Windows)" aria-label="Muse Dash, played 3h 49m, platform PC (Windows)">
+      <img src="covers/b98b9f925f5d425595825bf097ddcf78.webp" alt="Muse Dash" loading="lazy" decoding="async">
+      <figcaption>3h 49m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Neptunia x Senran Kagura: Ninja Wars" data-sort-name="Neptunia x Senran Kagura: Ninja Wars" data-playtime="3121" data-last-played="638480557034240000" data-platform="PC (Windows)" aria-label="Neptunia x Senran Kagura: Ninja Wars, played 0h 52m, platform PC (Windows)">
+      <img src="covers/15df49c2d06940d995fce04c4a3dea8f.webp" alt="Neptunia x Senran Kagura: Ninja Wars" loading="lazy" decoding="async">
+      <figcaption>0h 52m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="New Super Mario Bros. U Deluxe" data-sort-name="New Super Mario Bros. U Deluxe" data-playtime="0" data-last-played="0" data-platform="Nintendo Switch" aria-label="New Super Mario Bros. U Deluxe, played 0h 0m, platform Nintendo Switch">
+      <img src="covers/bffe98da21104e72a6cfcd0281191b70.webp" alt="New Super Mario Bros. U Deluxe" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Ni no Kuni: Wrath of the White Witch Remastered" data-sort-name="Ni no Kuni 01" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Ni no Kuni: Wrath of the White Witch Remastered, played 0h 0m, platform PC (Windows)">
+      <img src="covers/d2ea2d3fac0f47029bda4135aad53060.webp" alt="Ni no Kuni: Wrath of the White Witch Remastered" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Ni no Kuni II: Revenant Kingdom" data-sort-name="Ni no Kuni 02" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Ni no Kuni II: Revenant Kingdom, played 0h 0m, platform PC (Windows)">
+      <img src="covers/7ef6b3eb93234770a950ad3142524862.webp" alt="Ni no Kuni II: Revenant Kingdom" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="NieR Replicant" data-sort-name="NieR Replicant" data-playtime="2403" data-last-played="638620138590020000" data-platform="PC (Windows)" aria-label="NieR Replicant, played 0h 40m, platform PC (Windows)">
+      <img src="covers/2aeec494d3a942e1a1ec30565e80463b.webp" alt="NieR Replicant" loading="lazy" decoding="async">
+      <figcaption>0h 40m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="NieR: Automata" data-sort-name="NieR: Automata" data-playtime="0" data-last-played="638389467344910000" data-platform="PC (Windows)" aria-label="NieR: Automata, played 0h 0m, platform PC (Windows)">
+      <img src="covers/4938fb62332247809d8ad4a6a2367489.webp" alt="NieR: Automata" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Nightingale" data-sort-name="Nightingale" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Nightingale, played 0h 0m, platform PC (Windows)">
+      <img src="covers/b6eb51d4bfca4f319adfa05453821271.webp" alt="Nightingale" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Nioh: Complete Edition" data-sort-name="Nioh 01" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Nioh: Complete Edition, played 0h 0m, platform PC (Windows)">
+      <img src="covers/0aabe9cd1c9a4f82a073b1e47605ddf0.webp" alt="Nioh: Complete Edition" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Nioh 2: The Complete Edition" data-sort-name="Nioh 02 " data-playtime="895500" data-last-played="638029480410000000" data-platform="PC (Windows)" aria-label="Nioh 2: The Complete Edition, played 248h 45m, platform PC (Windows)">
+      <img src="covers/e8e43c1d2e3241e2b670d97946ce85d2.webp" alt="Nioh 2: The Complete Edition" loading="lazy" decoding="async">
+      <figcaption>248h 45m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Nioh 3" data-sort-name="Nioh 03" data-playtime="313042" data-last-played="639163755657890000" data-platform="PC (Windows)" aria-label="Nioh 3, played 86h 57m, platform PC (Windows)">
+      <img src="covers/b0880ee231594230b2d269d68dfdeeac.webp" alt="Nioh 3" loading="lazy" decoding="async">
+      <figcaption>86h 57m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="No Man&#39;s Sky" data-sort-name="No Man&#39;s Sky" data-playtime="76140" data-last-played="638603221270000000" data-platform="PC (Windows)" aria-label="No Man&#39;s Sky, played 21h 9m, platform PC (Windows)">
+      <img src="covers/39f5121b624e47e284977a636b8c3f89.webp" alt="No Man&#39;s Sky" loading="lazy" decoding="async">
+      <figcaption>21h 9m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="OCTOPATH TRAVELER 0" data-sort-name="OCTOPATH TRAVELER 00" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="OCTOPATH TRAVELER 0, played 0h 0m, platform PC (Windows)">
+      <img src="covers/3a4b36d55e6b4910bb15db409a0a94ce.webp" alt="OCTOPATH TRAVELER 0" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Octopath Traveler" data-sort-name="Octopath Traveler 01" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Octopath Traveler, played 0h 0m, platform PC (Windows)">
+      <img src="covers/92ccc977567548a4aabe0e85f42fa051.webp" alt="Octopath Traveler" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Octopath Traveler II" data-sort-name="Octopath Traveler 02" data-playtime="20121" data-last-played="638890029591250000" data-platform="PC (Windows)" aria-label="Octopath Traveler II, played 5h 35m, platform PC (Windows)">
+      <img src="covers/41a2098d4af44007ab300ae6cb298111.webp" alt="Octopath Traveler II" loading="lazy" decoding="async">
+      <figcaption>5h 35m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Odin Sphere Leifthrasir" data-sort-name="Odin Sphere Leifthrasir" data-playtime="0" data-last-played="638469026321970000" data-platform="Sony PlayStation 3" aria-label="Odin Sphere Leifthrasir, played 0h 0m, platform Sony PlayStation 3">
+      <img src="covers/e4de41201362492b892a7597b383b55a.webp" alt="Odin Sphere Leifthrasir" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Ori and the Blind Forest: Definitive Edition" data-sort-name="Ori and the Blind Forest: Definitive Edition" data-playtime="0" data-last-played="638775142483520000" data-platform="PC (Windows)" aria-label="Ori and the Blind Forest: Definitive Edition, played 0h 0m, platform PC (Windows)">
+      <img src="covers/a4724fd98818404f883589be9b702b7b.webp" alt="Ori and the Blind Forest: Definitive Edition" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Ori and the Will of the Wisps" data-sort-name="Ori and the Will of the Wisps" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Ori and the Will of the Wisps, played 0h 0m, platform PC (Windows)">
+      <img src="covers/ce013b2e15104f36a36872f6843ac917.webp" alt="Ori and the Will of the Wisps" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="The Outer Worlds: Spacer&#39;s Choice Edition" data-sort-name="Outer Worlds: Spacer&#39;s Choice Edition" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="The Outer Worlds: Spacer&#39;s Choice Edition, played 0h 0m, platform PC (Windows)">
+      <img src="covers/ec1d2f9503c54461885f23aa63a4ebf1.webp" alt="The Outer Worlds: Spacer&#39;s Choice Edition" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Paranormasight: The Seven Mysteries of Honjo" data-sort-name="Paranormasight 01" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Paranormasight: The Seven Mysteries of Honjo, played 0h 0m, platform PC (Windows)">
+      <img src="covers/99d84e55c47b4e5cbcf594740079e94c.webp" alt="Paranormasight: The Seven Mysteries of Honjo" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Party Animals" data-sort-name="Party Animals" data-playtime="87240" data-last-played="638992724030000000" data-platform="PC (Windows)" aria-label="Party Animals, played 24h 14m, platform PC (Windows)">
+      <img src="covers/1b549edfa6f24a25835e51d9e7bd8126.webp" alt="Party Animals" loading="lazy" decoding="async">
+      <figcaption>24h 14m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="People of Note" data-sort-name="People of Note" data-playtime="0" data-last-played="639112852348100000" data-platform="PC (Windows)" aria-label="People of Note, played 0h 0m, platform PC (Windows)">
+      <img src="covers/aa5efeff50894f9bafa934690ad1a699.webp" alt="People of Note" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Persona 3 Reload" data-sort-name="Persona 03 Reload" data-playtime="96600" data-last-played="638901186980000000" data-platform="PC (Windows)" aria-label="Persona 3 Reload, played 26h 50m, platform PC (Windows)">
+      <img src="covers/e681e87b847a40d485bcb96421f27881.webp" alt="Persona 3 Reload" loading="lazy" decoding="async">
+      <figcaption>26h 50m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Persona 4 Golden" data-sort-name="Persona 04 Golden" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Persona 4 Golden, played 0h 0m, platform PC (Windows)">
+      <img src="covers/77a2375cdfab43129081b20d64470899.webp" alt="Persona 4 Golden" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Persona 5 Royal" data-sort-name="Persona 05 Royal" data-playtime="960" data-last-played="638951811980000000" data-platform="PC (Windows)" aria-label="Persona 5 Royal, played 0h 16m, platform PC (Windows)">
+      <img src="covers/52398f9807db418bbd3fbf8897b8f125.webp" alt="Persona 5 Royal" loading="lazy" decoding="async">
+      <figcaption>0h 16m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Phantom Brave PC" data-sort-name="Phantom Brave 01" data-playtime="0" data-last-played="638897823390150000" data-platform="PC (Windows)" aria-label="Phantom Brave PC, played 0h 0m, platform PC (Windows)">
+      <img src="covers/a3c4d1a71cab496fa64dba4bc025a084.webp" alt="Phantom Brave PC" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Phantom Brave: The Lost Hero" data-sort-name="Phantom Brave 02" data-playtime="9422" data-last-played="638882181839560000" data-platform="PC (Windows)" aria-label="Phantom Brave: The Lost Hero, played 2h 37m, platform PC (Windows)">
+      <img src="covers/ad220764db2f4bf8ae908d39a19d0e22.webp" alt="Phantom Brave: The Lost Hero" loading="lazy" decoding="async">
+      <figcaption>2h 37m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="The Plucky Squire" data-sort-name="Plucky Squire" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="The Plucky Squire, played 0h 0m, platform PC (Windows)">
+      <img src="covers/11b8786009724f169ff6695ba404582c.webp" alt="The Plucky Squire" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Pokemon Legends Arceus" data-sort-name="Pokemon Legends Arceus" data-playtime="0" data-last-played="639037388917280000" data-platform="Nintendo Switch" aria-label="Pokemon Legends Arceus, played 0h 0m, platform Nintendo Switch">
+      <img src="covers/c4319d814db14a6298e81518808ced72.webp" alt="Pokemon Legends Arceus" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Pok&#233;mon Legends: Z-A" data-sort-name="Pok&#233;mon Legends: Z-A" data-playtime="2177" data-last-played="639037375946350000" data-platform="Nintendo Switch" aria-label="Pok&#233;mon Legends: Z-A, played 0h 36m, platform Nintendo Switch">
+      <img src="covers/30d74efdd763413587d8ef26045c5632.webp" alt="Pok&#233;mon Legends: Z-A" loading="lazy" decoding="async">
+      <figcaption>0h 36m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Pokemon Scarlet" data-sort-name="Pokemon Scarlet" data-playtime="0" data-last-played="639037430487270000" data-platform="Nintendo Switch" aria-label="Pokemon Scarlet, played 0h 0m, platform Nintendo Switch">
+      <img src="covers/715c277fefb9442898196d6c9e98e5b9.webp" alt="Pokemon Scarlet" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Pok&#233;mon Shining Pearl" data-sort-name="Pok&#233;mon Shining Pearl" data-playtime="0" data-last-played="0" data-platform="Nintendo Switch" aria-label="Pok&#233;mon Shining Pearl, played 0h 0m, platform Nintendo Switch">
+      <img src="covers/6801d471460a4d11b7e2178fcc7aab48.webp" alt="Pok&#233;mon Shining Pearl" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Pokemon Sword" data-sort-name="Pokemon Sword" data-playtime="0" data-last-played="639037424731160000" data-platform="Nintendo Switch" aria-label="Pokemon Sword, played 0h 0m, platform Nintendo Switch">
+      <img src="covers/97452467394f4285b9c2ab3230dec92b.webp" alt="Pokemon Sword" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Pok&#233;mon: Let&#39;s Go, Pikachu!" data-sort-name="Pok&#233;mon: Let&#39;s Go, Pikachu!" data-playtime="0" data-last-played="639037440873580000" data-platform="Nintendo Switch" aria-label="Pok&#233;mon: Let&#39;s Go, Pikachu!, played 0h 0m, platform Nintendo Switch">
+      <img src="covers/ba1328157250418b8dcb0cbee76b9726.webp" alt="Pok&#233;mon: Let&#39;s Go, Pikachu!" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="PRAGMATA" data-sort-name="PRAGMATA" data-playtime="0" data-last-played="639118940312850000" data-platform="PC (Windows)" aria-label="PRAGMATA, played 0h 0m, platform PC (Windows)">
+      <img src="covers/09181b18c7f44998b6a78c19e8ad2904.webp" alt="PRAGMATA" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Pyre" data-sort-name="Pyre" data-playtime="46800" data-last-played="637746586570000000" data-platform="PC (Windows)" aria-label="Pyre, played 13h 0m, platform PC (Windows)">
+      <img src="covers/49afe610debc493e9873e8b40830b4c6.webp" alt="Pyre" loading="lazy" decoding="async">
+      <figcaption>13h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Ratatan" data-sort-name="Ratatan" data-playtime="0" data-last-played="638940745251930000" data-platform="PC (Windows)" aria-label="Ratatan, played 0h 0m, platform PC (Windows)">
+      <img src="covers/f2d586670d23441897642d24e3defd94.webp" alt="Ratatan" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Red Dead Redemption" data-sort-name="Red Dead Redemption" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Red Dead Redemption, played 0h 0m, platform PC (Windows)">
+      <img src="covers/42803573e16646e38d6036df7280bb43.webp" alt="Red Dead Redemption" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Red Dead Redemption 2" data-sort-name="Red Dead Redemption 02" data-playtime="2185" data-last-played="638793643634790000" data-platform="PC (Windows)" aria-label="Red Dead Redemption 2, played 0h 36m, platform PC (Windows)">
+      <img src="covers/6c50d9e4162240f6beb69b6d10430f06.webp" alt="Red Dead Redemption 2" loading="lazy" decoding="async">
+      <figcaption>0h 36m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Remnant: From the Ashes" data-sort-name="Remnant 01" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Remnant: From the Ashes, played 0h 0m, platform PC (Windows)">
+      <img src="covers/5b020553a89e4ac5adfbbc616f73bc83.webp" alt="Remnant: From the Ashes" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Remnant II" data-sort-name="Remnant 02" data-playtime="1197" data-last-played="639026512341230000" data-platform="PC (Windows)" aria-label="Remnant II, played 0h 19m, platform PC (Windows)">
+      <img src="covers/fe7329935e6d42cb9f085890605a7250.webp" alt="Remnant II" loading="lazy" decoding="async">
+      <figcaption>0h 19m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Replaced" data-sort-name="Replaced" data-playtime="0" data-last-played="639118120214530000" data-platform="PC (Windows)" aria-label="Replaced, played 0h 0m, platform PC (Windows)">
+      <img src="covers/d6337bb6318a4c2eb3ada0f99605c965.webp" alt="Replaced" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Resident Evil Zero HD Remaster " data-sort-name="Resident Evil 00 " data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Resident Evil Zero HD Remaster , played 0h 0m, platform PC (Windows)">
+      <img src="covers/a8e0979128a34862b26503e30e2ea321.webp" alt="Resident Evil Zero HD Remaster " loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Resident Evil HD Remaster" data-sort-name="Resident Evil 01" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Resident Evil HD Remaster, played 0h 0m, platform PC (Windows)">
+      <img src="covers/ceffbf5a0e3d40b7aec97c8e1db401d1.webp" alt="Resident Evil HD Remaster" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Resident Evil 2 (2019)" data-sort-name="Resident Evil 02 2019" data-playtime="3127" data-last-played="638769630416090000" data-platform="PC (Windows)" aria-label="Resident Evil 2 (2019), played 0h 52m, platform PC (Windows)">
+      <img src="covers/704109985cf84022bb5baa0e57a0b8c1.webp" alt="Resident Evil 2 (2019)" loading="lazy" decoding="async">
+      <figcaption>0h 52m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Resident Evil 3 (2020)" data-sort-name="Resident Evil 03 2020" data-playtime="0" data-last-played="638420549136630000" data-platform="PC (Windows)" aria-label="Resident Evil 3 (2020), played 0h 0m, platform PC (Windows)">
+      <img src="covers/ae6a63cd9e274edab836fd905454b2a3.webp" alt="Resident Evil 3 (2020)" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Resident Evil 4 (2023)" data-sort-name="Resident Evil 04" data-playtime="1453" data-last-played="638749813591530000" data-platform="PC (Windows)" aria-label="Resident Evil 4 (2023), played 0h 24m, platform PC (Windows)">
+      <img src="covers/c80e4498e4a345e88de953ebd4cc5d18.webp" alt="Resident Evil 4 (2023)" loading="lazy" decoding="async">
+      <figcaption>0h 24m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Resident Evil 5" data-sort-name="Resident Evil 05" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Resident Evil 5, played 0h 0m, platform PC (Windows)">
+      <img src="covers/bd3d8ba7cc544be2b1217eb8c2a2e585.webp" alt="Resident Evil 5" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Resident Evil 6" data-sort-name="Resident Evil 06" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Resident Evil 6, played 0h 0m, platform PC (Windows)">
+      <img src="covers/3353bb9489e54288805af90967f069cf.webp" alt="Resident Evil 6" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Resident Evil 7: Biohazard" data-sort-name="Resident Evil 07 Biohazard" data-playtime="1572" data-last-played="638418728235510000" data-platform="PC (Windows)" aria-label="Resident Evil 7: Biohazard, played 0h 26m, platform PC (Windows)">
+      <img src="covers/b9209acb3b55485c8e4461031ed9b0fc.webp" alt="Resident Evil 7: Biohazard" loading="lazy" decoding="async">
+      <figcaption>0h 26m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Resident Evil Village" data-sort-name="Resident Evil 08" data-playtime="0" data-last-played="638419988195730000" data-platform="PC (Windows)" aria-label="Resident Evil Village, played 0h 0m, platform PC (Windows)">
+      <img src="covers/2cdfea43c8024c169a615017ec552809.webp" alt="Resident Evil Village" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Resident Evil Requiem" data-sort-name="Resident Evil 09" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Resident Evil Requiem, played 0h 0m, platform PC (Windows)">
+      <img src="covers/96c8489cf05f4fa0a2e593dfa48ba7c5.webp" alt="Resident Evil Requiem" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Reynatis" data-sort-name="Reynatis" data-playtime="2951" data-last-played="638720415801350000" data-platform="PC (Windows)" aria-label="Reynatis, played 0h 49m, platform PC (Windows)">
+      <img src="covers/abdc2674f43b4cd493a9182fa7909faf.webp" alt="Reynatis" loading="lazy" decoding="async">
+      <figcaption>0h 49m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Rise of the Ronin" data-sort-name="Rise of the Ronin" data-playtime="3524" data-last-played="638775781191100000" data-platform="PC (Windows)" aria-label="Rise of the Ronin, played 0h 58m, platform PC (Windows)">
+      <img src="covers/2a00d5a7da7c4429baaf6ec8069b890b.webp" alt="Rise of the Ronin" loading="lazy" decoding="async">
+      <figcaption>0h 58m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="River City Girls" data-sort-name="River City Girls" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="River City Girls, played 0h 0m, platform PC (Windows)">
+      <img src="covers/b408f101e7854d4287b9acd77466a199.webp" alt="River City Girls" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Rocket League" data-sort-name="Rocket League" data-playtime="88992" data-last-played="638992758214400000" data-platform="PC (Windows)" aria-label="Rocket League, played 24h 43m, platform PC (Windows)">
+      <img src="covers/b26ab401f0d547829365615c2527b2b1.webp" alt="Rocket League" loading="lazy" decoding="async">
+      <figcaption>24h 43m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Rugrats: Adventures in Gameland" data-sort-name="Rugrats: Adventures in Gameland" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Rugrats: Adventures in Gameland, played 0h 0m, platform PC (Windows)">
+      <img src="covers/ca01daf42bc34d17b094078a11d81dae.webp" alt="Rugrats: Adventures in Gameland" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Rune Factory: Guardians of Azuma" data-sort-name="Rune Factory: Guardians of Azuma" data-playtime="135765" data-last-played="638870936851850000" data-platform="PC (Windows)" aria-label="Rune Factory: Guardians of Azuma, played 37h 42m, platform PC (Windows)">
+      <img src="covers/3ceb6f938cef4cef8c79d6f3d9b866e3.webp" alt="Rune Factory: Guardians of Azuma" loading="lazy" decoding="async">
+      <figcaption>37h 42m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Saga Frontier Remastered" data-sort-name="SaGa Frontier 01 Remastered" data-playtime="0" data-last-played="638787995607990000" data-platform="PC (Windows)" aria-label="Saga Frontier Remastered, played 0h 0m, platform PC (Windows)">
+      <img src="covers/ba34348e5a664d92b549524277907505.webp" alt="Saga Frontier Remastered" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="SaGa Frontier 2 Remastered" data-sort-name="SaGa Frontier 02 Remastered" data-playtime="0" data-last-played="638787994773090000" data-platform="PC (Windows)" aria-label="SaGa Frontier 2 Remastered, played 0h 0m, platform PC (Windows)">
+      <img src="covers/a28fc9ecd81d40cdb0b42fef99c4a2e1.webp" alt="SaGa Frontier 2 Remastered" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Sailing Era" data-sort-name="Sailing Era" data-playtime="0" data-last-played="638474165416880000" data-platform="PC (Windows)" aria-label="Sailing Era, played 0h 0m, platform PC (Windows)">
+      <img src="covers/db11bf37152842f1b1d5f092e62b5a32.webp" alt="Sailing Era" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Saint Seiya: Soldiers&#39; Soul" data-sort-name="Saint Seiya: Soldiers&#39; Soul" data-playtime="0" data-last-played="638374871956540000" data-platform="PC (Windows)" aria-label="Saint Seiya: Soldiers&#39; Soul, played 0h 0m, platform PC (Windows)">
+      <img src="covers/1a8b34763bb2452692c7787dfb804277.webp" alt="Saint Seiya: Soldiers&#39; Soul" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Sakuna: Of Rice and Ruin" data-sort-name="Sakuna: Of Rice and Ruin" data-playtime="8159" data-last-played="638591900040570000" data-platform="PC (Windows)" aria-label="Sakuna: Of Rice and Ruin, played 2h 15m, platform PC (Windows)">
+      <img src="covers/3d0fcf7f3ba64b2fb85bd0529d82e9ef.webp" alt="Sakuna: Of Rice and Ruin" loading="lazy" decoding="async">
+      <figcaption>2h 15m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Samurai Maiden" data-sort-name="Samurai Maiden" data-playtime="2803" data-last-played="638480220677290000" data-platform="PC (Windows)" aria-label="Samurai Maiden, played 0h 46m, platform PC (Windows)">
+      <img src="covers/ab5904d1e7c9409b938e591ab96a1cd9.webp" alt="Samurai Maiden" loading="lazy" decoding="async">
+      <figcaption>0h 46m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Samurai Shodown (2020)" data-sort-name="Samurai Shodown (2020)" data-playtime="52260" data-last-played="638208147670000000" data-platform="PC (Windows)" aria-label="Samurai Shodown (2020), played 14h 31m, platform PC (Windows)">
+      <img src="covers/07b6b1cbe57044c49840ac0d806875a0.webp" alt="Samurai Shodown (2020)" loading="lazy" decoding="async">
+      <figcaption>14h 31m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Sand Land" data-sort-name="Sand Land" data-playtime="33877" data-last-played="639061119138960000" data-platform="PC (Windows)" aria-label="Sand Land, played 9h 24m, platform PC (Windows)">
+      <img src="covers/c1e2e0439d514fbeb4734f6c1853506d.webp" alt="Sand Land" loading="lazy" decoding="async">
+      <figcaption>9h 24m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="SCARLET NEXUS" data-sort-name="SCARLET NEXUS" data-playtime="274980" data-last-played="637845452690000000" data-platform="PC (Windows)" aria-label="SCARLET NEXUS, played 76h 23m, platform PC (Windows)">
+      <img src="covers/c2b7b283ae534c889bf30ab738cc65ae.webp" alt="SCARLET NEXUS" loading="lazy" decoding="async">
+      <figcaption>76h 23m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Scott Pilgrim vs. The World: The Game" data-sort-name="Scott Pilgrim 01" data-playtime="0" data-last-played="639007527921490000" data-platform="PC (Windows)" aria-label="Scott Pilgrim vs. The World: The Game, played 0h 0m, platform PC (Windows)">
+      <img src="covers/100ad7ab372e4c90ac86067c3a735c4b.webp" alt="Scott Pilgrim vs. The World: The Game" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Scott Pilgrim EX" data-sort-name="Scott Pilgrim 02" data-playtime="393" data-last-played="639084323207300000" data-platform="PC (Windows)" aria-label="Scott Pilgrim EX, played 0h 6m, platform PC (Windows)">
+      <img src="covers/f68f5606d4964a7686cfa0ca18ea7670.webp" alt="Scott Pilgrim EX" loading="lazy" decoding="async">
+      <figcaption>0h 6m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Screamer" data-sort-name="Screamer" data-playtime="1195" data-last-played="639131024544470000" data-platform="PC (Windows)" aria-label="Screamer, played 0h 19m, platform PC (Windows)">
+      <img src="covers/314861f52c2849d8b005d96e6efb3a25.webp" alt="Screamer" loading="lazy" decoding="async">
+      <figcaption>0h 19m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Scribblenauts Unlimited" data-sort-name="Scribblenauts Unlimited" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Scribblenauts Unlimited, played 0h 0m, platform PC (Windows)">
+      <img src="covers/a82ffc522b724ee08ab153f740b4b4b5.webp" alt="Scribblenauts Unlimited" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Sea of Stars" data-sort-name="Sea of Stars" data-playtime="0" data-last-played="638951839662230000" data-platform="PC (Windows)" aria-label="Sea of Stars, played 0h 0m, platform PC (Windows)">
+      <img src="covers/3ebfb3b161cb4dc0ac4be16407636118.webp" alt="Sea of Stars" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Sekiro: Shadows Die Twice" data-sort-name="Sekiro: Shadows Die Twice" data-playtime="41764" data-last-played="639026441886930000" data-platform="PC (Windows)" aria-label="Sekiro: Shadows Die Twice, played 11h 36m, platform PC (Windows)">
+      <img src="covers/38cbf20375af40548ec48b73e55e63f4.webp" alt="Sekiro: Shadows Die Twice" loading="lazy" decoding="async">
+      <figcaption>11h 36m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="A Short Hike" data-sort-name="Short Hike" data-playtime="0" data-last-played="638509005848550000" data-platform="PC (Windows)" aria-label="A Short Hike, played 0h 0m, platform PC (Windows)">
+      <img src="covers/7cdc73fb3a71497f9174fffb9bb60a51.webp" alt="A Short Hike" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Shuten Order" data-sort-name="Shuten Order" data-playtime="0" data-last-played="638931389741200000" data-platform="PC (Windows)" aria-label="Shuten Order, played 0h 0m, platform PC (Windows)">
+      <img src="covers/626234aa299240f0814bed62d4544c97.webp" alt="Shuten Order" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Silent Hill 2" data-sort-name="Silent Hill 02" data-playtime="0" data-last-played="638696224380740000" data-platform="PC (Windows)" aria-label="Silent Hill 2, played 0h 0m, platform PC (Windows)">
+      <img src="covers/be24b387d0e74b4e8b4b8d111d480b47.webp" alt="Silent Hill 2" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Silent Hill f" data-sort-name="Silent Hill f" data-playtime="0" data-last-played="638952006073770000" data-platform="PC (Windows)" aria-label="Silent Hill f, played 0h 0m, platform PC (Windows)">
+      <img src="covers/a543d0856696439a85c8f64fb6a40675.webp" alt="Silent Hill f" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Silent Hope" data-sort-name="Silent Hope" data-playtime="2338" data-last-played="638775690812200000" data-platform="PC (Windows)" aria-label="Silent Hope, played 0h 38m, platform PC (Windows)">
+      <img src="covers/2d17baf2eb744626ab8517189fdd51a3.webp" alt="Silent Hope" loading="lazy" decoding="async">
+      <figcaption>0h 38m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Soulstice" data-sort-name="Soulstice" data-playtime="0" data-last-played="638616159773570000" data-platform="PC (Windows)" aria-label="Soulstice, played 0h 0m, platform PC (Windows)">
+      <img src="covers/ac11e18cc73d476680e253d11b59721f.webp" alt="Soulstice" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Spirit City: Lofi Sessions" data-sort-name="Spirit City: Lofi Sessions" data-playtime="127333" data-last-played="639099855374300000" data-platform="PC (Windows)" aria-label="Spirit City: Lofi Sessions, played 35h 22m, platform PC (Windows)">
+      <img src="covers/1c3f97ee591f4eac9f1c9166e5f212a1.webp" alt="Spirit City: Lofi Sessions" loading="lazy" decoding="async">
+      <figcaption>35h 22m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Spyro Reignited Trilogy" data-sort-name="Spyro Reignited Trilogy" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Spyro Reignited Trilogy, played 0h 0m, platform PC (Windows)">
+      <img src="covers/c4d33aea0bd84885b881e2b43280de13.webp" alt="Spyro Reignited Trilogy" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Star Ocean: The Divine Force" data-sort-name="Star Ocean: The Divine Force" data-playtime="19522" data-last-played="638585858898010000" data-platform="PC (Windows)" aria-label="Star Ocean: The Divine Force, played 5h 25m, platform PC (Windows)">
+      <img src="covers/cfc2c04c4b134de099a04d7f15bbf3fb.webp" alt="Star Ocean: The Divine Force" loading="lazy" decoding="async">
+      <figcaption>5h 25m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Star Ocean: The Second Story R" data-sort-name="Star Ocean: The Second Story R" data-playtime="0" data-last-played="638503817461340000" data-platform="PC (Windows)" aria-label="Star Ocean: The Second Story R, played 0h 0m, platform PC (Windows)">
+      <img src="covers/594c08ce6670475f91b9879bc98335ea.webp" alt="Star Ocean: The Second Story R" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Star Wars Outlaws" data-sort-name="Star Wars Outlaws" data-playtime="1171" data-last-played="639105950609960000" data-platform="PC (Windows)" aria-label="Star Wars Outlaws, played 0h 19m, platform PC (Windows)">
+      <img src="covers/371b70d0b6d34c0c9cc64ad7c801b66e.webp" alt="Star Wars Outlaws" loading="lazy" decoding="async">
+      <figcaption>0h 19m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Stardew Valley" data-sort-name="Stardew Valley" data-playtime="86520" data-last-played="638140960450000000" data-platform="PC (Windows)" aria-label="Stardew Valley, played 24h 2m, platform PC (Windows)">
+      <img src="covers/f06b94d185ae45bb95226f69c1e781ab.webp" alt="Stardew Valley" loading="lazy" decoding="async">
+      <figcaption>24h 2m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Stardust: Wish of Witch" data-sort-name="Stardust: Wish of Witch" data-playtime="212" data-last-played="639163080757360000" data-platform="PC (Windows)" aria-label="Stardust: Wish of Witch, played 0h 3m, platform PC (Windows)">
+      <img src="covers/0babca9f1e01443685f3a93c0e28874f.webp" alt="Stardust: Wish of Witch" loading="lazy" decoding="async">
+      <figcaption>0h 3m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Starsand Island" data-sort-name="Starsand Island" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Starsand Island, played 0h 0m, platform PC (Windows)">
+      <img src="covers/4379d067fd914a478a69469703d2b567.webp" alt="Starsand Island" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Stellar Blade" data-sort-name="Stellar Blade" data-playtime="115544" data-last-played="639164711432550000" data-platform="PC (Windows)" aria-label="Stellar Blade, played 32h 5m, platform PC (Windows)">
+      <img src="covers/e4b902d4c6864b0caeb6c0b7a0c924d3.webp" alt="Stellar Blade" loading="lazy" decoding="async">
+      <figcaption>32h 5m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Stories from Sol The Gun-Dog" data-sort-name="Stories from Sol The Gun-Dog" data-playtime="0" data-last-played="638756790548800000" data-platform="PC (Windows)" aria-label="Stories from Sol The Gun-Dog, played 0h 0m, platform PC (Windows)">
+      <img src="covers/c4b0c948b20e49eca094dd56910572f0.webp" alt="Stories from Sol The Gun-Dog" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Story of Seasons: Friends of Mineral Town" data-sort-name="Story of Seasons: Friends of Mineral Town" data-playtime="737" data-last-played="639018601830150000" data-platform="PC (Windows)" aria-label="Story of Seasons: Friends of Mineral Town, played 0h 12m, platform PC (Windows)">
+      <img src="covers/036a934d2c37411699ad26d94900b46d.webp" alt="Story of Seasons: Friends of Mineral Town" loading="lazy" decoding="async">
+      <figcaption>0h 12m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Story of Seasons: Grand Bazaar" data-sort-name="Story of Seasons: Grand Bazaar" data-playtime="2040" data-last-played="638940683739410000" data-platform="PC (Windows)" aria-label="Story of Seasons: Grand Bazaar, played 0h 34m, platform PC (Windows)">
+      <img src="covers/9982a764acbc4af38eb3a54ae5910225.webp" alt="Story of Seasons: Grand Bazaar" loading="lazy" decoding="async">
+      <figcaption>0h 34m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Stranger of Paradise: Final Fantasy Origin" data-sort-name="Stranger of Paradise: Final Fantasy Origin" data-playtime="74561" data-last-played="638741197329150000" data-platform="PC (Windows)" aria-label="Stranger of Paradise: Final Fantasy Origin, played 20h 42m, platform PC (Windows)">
+      <img src="covers/7d5b0f1a1f064204b25a7116a910661b.webp" alt="Stranger of Paradise: Final Fantasy Origin" loading="lazy" decoding="async">
+      <figcaption>20h 42m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Stray" data-sort-name="Stray" data-playtime="0" data-last-played="638775732030420000" data-platform="PC (Windows)" aria-label="Stray, played 0h 0m, platform PC (Windows)">
+      <img src="covers/bf5718bd344041fbaaf2988e38e54746.webp" alt="Stray" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Street Fighter 6" data-sort-name="Street Fighter 06" data-playtime="433920" data-last-played="638545319270000000" data-platform="PC (Windows)" aria-label="Street Fighter 6, played 120h 32m, platform PC (Windows)">
+      <img src="covers/f792612b00814eb6b31cc8316af99381.webp" alt="Street Fighter 6" loading="lazy" decoding="async">
+      <figcaption>120h 32m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Subnautica" data-sort-name="Subnautica" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Subnautica, played 0h 0m, platform PC (Windows)">
+      <img src="covers/076163bd93934e6e85901e975a22a649.webp" alt="Subnautica" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Subnautica 2" data-sort-name="Subnautica 02" data-playtime="0" data-last-played="639144968316880000" data-platform="PC (Windows)" aria-label="Subnautica 2, played 0h 0m, platform PC (Windows)">
+      <img src="covers/e45988c5687c400d9f229a3e2db87b87.webp" alt="Subnautica 2" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Super Mario 3D World + Bowser&#39;s Fury" data-sort-name="Super Mario 3D World + Bowser&#39;s Fury" data-playtime="0" data-last-played="638478737876780000" data-platform="Nintendo Switch" aria-label="Super Mario 3D World + Bowser&#39;s Fury, played 0h 0m, platform Nintendo Switch">
+      <img src="covers/77be39772728423ca7671c6411dd0e4f.webp" alt="Super Mario 3D World + Bowser&#39;s Fury" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Super Mario Bros. Wonder" data-sort-name="Super Mario Bros. Wonder" data-playtime="0" data-last-played="638355144446220000" data-platform="Nintendo Switch" aria-label="Super Mario Bros. Wonder, played 0h 0m, platform Nintendo Switch">
+      <img src="covers/f55ede42e8bb447884151cdfe49d69d7.webp" alt="Super Mario Bros. Wonder" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Super Mario Maker" data-sort-name="Super Mario Maker" data-playtime="0" data-last-played="0" data-platform="Nintendo Wii U" aria-label="Super Mario Maker, played 0h 0m, platform Nintendo Wii U">
+      <img src="covers/36043343800e4766a8ca95c797719db1.webp" alt="Super Mario Maker" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Super Mario Odyssey" data-sort-name="Super Mario Odyssey" data-playtime="0" data-last-played="0" data-platform="Nintendo Switch" aria-label="Super Mario Odyssey, played 0h 0m, platform Nintendo Switch">
+      <img src="covers/e4d23d71242c41ca9e98a171eda31565.webp" alt="Super Mario Odyssey" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Super Mario Party Jamboree" data-sort-name="Super Mario Party Jamboree" data-playtime="0" data-last-played="638644382297270000" data-platform="Nintendo Switch" aria-label="Super Mario Party Jamboree, played 0h 0m, platform Nintendo Switch">
+      <img src="covers/d26283284fb54f02ac9c95f6933f78b3.webp" alt="Super Mario Party Jamboree" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Super Smash Bros. Ultimate" data-sort-name="Super Smash Bros. Ultimate" data-playtime="0" data-last-played="638793867247780000" data-platform="Nintendo Switch" aria-label="Super Smash Bros. Ultimate, played 0h 0m, platform Nintendo Switch">
+      <img src="covers/376ef5df5e754e869424affc8a365ed2.webp" alt="Super Smash Bros. Ultimate" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Tactics Ogre: Reborn" data-sort-name="Tactics Ogre: Reborn" data-playtime="0" data-last-played="638420550506120000" data-platform="PC (Windows)" aria-label="Tactics Ogre: Reborn, played 0h 0m, platform PC (Windows)">
+      <img src="covers/5481036cc2e34855af3aed378103926c.webp" alt="Tactics Ogre: Reborn" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Taiko no Tatsujin: Rhythm Festival" data-sort-name="Taiko no Tatsujin: Rhythm Festival" data-playtime="9665" data-last-played="638847626214970000" data-platform="PC (Windows)" aria-label="Taiko no Tatsujin: Rhythm Festival, played 2h 41m, platform PC (Windows)">
+      <img src="covers/8c002bcc9b2b44b0a0d7908a0c19935a.webp" alt="Taiko no Tatsujin: Rhythm Festival" loading="lazy" decoding="async">
+      <figcaption>2h 41m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Tales of Destiny: Director&#39;s Cut" data-sort-name="Tales of 02" data-playtime="152698" data-last-played="639081727675250000" data-platform="Sony PlayStation 2" aria-label="Tales of Destiny: Director&#39;s Cut, played 42h 24m, platform Sony PlayStation 2">
+      <img src="covers/9bd7ca61beb54865b08930474337e6cb.webp" alt="Tales of Destiny: Director&#39;s Cut" loading="lazy" decoding="async">
+      <figcaption>42h 24m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Tales of Symphonia HD" data-sort-name="Tales of 04" data-playtime="0" data-last-played="0" data-platform="Sony PlayStation 3" aria-label="Tales of Symphonia HD, played 0h 0m, platform Sony PlayStation 3">
+      <img src="covers/1acaeacd1de942c98aeeeb9003dbfba2.webp" alt="Tales of Symphonia HD" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Tales of Vesperia: Definitive Edition" data-sort-name="Tales of 12" data-playtime="1680" data-last-played="638780979420000000" data-platform="PC (Windows)" aria-label="Tales of Vesperia: Definitive Edition, played 0h 28m, platform PC (Windows)">
+      <img src="covers/ee1a95b99db34ae380829e66dcc07c94.webp" alt="Tales of Vesperia: Definitive Edition" loading="lazy" decoding="async">
+      <figcaption>0h 28m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Tales of Graces f Remastered" data-sort-name="Tales of 14" data-playtime="0" data-last-played="638727460706670000" data-platform="PC (Windows)" aria-label="Tales of Graces f Remastered, played 0h 0m, platform PC (Windows)">
+      <img src="covers/33b9a276618b4b9a89068fc26e0e1288.webp" alt="Tales of Graces f Remastered" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Tales of Xillia Remastered" data-sort-name="Tales of 15" data-playtime="0" data-last-played="638974707426460000" data-platform="PC (Windows)" aria-label="Tales of Xillia Remastered, played 0h 0m, platform PC (Windows)">
+      <img src="covers/7ffa6e2672044b47834f2b24b327d3c0.webp" alt="Tales of Xillia Remastered" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Tales of Zestiria" data-sort-name="Tales of 17" data-playtime="0" data-last-played="638388009681790000" data-platform="PC (Windows)" aria-label="Tales of Zestiria, played 0h 0m, platform PC (Windows)">
+      <img src="covers/d982aa1a7c654ae180007da150cdd154.webp" alt="Tales of Zestiria" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Tales of Berseria Remastered" data-sort-name="Tales of 18" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Tales of Berseria Remastered, played 0h 0m, platform PC (Windows)">
+      <img src="covers/3881533cb4ca4374bccf1d3e0e00873e.webp" alt="Tales of Berseria Remastered" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Tales of Arise" data-sort-name="Tales of 19" data-playtime="376020" data-last-played="638781027390000000" data-platform="PC (Windows)" aria-label="Tales of Arise, played 104h 27m, platform PC (Windows)">
+      <img src="covers/d190c230865a447c8605b34337c8ec3b.webp" alt="Tales of Arise" loading="lazy" decoding="async">
+      <figcaption>104h 27m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="The Thaumaturge" data-sort-name="Thaumaturge" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="The Thaumaturge, played 0h 0m, platform PC (Windows)">
+      <img src="covers/9421ae1f7a8c4fc9a2e2ec6a9fd9690f.webp" alt="The Thaumaturge" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Theatrhythm Final Bar Line" data-sort-name="Theatrhythm Final Bar Line" data-playtime="1946" data-last-played="638373272215410000" data-platform="Nintendo Switch" aria-label="Theatrhythm Final Bar Line, played 0h 32m, platform Nintendo Switch">
+      <img src="covers/6cefb5eacc7b4f0194fee790e5fe7f31.webp" alt="Theatrhythm Final Bar Line" loading="lazy" decoding="async">
+      <figcaption>0h 32m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Thief" data-sort-name="Thief" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Thief, played 0h 0m, platform PC (Windows)">
+      <img src="covers/e660b26682854ca5968b04ab0054436b.webp" alt="Thief" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Timberborn" data-sort-name="Timberborn" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Timberborn, played 0h 0m, platform PC (Windows)">
+      <img src="covers/6598a4e291764ae289be3b46604c5738.webp" alt="Timberborn" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Tiny Glade" data-sort-name="Tiny Glade" data-playtime="2320" data-last-played="638775709740280000" data-platform="PC (Windows)" aria-label="Tiny Glade, played 0h 38m, platform PC (Windows)">
+      <img src="covers/d612366eee414232a387bdfc560568f8.webp" alt="Tiny Glade" loading="lazy" decoding="async">
+      <figcaption>0h 38m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Titanfall 2" data-sort-name="Titanfall 02" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Titanfall 2, played 0h 0m, platform PC (Windows)">
+      <img src="covers/da059057d65346a185be335b2fc6aaaf.webp" alt="Titanfall 2" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="To the Moon" data-sort-name="To the Moon" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="To the Moon, played 0h 0m, platform PC (Windows)">
+      <img src="covers/daed4775859d4cd18ca6cf2a14562e1f.webp" alt="To the Moon" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Tomb Raider (2013)" data-sort-name="Tomb Raider 01" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Tomb Raider (2013), played 0h 0m, platform PC (Windows)">
+      <img src="covers/cd0c39a67feb4da3a1173ae7d4a19a76.webp" alt="Tomb Raider (2013)" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Rise of the Tomb Raider" data-sort-name="Tomb Raider 02" data-playtime="2167" data-last-played="638769645290460000" data-platform="PC (Windows)" aria-label="Rise of the Tomb Raider, played 0h 36m, platform PC (Windows)">
+      <img src="covers/f3bf423e031b4d2c8e71f7604dcf0564.webp" alt="Rise of the Tomb Raider" loading="lazy" decoding="async">
+      <figcaption>0h 36m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Shadow of the Tomb Raider" data-sort-name="Tomb Raider 03" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Shadow of the Tomb Raider, played 0h 0m, platform PC (Windows)">
+      <img src="covers/0b4d5f9d38e4411ba6984fbcad6cb36d.webp" alt="Shadow of the Tomb Raider" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Tooth and Tail" data-sort-name="Tooth and Tail" data-playtime="15300" data-last-played="638140961160000000" data-platform="PC (Windows)" aria-label="Tooth and Tail, played 4h 15m, platform PC (Windows)">
+      <img src="covers/336c898e086d4d43860addd2ba64980b.webp" alt="Tooth and Tail" loading="lazy" decoding="async">
+      <figcaption>4h 15m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Torchlight" data-sort-name="Torchlight" data-playtime="64500" data-last-played="634842396000000000" data-platform="PC (Windows)" aria-label="Torchlight, played 17h 55m, platform PC (Windows)">
+      <img src="covers/b48e8178cdbb468984b88c6ccfb234ce.webp" alt="Torchlight" loading="lazy" decoding="async">
+      <figcaption>17h 55m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Torchlight II" data-sort-name="Torchlight 02" data-playtime="2940" data-last-played="636372860890000000" data-platform="PC (Windows)" aria-label="Torchlight II, played 0h 49m, platform PC (Windows)">
+      <img src="covers/ca2afa3c17f74bdeb27deb67a88baa51.webp" alt="Torchlight II" loading="lazy" decoding="async">
+      <figcaption>0h 49m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Total War: THREE KINGDOMS" data-sort-name="Total War: THREE KINGDOMS" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Total War: THREE KINGDOMS, played 0h 0m, platform PC (Windows)">
+      <img src="covers/3bce6fdc8a654bb2b345abd976f1665f.webp" alt="Total War: THREE KINGDOMS" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Towa and the Guardians of the Sacred Tree" data-sort-name="Towa and the Guardians of the Sacred Tree" data-playtime="0" data-last-played="638939321742570000" data-platform="PC (Windows)" aria-label="Towa and the Guardians of the Sacred Tree, played 0h 0m, platform PC (Windows)">
+      <img src="covers/c0d6861e3fc54d7da865c0a84f84cfaa.webp" alt="Towa and the Guardians of the Sacred Tree" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Town To City" data-sort-name="Town To City" data-playtime="0" data-last-played="638951812354430000" data-platform="PC (Windows)" aria-label="Town To City, played 0h 0m, platform PC (Windows)">
+      <img src="covers/63be5dcac7ee4337b69ea3590c7a8c30.webp" alt="Town To City" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Trails in the Sky 1st Chapter" data-sort-name="Trails in the Sky 1st Chapter" data-playtime="0" data-last-played="638940746366180000" data-platform="PC (Windows)" aria-label="Trails in the Sky 1st Chapter, played 0h 0m, platform PC (Windows)">
+      <img src="covers/6076e859ca42468c86e8636f7e9501ff.webp" alt="Trails in the Sky 1st Chapter" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Transistor" data-sort-name="Transistor" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Transistor, played 0h 0m, platform PC (Windows)">
+      <img src="covers/a4db1fef64b94d70921f0ae54b9e7e00.webp" alt="Transistor" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Triangle Strategy" data-sort-name="Triangle Strategy" data-playtime="0" data-last-played="638951963821990000" data-platform="PC (Windows)" aria-label="Triangle Strategy, played 0h 0m, platform PC (Windows)">
+      <img src="covers/251f0b612ff246d7a3e877629ccec918.webp" alt="Triangle Strategy" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Trinity Trigger" data-sort-name="Trinity Trigger" data-playtime="0" data-last-played="638775710378200000" data-platform="PC (Windows)" aria-label="Trinity Trigger, played 0h 0m, platform PC (Windows)">
+      <img src="covers/f9859901c2dc4151b20824916513c3b6.webp" alt="Trinity Trigger" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Trombone Champ" data-sort-name="Trombone Champ" data-playtime="0" data-last-played="638775711907570000" data-platform="PC (Windows)" aria-label="Trombone Champ, played 0h 0m, platform PC (Windows)">
+      <img src="covers/991a3bfd8c164a1a87c5a3cb9783686c.webp" alt="Trombone Champ" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="TurretGirls" data-sort-name="TurretGirls" data-playtime="2181" data-last-played="638952023303610000" data-platform="PC (Windows)" aria-label="TurretGirls, played 0h 36m, platform PC (Windows)">
+      <img src="covers/310816b7010f42479ba04cc085ad659c.webp" alt="TurretGirls" loading="lazy" decoding="async">
+      <figcaption>0h 36m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="UltraGirl Alters" data-sort-name="UltraGirl Alters" data-playtime="0" data-last-played="638989043780140000" data-platform="PC (Windows)" aria-label="UltraGirl Alters, played 0h 0m, platform PC (Windows)">
+      <img src="covers/2cb6ff2f74594e47947241fd36077241.webp" alt="UltraGirl Alters" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Unbeatable" data-sort-name="Unbeatable" data-playtime="0" data-last-played="639010482403920000" data-platform="PC (Windows)" aria-label="Unbeatable, played 0h 0m, platform PC (Windows)">
+      <img src="covers/aa24a25aa85940faa9ea6c21f4ec05d1.webp" alt="Unbeatable" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Under Night In-Birth II Sys:Celes" data-sort-name="Under Night In-Birth 02 Sys:Celes" data-playtime="0" data-last-played="638489909572600000" data-platform="PC (Windows)" aria-label="Under Night In-Birth II Sys:Celes, played 0h 0m, platform PC (Windows)">
+      <img src="covers/723eda9fcd694a28b54702981015b44c.webp" alt="Under Night In-Birth II Sys:Celes" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Undertale" data-sort-name="Undertale" data-playtime="0" data-last-played="638952827088800000" data-platform="PC (Windows)" aria-label="Undertale, played 0h 0m, platform PC (Windows)">
+      <img src="covers/e618593990524670b6172eb27ac26408.webp" alt="Undertale" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Unicorn Overlord" data-sort-name="Unicorn Overlord" data-playtime="122387" data-last-played="638995094481570000" data-platform="Nintendo Switch" aria-label="Unicorn Overlord, played 33h 59m, platform Nintendo Switch">
+      <img src="covers/993423441e0f41229abe72556ecbdd56.webp" alt="Unicorn Overlord" loading="lazy" decoding="async">
+      <figcaption>33h 59m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="V Rising" data-sort-name="V Rising" data-playtime="195808" data-last-played="638596195422930000" data-platform="PC (Windows)" aria-label="V Rising, played 54h 23m, platform PC (Windows)">
+      <img src="covers/7b7bc9c8bcb54b8e9dc7b83fab0f87a9.webp" alt="V Rising" loading="lazy" decoding="async">
+      <figcaption>54h 23m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Valheim" data-sort-name="Valheim" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Valheim, played 0h 0m, platform PC (Windows)">
+      <img src="covers/bcc5f8b93c9d4d3b83d58ef1a0d8c9b6.webp" alt="Valheim" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Valkyria Chronicles 4" data-sort-name="Valkyria Chronicles 04" data-playtime="2071" data-last-played="638585880378830000" data-platform="PC (Windows)" aria-label="Valkyria Chronicles 4, played 0h 34m, platform PC (Windows)">
+      <img src="covers/9d7c2e869c4f4ad1a3be510534949a77.webp" alt="Valkyria Chronicles 4" loading="lazy" decoding="async">
+      <figcaption>0h 34m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Valkyrie Elysium" data-sort-name="Valkyrie Elysium" data-playtime="1046" data-last-played="638480546595470000" data-platform="PC (Windows)" aria-label="Valkyrie Elysium, played 0h 17m, platform PC (Windows)">
+      <img src="covers/3f44158d92ae4227bf7eb9de7cab2f84.webp" alt="Valkyrie Elysium" loading="lazy" decoding="async">
+      <figcaption>0h 17m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Vampire Survivors" data-sort-name="Vampire Survivors" data-playtime="0" data-last-played="638775714433900000" data-platform="PC (Windows)" aria-label="Vampire Survivors, played 0h 0m, platform PC (Windows)">
+      <img src="covers/5ec72e8fc5714fda80fae31b48a3a785.webp" alt="Vampire Survivors" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="WARRIORS: Abyss" data-sort-name="WARRIORS: Abyss" data-playtime="7639" data-last-played="638755005778470000" data-platform="PC (Windows)" aria-label="WARRIORS: Abyss, played 2h 7m, platform PC (Windows)">
+      <img src="covers/7c022d19de134163923cb9e1aaa6c4b6.webp" alt="WARRIORS: Abyss" loading="lazy" decoding="async">
+      <figcaption>2h 7m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Whisper of the House" data-sort-name="Whisper of the House" data-playtime="0" data-last-played="638964302496030000" data-platform="PC (Windows)" aria-label="Whisper of the House, played 0h 0m, platform PC (Windows)">
+      <img src="covers/4dc2aa0002084457a33bb978f9305ef6.webp" alt="Whisper of the House" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Wildgate" data-sort-name="Wildgate" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Wildgate, played 0h 0m, platform PC (Windows)">
+      <img src="covers/fa5a01daf98b486ca963e6c98a2e94a3.webp" alt="Wildgate" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Winter Burrow" data-sort-name="Winter Burrow" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Winter Burrow, played 0h 0m, platform PC (Windows)">
+      <img src="covers/b54c8583c0d44b9f9b85aaf131e0f705.webp" alt="Winter Burrow" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="The Witcher: Enhanced Edition" data-sort-name="Witcher 01" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="The Witcher: Enhanced Edition, played 0h 0m, platform PC (Windows)">
+      <img src="covers/2d23b89aec734c0aa83b4e4ca19ade70.webp" alt="The Witcher: Enhanced Edition" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="The Witcher 2: Assassins of Kings Enhanced Edition" data-sort-name="Witcher 02" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="The Witcher 2: Assassins of Kings Enhanced Edition, played 0h 0m, platform PC (Windows)">
+      <img src="covers/283f0fabfe3542728f6931cd0b1f555c.webp" alt="The Witcher 2: Assassins of Kings Enhanced Edition" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="The Witcher 3: Wild Hunt" data-sort-name="Witcher 03" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="The Witcher 3: Wild Hunt, played 0h 0m, platform PC (Windows)">
+      <img src="covers/641e96ec45474bec83c75b958ecf4f3e.webp" alt="The Witcher 3: Wild Hunt" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="WitchSpring R" data-sort-name="WitchSpring R" data-playtime="1492" data-last-played="638775717577950000" data-platform="PC (Windows)" aria-label="WitchSpring R, played 0h 24m, platform PC (Windows)">
+      <img src="covers/2d9a6d7c3b12451abb62f9cfc7fd910b.webp" alt="WitchSpring R" loading="lazy" decoding="async">
+      <figcaption>0h 24m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Wo Long: Fallen Dynasty" data-sort-name="Wo Long: Fallen Dynasty" data-playtime="450980" data-last-played="638778952337580000" data-platform="PC (Windows)" aria-label="Wo Long: Fallen Dynasty, played 125h 16m, platform PC (Windows)">
+      <img src="covers/8989f2ec962f4a5e80022d9550fb4921.webp" alt="Wo Long: Fallen Dynasty" loading="lazy" decoding="async">
+      <figcaption>125h 16m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="World War Z" data-sort-name="World War Z" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="World War Z, played 0h 0m, platform PC (Windows)">
+      <img src="covers/db8f1ecc801f4a1099db6710a8326730.webp" alt="World War Z" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Wuchang: Fallen Feathers" data-sort-name="Wuchang: Fallen Feathers" data-playtime="195996" data-last-played="639062733494400000" data-platform="PC (Windows)" aria-label="Wuchang: Fallen Feathers, played 54h 26m, platform PC (Windows)">
+      <img src="covers/afb8e61f760647fb96f42f74d02ca63e.webp" alt="Wuchang: Fallen Feathers" loading="lazy" decoding="async">
+      <figcaption>54h 26m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Xenoblade Chronicles X" data-sort-name="Xenoblade 10" data-playtime="298671" data-last-played="638995098635070000" data-platform="Nintendo Wii U" aria-label="Xenoblade Chronicles X, played 82h 57m, platform Nintendo Wii U">
+      <img src="covers/71943b67c615454c96fc9b093b89f38d.webp" alt="Xenoblade Chronicles X" loading="lazy" decoding="async">
+      <figcaption>82h 57m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Xenoblade Chronicles: Definitive Edition" data-sort-name="Xenoblade Chronicles 01" data-playtime="0" data-last-played="638789830499410000" data-platform="Nintendo Switch" aria-label="Xenoblade Chronicles: Definitive Edition, played 0h 0m, platform Nintendo Switch">
+      <img src="covers/7859bf2868464d4db43e01ca853d6679.webp" alt="Xenoblade Chronicles: Definitive Edition" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Xenoblade Chronicles 2" data-sort-name="Xenoblade Chronicles 02" data-playtime="0" data-last-played="0" data-platform="Nintendo Switch" aria-label="Xenoblade Chronicles 2, played 0h 0m, platform Nintendo Switch">
+      <img src="covers/83d36e5ffc6d447a9cb02fbe6456e712.webp" alt="Xenoblade Chronicles 2" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Xenoblade Chronicles 3" data-sort-name="Xenoblade Chronicles 03" data-playtime="0" data-last-played="0" data-platform="Nintendo Switch" aria-label="Xenoblade Chronicles 3, played 0h 0m, platform Nintendo Switch">
+      <img src="covers/91b3c970e20b40e0a7a63bf2322df6cd.webp" alt="Xenoblade Chronicles 3" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Yolk Heroes: A Long Tamago" data-sort-name="Yolk Heroes: A Long Tamago" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Yolk Heroes: A Long Tamago, played 0h 0m, platform PC (Windows)">
+      <img src="covers/a12edab6881944b0ab177ac3d5e31ed0.webp" alt="Yolk Heroes: A Long Tamago" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Yoshi&#39;s Woolly World" data-sort-name="Yoshi&#39;s Woolly World" data-playtime="0" data-last-played="0" data-platform="Nintendo Wii U" aria-label="Yoshi&#39;s Woolly World, played 0h 0m, platform Nintendo Wii U">
+      <img src="covers/8ea6b738144d4b62968f932125c6e068.webp" alt="Yoshi&#39;s Woolly World" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Zenless Zone Zero" data-sort-name="Zenless Zone Zero" data-playtime="11183" data-last-played="638589052502530000" data-platform="PC (Windows)" aria-label="Zenless Zone Zero, played 3h 6m, platform PC (Windows)">
+      <img src="covers/de5da71d620047bea77b32baf91be58a.webp" alt="Zenless Zone Zero" loading="lazy" decoding="async">
+      <figcaption>3h 6m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Zero Escape: The Nonary Games" data-sort-name="Zero Escape: The Nonary Games" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" aria-label="Zero Escape: The Nonary Games, played 0h 0m, platform PC (Windows)">
+      <img src="covers/00c51effbed34315a9e942a784a0f7eb.webp" alt="Zero Escape: The Nonary Games" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
+    </figure>
+  </main>
+  <script>
+    const gallery = document.querySelector('#gallery');
+    const cards = [...gallery.querySelectorAll('.cover')];
+    const search = document.querySelector('#search');
+    const clearSearch = document.querySelector('#clear-search');
+    let sortKey = 'name';
+    let sortDirection = 1;
+    let grouped = false;
+    let searchQuery = '';
+
+    function compareCards(a, b) {
+      if (sortKey === 'playtime') {
+        return (Number(a.dataset.playtime) - Number(b.dataset.playtime)) * sortDirection;
+      }
+      if (sortKey === 'last-played') {
+        return (Number(a.dataset.lastPlayed) - Number(b.dataset.lastPlayed)) * sortDirection;
+      }
+      return a.dataset.sortName.localeCompare(b.dataset.sortName, undefined, { sensitivity: 'base' }) * sortDirection;
+    }
+
+    function render() {
+      const filtered = cards.filter(card =>
+        card.dataset.name.toLocaleLowerCase().includes(searchQuery));
+      const sorted = [...filtered].sort(compareCards);
+      gallery.replaceChildren();
+
+      if (sorted.length === 0) {
+        const empty = document.createElement('p');
+        empty.className = 'empty';
+        empty.textContent = 'No games found.';
+        gallery.append(empty);
+        return;
+      }
+
+      if (!grouped) {
+        gallery.append(...sorted);
+        return;
+      }
+
+      const platforms = [...new Set(sorted.map(card => card.dataset.platform))]
+        .sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+
+      for (const platform of platforms) {
+        const section = document.createElement('section');
+        section.className = 'platform-group';
+        const heading = document.createElement('h2');
+        heading.textContent = platform;
+        const grid = document.createElement('div');
+        grid.className = 'platform-grid';
+        grid.append(...sorted.filter(card => card.dataset.platform === platform));
+        section.append(heading, grid);
+        gallery.append(section);
+      }
+    }
+
+    document.querySelector('#sort-name').addEventListener('click', event => {
+      sortDirection = sortKey === 'name' ? sortDirection * -1 : 1;
+      sortKey = 'name';
+      event.currentTarget.textContent = sortDirection === 1 ? 'Name: A-Z' : 'Name: Z-A';
+      render();
+    });
+
+    document.querySelector('#sort-playtime').addEventListener('click', event => {
+      sortDirection = sortKey === 'playtime' ? sortDirection * -1 : -1;
+      sortKey = 'playtime';
+      event.currentTarget.textContent = sortDirection === -1 ? 'Playtime: high-low' : 'Playtime: low-high';
+      render();
+    });
+
+    document.querySelector('#group-platform').addEventListener('click', event => {
+      grouped = !grouped;
+      event.currentTarget.setAttribute('aria-pressed', grouped);
+      event.currentTarget.textContent = grouped ? 'Ungroup platforms' : 'Group by platform';
+      render();
+    });
+
+    document.querySelector('#sort-last-played').addEventListener('click', event => {
+      sortDirection = sortKey === 'last-played' ? sortDirection * -1 : -1;
+      sortKey = 'last-played';
+      event.currentTarget.textContent = sortDirection === -1 ? 'Last played: recent' : 'Last played: oldest';
+      render();
+    });
+
+    search.addEventListener('input', event => {
+      searchQuery = event.currentTarget.value.trim().toLocaleLowerCase();
+      clearSearch.classList.toggle('visible', event.currentTarget.value.length > 0);
+      render();
+    });
+
+    clearSearch.addEventListener('click', () => {
+      search.value = '';
+      searchQuery = '';
+      clearSearch.classList.remove('visible');
+      search.focus();
+      render();
+    });
+
+    document.addEventListener('click', event => {
+      const selected = event.target.closest('.cover');
+      if (!selected) {
+        cards.forEach(card => card.classList.remove('active', 'suppressed'));
+        return;
+      }
+      const wasActive = selected.classList.contains('active');
+      cards.forEach(card => card.classList.remove('active', 'suppressed'));
+      selected.classList.add(wasActive ? 'suppressed' : 'active');
+    });
+
+    cards.forEach(card => card.addEventListener('mouseleave', () => card.classList.remove('suppressed')));
+
+    render();
+  </script>
+</body>
+</html>
