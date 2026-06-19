@@ -29,7 +29,7 @@
     .cover img { width: 100%; height: 100%; display: block; object-fit: cover; transition: transform 220ms ease; }
     .cover figcaption { position: absolute; inset: 0; display: flex; align-items: end; padding: 18px 14px; color: white; font: 600 15px/1.2 system-ui, sans-serif; background: linear-gradient(to bottom, transparent 45%, rgba(0, 0, 0, .78) 100%); opacity: 0; transition: opacity 180ms ease; }
     .cover:not(.suppressed):hover, .cover.active, .cover:focus-visible { z-index: 1; transform: translateY(-5px) scale(1.04); box-shadow: 0 14px 30px rgba(0, 0, 0, .55); }
-    .cover:not(.suppressed):hover img, .cover.active img, .cover:focus-visible img { transform: scale(1.025); }
+    .cover:not(.suppressed):hover img, .cover.active img, .cover:focus-visible img { transform: scale(1.08); }
     .cover:not(.suppressed):hover figcaption, .cover.active figcaption, .cover:focus-visible figcaption { opacity: 1; }
     .cover:focus-visible { box-shadow: 0 0 0 3px white; }
     .empty { grid-column: 1 / -1; padding: 50px 18px; color: #aaaab2; text-align: center; }
@@ -49,7 +49,7 @@
 <body>
   <nav class="toolbar" aria-label="Gallery controls">
     <div class="search-box">
-      <input id="search" type="search" placeholder="Search all 382 games..." aria-label="Search games by name">
+      <input id="search" type="search" placeholder="Search all 383 games..." aria-label="Search games by name">
       <button id="clear-search" class="clear-search" type="button" aria-label="Clear search" title="Clear search"></button>
     </div>
     <button id="sort-name" type="button">Name: A-Z</button>
@@ -66,6 +66,10 @@
     <figure class="cover" tabindex="0" data-name="Absolum" data-sort-name="Absolum" data-playtime="1884" data-last-played="639169744803930000" data-platform="PC (Windows)" data-year="2025" aria-label="Absolum, played 0h 31m, platform PC (Windows)">
       <img src="covers/9235044227b0403eab6f805d2f410a61.webp" alt="Absolum" loading="lazy" decoding="async">
       <figcaption>0h 31m</figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="The Adventures of Elliot_The Millennium Tales" data-sort-name="Adventures of Elliot_The Millennium Tales" data-playtime="0" data-last-played="0" data-platform="PC (Windows)" data-year="2026" aria-label="The Adventures of Elliot_The Millennium Tales, played 0h 0m, platform PC (Windows)">
+      <img src="covers/4d79b8b9dfe24ffc876006a394a0601d.webp" alt="The Adventures of Elliot_The Millennium Tales" loading="lazy" decoding="async">
+      <figcaption>0h 0m</figcaption>
     </figure>
     <figure class="cover" tabindex="0" data-name="AI Limit" data-sort-name="AI Limit" data-playtime="87803" data-last-played="639104223896990000" data-platform="PC (Windows)" data-year="2025" aria-label="AI Limit, played 24h 23m, platform PC (Windows)">
       <img src="covers/e3fefacdfdef40d196fd2cb79619aed2.webp" alt="AI Limit" loading="lazy" decoding="async">
@@ -1283,9 +1287,9 @@
       <img src="covers/4379d067fd914a478a69469703d2b567.webp" alt="Starsand Island" loading="lazy" decoding="async">
       <figcaption>0h 0m</figcaption>
     </figure>
-    <figure class="cover" tabindex="0" data-name="Stellar Blade" data-sort-name="Stellar Blade" data-playtime="136610" data-last-played="639174169728420000" data-platform="PC (Windows)" data-year="2025" aria-label="Stellar Blade, played 37h 56m, platform PC (Windows)">
+    <figure class="cover" tabindex="0" data-name="Stellar Blade" data-sort-name="Stellar Blade" data-playtime="141193" data-last-played="639175027999280000" data-platform="PC (Windows)" data-year="2025" aria-label="Stellar Blade, played 39h 13m, platform PC (Windows)">
       <img src="covers/e4b902d4c6864b0caeb6c0b7a0c924d3.webp" alt="Stellar Blade" loading="lazy" decoding="async">
-      <figcaption>37h 56m</figcaption>
+      <figcaption>39h 13m</figcaption>
     </figure>
     <figure class="cover" tabindex="0" data-name="Stories from Sol The Gun-Dog" data-sort-name="Stories from Sol The Gun-Dog" data-playtime="0" data-last-played="638756790548800000" data-platform="PC (Windows)" data-year="2025" aria-label="Stories from Sol The Gun-Dog, played 0h 0m, platform PC (Windows)">
       <img src="covers/c4b0c948b20e49eca094dd56910572f0.webp" alt="Stories from Sol The Gun-Dog" loading="lazy" decoding="async">
