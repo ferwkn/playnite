@@ -1742,23 +1742,18 @@
     let comparisonRequest = 0;
     let coverSize = window.matchMedia('(max-width: 600px)').matches ? 125 : 170;
     let lastScrollY = window.scrollY;
-    let coverSizeFrame = 0;
     let coverResizeTimer = 0;
     const minCoverSize = 125;
     const maxCoverSize = 300;
-    const coverSizeStep = 15;
+    const coverSizeStep = 30;
 
     function applyCoverSize() {
       coverSmaller.disabled = coverSize <= minCoverSize;
       coverLarger.disabled = coverSize >= maxCoverSize;
-      if (coverSizeFrame) return;
       document.body.classList.add('resizing-covers');
-      coverSizeFrame = requestAnimationFrame(() => {
-        coverSizeFrame = 0;
-        document.body.style.setProperty('--cover-size', `${coverSize}px`);
-        clearTimeout(coverResizeTimer);
-        coverResizeTimer = setTimeout(() => document.body.classList.remove('resizing-covers'), 140);
-      });
+      document.body.style.setProperty('--cover-size', `${coverSize}px`);
+      clearTimeout(coverResizeTimer);
+      coverResizeTimer = setTimeout(() => document.body.classList.remove('resizing-covers'), 120);
     }
 
     function compareCards(a, b) {
