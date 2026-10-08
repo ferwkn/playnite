@@ -29,7 +29,7 @@
     .platform-group { grid-column: 1 / -1; contain: layout paint; }
     .platform-group h2 { margin: 10px 0 0; font-size: 20px; }
     .platform-group .platform-grid { padding: 14px 0 6px; }
-    .cover { position: relative; z-index: 0; margin: 0; overflow: hidden; border-radius: 14px; background: #080808; aspect-ratio: 2 / 3; outline: none; isolation: isolate; contain: layout paint; transition: transform 220ms ease, box-shadow 220ms ease; }
+    .cover { position: relative; z-index: 0; margin: 0; overflow: hidden; border-radius: 14px; background: #080808; aspect-ratio: 2 / 3; outline: none; isolation: isolate; contain: layout paint; content-visibility: auto; contain-intrinsic-size: 300px 450px; transition: transform 220ms ease, box-shadow 220ms ease; }
     .cover img { width: 100%; height: 100%; display: block; object-fit: cover; transition: transform 220ms ease; }
     .cover figcaption { position: absolute; inset: 0; display: flex; align-items: end; padding: 18px 14px; color: white; font: 600 15px/1.2 system-ui, sans-serif; background: linear-gradient(to bottom, transparent 45%, rgba(0, 0, 0, .78) 100%); opacity: 0; transition: opacity 180ms ease; }
     .cover:not(.suppressed):hover, .cover.active, .cover:focus-visible { z-index: 1; transform: translateY(-5px) scale(1.04); box-shadow: 0 14px 30px rgba(0, 0, 0, .55); }
@@ -1740,18 +1740,45 @@
     let comparisonMode = false;
     let comparisonStatus = '';
     let comparisonRequest = 0;
-    let coverSize = window.matchMedia('(max-width: 600px)').matches ? 125 : 170;
     let lastScrollY = window.scrollY;
     let coverResizeTimer = 0;
+    const coverSizeStorageKey = 'playnite-gallery-cover-size';
     const minCoverSize = 125;
     const maxCoverSize = 300;
     const coverSizeStep = 30;
+    let coverSize = loadCoverSize();
 
-    function applyCoverSize() {
+    function clampCoverSize(value) {
+      const size = Number(value);
+      return Number.isFinite(size) ? Math.min(maxCoverSize, Math.max(minCoverSize, Math.round(size))) : null;
+    }
+
+    function getStoredCoverSize() {
+      try {
+        return clampCoverSize(localStorage.getItem(coverSizeStorageKey));
+      } catch (_) {
+        return null;
+      }
+    }
+
+    function loadCoverSize() {
+      return getStoredCoverSize() || (window.matchMedia('(max-width: 600px)').matches ? minCoverSize : 170);
+    }
+
+    function saveCoverSize() {
+      try {
+        localStorage.setItem(coverSizeStorageKey, String(coverSize));
+      } catch (_) {
+        // Browser settings may block local storage.
+      }
+    }
+
+    function applyCoverSize(save = false) {
       coverSmaller.disabled = coverSize <= minCoverSize;
       coverLarger.disabled = coverSize >= maxCoverSize;
       document.body.classList.add('resizing-covers');
       document.body.style.setProperty('--cover-size', `${coverSize}px`);
+      if (save) saveCoverSize();
       clearTimeout(coverResizeTimer);
       coverResizeTimer = setTimeout(() => document.body.classList.remove('resizing-covers'), 120);
     }
@@ -1947,12 +1974,12 @@
 
     coverLarger.addEventListener('click', () => {
       coverSize = Math.min(maxCoverSize, coverSize + coverSizeStep);
-      applyCoverSize();
+      applyCoverSize(true);
     });
 
     coverSmaller.addEventListener('click', () => {
       coverSize = Math.max(minCoverSize, coverSize - coverSizeStep);
-      applyCoverSize();
+      applyCoverSize(true);
     });
 
     document.querySelector('#sort-last-played').addEventListener('click', event => {
