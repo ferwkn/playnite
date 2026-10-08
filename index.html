@@ -7,10 +7,12 @@
   <style>
     * { box-sizing: border-box; }
     html, body { min-height: 100%; background: #000; }
-    body { margin: 0; color: white; font-family: system-ui, sans-serif; }
-    .toolbar { position: sticky; z-index: 2; top: 0; display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 18px; background: rgba(0, 0, 0, .9); backdrop-filter: blur(12px); }
+    body { --cover-size: 170px; margin: 0; color: white; font-family: system-ui, sans-serif; }
+    .toolbar { position: sticky; z-index: 2; top: 0; display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 18px; background: rgba(0, 0, 0, .9); backdrop-filter: blur(12px); transform: translateY(0); transition: transform 180ms ease; }
+    .toolbar.hidden { transform: translateY(-110%); }
     button, input { min-height: 42px; border: 1px solid #202024; border-radius: 7px; color: #c9c9ce; background: rgba(18, 18, 20, .72); font: inherit; }
     button { padding: 9px 14px; cursor: pointer; }
+    button:disabled { border-color: #141416; color: #4d4d55; background: rgba(12, 12, 14, .72); cursor: default; }
     .search-box { position: relative; flex: 1 1 240px; min-width: 160px; }
     .search-box input { width: 100%; padding: 9px 42px 9px 12px; }
     .clear-search { position: absolute; top: 50%; right: 5px; display: none; width: 32px; min-height: 32px; padding: 0; border: 0; border-radius: 50%; color: #57575d; background: #18181c; transform: translateY(-50%); }
@@ -20,8 +22,10 @@
     .clear-search:hover, .clear-search:focus-visible { color: #85858d; background: #202025; }
     .clear-search.visible { display: flex; }
     input::placeholder { color: #707078; }
-    button:hover, button:focus-visible, button[aria-pressed="true"], input:focus-visible { border-color: #484850; color: white; background: #18181c; outline: none; }
-    main, .platform-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 22px; padding: 22px; }
+    button:not(:disabled):hover, button:focus-visible, button[aria-pressed="true"], input:focus-visible { border-color: #484850; color: white; background: #18181c; outline: none; }
+    .cover-size-controls { display: flex; flex-direction: column; gap: 3px; width: 34px; }
+    .cover-size-controls button { min-height: 19px; height: 19px; padding: 0; border-radius: 6px; font-size: 14px; line-height: 1; }
+    main, .platform-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(var(--cover-size), 1fr)); gap: 22px; padding: 22px; }
     .platform-group { grid-column: 1 / -1; }
     .platform-group h2 { margin: 10px 0 0; font-size: 20px; }
     .platform-group .platform-grid { padding: 14px 0 6px; }
@@ -36,8 +40,9 @@
     @media (max-width: 600px) {
       .toolbar { padding: 10px; }
       button { flex: 1 1 auto; padding-inline: 10px; }
+      .cover-size-controls { flex: 0 0 34px; }
       .search-box { flex-basis: 100%; order: -1; }
-      main, .platform-grid { grid-template-columns: repeat(auto-fill, minmax(105px, 1fr)); gap: 14px; padding: 14px; }
+      main, .platform-grid { gap: 14px; padding: 14px; }
       .platform-group .platform-grid { padding: 10px 0 4px; }
       .platform-group h2 { font-size: 17px; }
       .cover { border-radius: 10px; }
@@ -57,6 +62,10 @@
     <button id="sort-last-played" type="button">Last played: recent</button>
     <button id="group-year" type="button" aria-pressed="false">Group by year</button>
     <button id="group-platform" type="button" aria-pressed="false">Group by platform</button>
+    <div class="cover-size-controls" aria-label="Cover size controls">
+      <button id="cover-larger" type="button" aria-label="Increase cover size">+</button>
+      <button id="cover-smaller" type="button" aria-label="Decrease cover size">-</button>
+    </div>
   </nav>
   <main id="gallery">
     <figure class="cover" tabindex="0" data-name="13 Sentinels: Aegis Rim" data-sort-name="13 Sentinels: Aegis Rim" data-playtime="151568" data-last-played="638995089295820000" data-platform="Nintendo Switch" data-year="2022" aria-label="13 Sentinels: Aegis Rim, played 42h 6m, platform Nintendo Switch">
@@ -859,9 +868,9 @@
       <img src="covers/498fc85c424e451a8b569b05b550d99e.webp?v=c860e979b2823cfd" alt="Little Noah: Scion of Paradise" loading="lazy" decoding="async">
       <figcaption>17h 19m</figcaption>
     </figure>
-    <figure class="cover" tabindex="0" data-name="Little Witch in the Woods" data-sort-name="Little Witch in the Woods" data-playtime="0" data-last-played="638728928980000000" data-platform="PC (Windows)" data-year="2025" aria-label="Little Witch in the Woods, played Not played, platform PC (Windows)">
+    <figure class="cover" tabindex="0" data-name="Little Witch in the Woods" data-sort-name="Little Witch in the Woods" data-playtime="120" data-last-played="638728928980000000" data-platform="PC (Windows)" data-year="2025" aria-label="Little Witch in the Woods, played 0h 2m, platform PC (Windows)">
       <img src="covers/d611a585969d49aa88d60c6a7b560005.webp?v=d6108a0223673ff2" alt="Little Witch in the Woods" loading="lazy" decoding="async">
-      <figcaption>Not played</figcaption>
+      <figcaption>0h 2m</figcaption>
     </figure>
     <figure class="cover" tabindex="0" data-name="Lords of the Fallen" data-sort-name="Lords of the Fallen" data-playtime="327480" data-last-played="639012508010000000" data-platform="PC (Windows)" data-year="2023" aria-label="Lords of the Fallen, played 90h 58m, platform PC (Windows)">
       <img src="covers/9ff514708ed74bc095f0a6e7424a56fe.webp?v=335c7fb68ad0e9f4" alt="Lords of the Fallen" loading="lazy" decoding="async">
@@ -955,9 +964,9 @@
       <img src="covers/b778cd6fc07b40c19302e9c7824197db.webp?v=3cb9c9d75d13b114" alt="Metal Gear Solid V: Ground Zeroes" loading="lazy" decoding="async">
       <figcaption>1h 20m</figcaption>
     </figure>
-    <figure class="cover" tabindex="0" data-name="METAL GEAR SOLID V: THE PHANTOM PAIN" data-sort-name="Metal Gear Solid 05 B" data-playtime="0" data-last-played="638340996790000000" data-platform="PC (Windows)" data-year="2015" aria-label="METAL GEAR SOLID V: THE PHANTOM PAIN, played Not played, platform PC (Windows)">
+    <figure class="cover" tabindex="0" data-name="METAL GEAR SOLID V: THE PHANTOM PAIN" data-sort-name="Metal Gear Solid 05 B" data-playtime="60" data-last-played="638340996790000000" data-platform="PC (Windows)" data-year="2015" aria-label="METAL GEAR SOLID V: THE PHANTOM PAIN, played 0h 1m, platform PC (Windows)">
       <img src="covers/f4c036bb3d1340929492cc17b9999ad1.webp?v=548ffe24ddfdf65f" alt="METAL GEAR SOLID V: THE PHANTOM PAIN" loading="lazy" decoding="async">
-      <figcaption>Not played</figcaption>
+      <figcaption>0h 1m</figcaption>
     </figure>
     <figure class="cover" tabindex="0" data-name="Metal Gear Solid: Peace Walker - Master Collection Version" data-sort-name="Metal Gear Solid 06" data-playtime="0" data-last-played="639235611809500000" data-platform="PC (Windows)" data-year="2026" aria-label="Metal Gear Solid: Peace Walker - Master Collection Version, played Not played, platform PC (Windows)">
       <img src="covers/17c5d36f16f4434983b66e0bfc817e2f.webp?v=5c0d0a7e3e87cd02" alt="Metal Gear Solid: Peace Walker - Master Collection Version" loading="lazy" decoding="async">
@@ -1717,8 +1726,11 @@
     const localCards = [...gallery.querySelectorAll('.cover')];
     const search = document.querySelector('#search');
     const clearSearch = document.querySelector('#clear-search');
+    const toolbar = document.querySelector('.toolbar');
     const groupYear = document.querySelector('#group-year');
     const groupPlatform = document.querySelector('#group-platform');
+    const coverLarger = document.querySelector('#cover-larger');
+    const coverSmaller = document.querySelector('#cover-smaller');
     let cards = localCards;
     let sortKey = 'name';
     let sortDirection = 1;
@@ -1727,6 +1739,17 @@
     let comparisonMode = false;
     let comparisonStatus = '';
     let comparisonRequest = 0;
+    let coverSize = window.matchMedia('(max-width: 600px)').matches ? 105 : 170;
+    let lastScrollY = window.scrollY;
+    const minCoverSize = 105;
+    const maxCoverSize = 260;
+    const coverSizeStep = 15;
+
+    function applyCoverSize() {
+      document.body.style.setProperty('--cover-size', `${coverSize}px`);
+      coverSmaller.disabled = coverSize <= minCoverSize;
+      coverLarger.disabled = coverSize >= maxCoverSize;
+    }
 
     function compareCards(a, b) {
       if (sortKey === 'playtime') {
@@ -1917,6 +1940,16 @@
     groupYear.addEventListener('click', () => setGroupMode('year'));
     groupPlatform.addEventListener('click', () => setGroupMode('platform'));
 
+    coverLarger.addEventListener('click', () => {
+      coverSize = Math.min(maxCoverSize, coverSize + coverSizeStep);
+      applyCoverSize();
+    });
+
+    coverSmaller.addEventListener('click', () => {
+      coverSize = Math.max(minCoverSize, coverSize - coverSizeStep);
+      applyCoverSize();
+    });
+
     document.querySelector('#sort-last-played').addEventListener('click', event => {
       sortDirection = sortKey === 'last-played' ? sortDirection * -1 : -1;
       sortKey = 'last-played';
@@ -1967,6 +2000,17 @@
 
     localCards.forEach(card => card.addEventListener('mouseleave', () => card.classList.remove('suppressed')));
 
+    window.addEventListener('scroll', () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY && currentScrollY > 120) {
+        toolbar.classList.add('hidden');
+      } else if (currentScrollY < lastScrollY) {
+        toolbar.classList.remove('hidden');
+      }
+      lastScrollY = Math.max(0, currentScrollY);
+    }, { passive: true });
+
+    applyCoverSize();
     render();
   </script>
 </body>
