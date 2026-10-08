@@ -26,16 +26,17 @@
     .cover-size-controls { display: flex; flex-direction: column; gap: 3px; width: 34px; }
     .cover-size-controls button { min-height: 19px; height: 19px; padding: 0; border-radius: 6px; font-size: 14px; line-height: 1; }
     main, .platform-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(var(--cover-size), 1fr)); gap: 22px; padding: 22px; }
-    .platform-group { grid-column: 1 / -1; }
+    .platform-group { grid-column: 1 / -1; contain: layout paint; }
     .platform-group h2 { margin: 10px 0 0; font-size: 20px; }
     .platform-group .platform-grid { padding: 14px 0 6px; }
-    .cover { position: relative; z-index: 0; margin: 0; overflow: hidden; border-radius: 14px; background: #080808; aspect-ratio: 2 / 3; outline: none; isolation: isolate; transition: transform 220ms ease, box-shadow 220ms ease; }
+    .cover { position: relative; z-index: 0; margin: 0; overflow: hidden; border-radius: 14px; background: #080808; aspect-ratio: 2 / 3; outline: none; isolation: isolate; contain: layout paint; transition: transform 220ms ease, box-shadow 220ms ease; }
     .cover img { width: 100%; height: 100%; display: block; object-fit: cover; transition: transform 220ms ease; }
     .cover figcaption { position: absolute; inset: 0; display: flex; align-items: end; padding: 18px 14px; color: white; font: 600 15px/1.2 system-ui, sans-serif; background: linear-gradient(to bottom, transparent 45%, rgba(0, 0, 0, .78) 100%); opacity: 0; transition: opacity 180ms ease; }
     .cover:not(.suppressed):hover, .cover.active, .cover:focus-visible { z-index: 1; transform: translateY(-5px) scale(1.04); box-shadow: 0 14px 30px rgba(0, 0, 0, .55); }
     .cover:not(.suppressed):hover img, .cover.active img, .cover:focus-visible img { transform: scale(1.05); }
     .cover:not(.suppressed):hover figcaption, .cover.active figcaption, .cover:focus-visible figcaption { opacity: 1; }
     .cover:focus-visible { box-shadow: 0 0 0 3px white; }
+    body.resizing-covers .cover, body.resizing-covers .cover img, body.resizing-covers .cover figcaption { transition: none; }
     .empty { grid-column: 1 / -1; padding: 50px 18px; color: #aaaab2; text-align: center; }
     @media (max-width: 600px) {
       .toolbar { padding: 10px; }
@@ -1741,14 +1742,23 @@
     let comparisonRequest = 0;
     let coverSize = window.matchMedia('(max-width: 600px)').matches ? 125 : 170;
     let lastScrollY = window.scrollY;
+    let coverSizeFrame = 0;
+    let coverResizeTimer = 0;
     const minCoverSize = 125;
     const maxCoverSize = 300;
     const coverSizeStep = 15;
 
     function applyCoverSize() {
-      document.body.style.setProperty('--cover-size', `${coverSize}px`);
       coverSmaller.disabled = coverSize <= minCoverSize;
       coverLarger.disabled = coverSize >= maxCoverSize;
+      if (coverSizeFrame) return;
+      document.body.classList.add('resizing-covers');
+      coverSizeFrame = requestAnimationFrame(() => {
+        coverSizeFrame = 0;
+        document.body.style.setProperty('--cover-size', `${coverSize}px`);
+        clearTimeout(coverResizeTimer);
+        coverResizeTimer = setTimeout(() => document.body.classList.remove('resizing-covers'), 140);
+      });
     }
 
     function compareCards(a, b) {
