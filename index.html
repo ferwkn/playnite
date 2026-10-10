@@ -7,7 +7,7 @@
   <style>
     * { box-sizing: border-box; }
     html, body { min-height: 100%; background: #000; }
-    body { --cover-size: 170px; --mobile-columns: 2; margin: 0; color: white; font-family: system-ui, sans-serif; }
+    body { --cover-size: 170px; --mobile-columns: 2; --cover-text-size: 15px; margin: 0; color: white; font-family: system-ui, sans-serif; }
     .toolbar { position: sticky; z-index: 2; top: 0; display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 18px; background: rgba(0, 0, 0, .9); backdrop-filter: blur(12px); transform: translateY(0); will-change: transform; }
     button, input { min-height: 42px; border: 1px solid #202024; border-radius: 7px; color: #c9c9ce; background: rgba(18, 18, 20, .72); font: inherit; }
     button { padding: 9px 14px; cursor: pointer; }
@@ -33,9 +33,9 @@
     .cover::before, .cover::after { position: absolute; left: 0; right: 0; z-index: 1; content: ''; pointer-events: none; opacity: 0; transition: opacity 180ms ease; }
     .cover::before { top: -3px; left: -3px; right: -3px; height: calc(34% + 6px); background: linear-gradient(to bottom, #000 0, rgba(0, 0, 0, .92) 4px, rgba(0, 0, 0, .58) 38%, transparent); }
     .cover::after { bottom: -3px; left: -3px; right: -3px; height: calc(42% + 6px); background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, .58) 48%, rgba(0, 0, 0, .92) calc(100% - 4px), #000 100%); }
-    .cover figcaption { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; justify-content: space-between; padding: 13px 14px 15px; color: white; font: 600 15px/1.2 system-ui, sans-serif; opacity: 0; transition: opacity 180ms ease; pointer-events: none; }
+    .cover figcaption { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; justify-content: space-between; padding: 13px 14px 15px; color: white; font: 600 var(--cover-text-size)/1.2 system-ui, sans-serif; opacity: 0; transition: opacity 180ms ease; pointer-events: none; }
     .cover-top, .cover-bottom { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 20px; text-shadow: 0 1px 3px rgba(0, 0, 0, .85); }
-    .cover-bottom span:first-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .cover-bottom span:first-child { overflow: hidden; white-space: nowrap; }
     .cover-top span:last-child, .cover-bottom span:last-child { flex: 0 0 auto; text-align: right; }
     .cover:not(.suppressed):hover, .cover.active, .cover:focus-visible { z-index: 1; transform: translateY(-5px) scale(1.04); box-shadow: 0 14px 30px rgba(0, 0, 0, .55); }
     .cover:not(.suppressed):hover img, .cover.active img, .cover:focus-visible img { transform: scale(1.05); }
@@ -52,7 +52,7 @@
       .platform-group .platform-grid { padding: 10px 0 4px; }
       .platform-group h2 { font-size: 17px; }
       .cover { clip-path: inset(0 round 10px); border-radius: 10px; }
-       .cover figcaption { padding: 10px 9px 11px; font-size: 13px; }
+       .cover figcaption { padding: 10px 9px 11px; }
     }
     @media (prefers-reduced-motion: reduce) { .cover, .cover img, .cover::before, .cover::after, .cover figcaption { transition: none; } }
   </style>
@@ -1496,10 +1496,10 @@
          <span class="cover-bottom"><span>Very Positive</span><span>88%</span></span>
        </figcaption>
     </figure>
-    <figure class="cover" tabindex="0" data-name="Little Witch in the Woods" data-sort-name="Little Witch in the Woods" data-playtime="0" data-last-played="638728928980000000" data-platform="PC (Windows)" data-year="2025" data-rating="86" aria-label="Little Witch in the Woods, played Not played, platform PC (Windows)">
+    <figure class="cover" tabindex="0" data-name="Little Witch in the Woods" data-sort-name="Little Witch in the Woods" data-playtime="120" data-last-played="638728928980000000" data-platform="PC (Windows)" data-year="2025" data-rating="86" aria-label="Little Witch in the Woods, played 0h 2m, platform PC (Windows)">
       <img src="covers/d611a585969d49aa88d60c6a7b560005.webp?v=d6108a0223673ff2" alt="Little Witch in the Woods" loading="lazy" decoding="async">
        <figcaption>
-         <span class="cover-top"><span>2025</span><span>Not played</span></span>
+         <span class="cover-top"><span>2025</span><span>0h 2m</span></span>
          <span class="cover-bottom"><span>Very Positive</span><span>86%</span></span>
        </figcaption>
     </figure>
@@ -1664,10 +1664,10 @@
          <span class="cover-bottom"><span>Positive</span><span>83%</span></span>
        </figcaption>
     </figure>
-    <figure class="cover" tabindex="0" data-name="METAL GEAR SOLID V: THE PHANTOM PAIN" data-sort-name="Metal Gear Solid 05 B" data-playtime="0" data-last-played="638340996790000000" data-platform="PC (Windows)" data-year="2015" data-rating="90" aria-label="METAL GEAR SOLID V: THE PHANTOM PAIN, played Not played, platform PC (Windows)">
+    <figure class="cover" tabindex="0" data-name="METAL GEAR SOLID V: THE PHANTOM PAIN" data-sort-name="Metal Gear Solid 05 B" data-playtime="60" data-last-played="638340996790000000" data-platform="PC (Windows)" data-year="2015" data-rating="90" aria-label="METAL GEAR SOLID V: THE PHANTOM PAIN, played 0h 1m, platform PC (Windows)">
       <img src="covers/f4c036bb3d1340929492cc17b9999ad1.webp?v=548ffe24ddfdf65f" alt="METAL GEAR SOLID V: THE PHANTOM PAIN" loading="lazy" decoding="async">
        <figcaption>
-         <span class="cover-top"><span>2015</span><span>Not played</span></span>
+         <span class="cover-top"><span>2015</span><span>0h 1m</span></span>
          <span class="cover-bottom"><span>Very Positive</span><span>90%</span></span>
        </figcaption>
     </figure>
@@ -3177,6 +3177,13 @@
         coverSmaller.disabled = currentColumns >= getDesktopMaxColumnCount();
       }
     }
+ 
+    function updateCoverTextSize() {
+      const visibleCard = cards.find(card => card.isConnected && card.offsetParent !== null) || localCards[0];
+      const width = visibleCard ? visibleCard.getBoundingClientRect().width : coverSize;
+      const size = Math.min(15, Math.max(8, Math.round(width * 0.075)));
+      document.body.style.setProperty('--cover-text-size', `${size}px`);
+    }
 
     function applyCoverLayout(save = false) {
       updateCoverButtons();
@@ -3194,6 +3201,7 @@
       clearTimeout(coverResizeTimer);
       coverResizeTimer = setTimeout(() => document.body.classList.remove('resizing-covers'), 120);
       requestAnimationFrame(() => {
+        updateCoverTextSize();
         lastScrollY = Math.max(0, window.scrollY);
       });
     }
@@ -3356,6 +3364,7 @@
         status.className = 'empty';
         status.textContent = comparisonStatus;
         gallery.append(status);
+        updateCoverTextSize();
         return;
       }
 
@@ -3369,11 +3378,13 @@
         empty.className = 'empty';
         empty.textContent = comparisonMode ? 'No games found outside your library.' : 'No games found.';
         gallery.append(empty);
+        updateCoverTextSize();
         return;
       }
 
       if (!groupMode) {
         gallery.append(...sorted);
+        updateCoverTextSize();
         return;
       }
 
@@ -3394,6 +3405,7 @@
         section.append(heading, grid);
         gallery.append(section);
       }
+      updateCoverTextSize();
     }
 
     document.querySelector('#sort-name').addEventListener('click', event => {
