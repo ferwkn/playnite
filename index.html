@@ -47,7 +47,7 @@
     body.resizing-covers .cover, body.resizing-covers .cover img, body.resizing-covers .cover::before, body.resizing-covers .cover::after, body.resizing-covers .cover figcaption { transition: none; }
     .empty { grid-column: 1 / -1; padding: 50px 18px; color: #aaaab2; text-align: center; }
     @media (max-width: 900px) {
-      .toolbar > button, .toolbar-group-controls > button { flex-basis: 110px; font-size: 14px; padding-inline: 9px; }
+      .toolbar > button, .toolbar-group-controls > button { flex-basis: 110px; padding-inline: 9px; }
     }
     @media (max-width: 600px) {
       .toolbar { padding: 10px; }
@@ -3194,10 +3194,16 @@
 
     function updateToolbarTextSize() {
       const maxSize = 15;
-      const minSize = 11;
+      const minSize = 7;
       for (let size = maxSize; size >= minSize; size--) {
         document.body.style.setProperty('--toolbar-font-size', `${size}px`);
-        const fits = toolbarTextButtons.every(button => button.scrollWidth <= button.clientWidth + 1);
+        textMeasure.font = `400 ${size}px system-ui, sans-serif`;
+        const fits = toolbarTextButtons.every(button => {
+          const style = getComputedStyle(button);
+          const padding = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
+          const available = Math.max(1, button.clientWidth - padding - 2);
+          return textMeasure.measureText(button.textContent.trim()).width <= available;
+        });
         if (fits) return;
       }
     }
