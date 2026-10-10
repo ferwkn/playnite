@@ -35,7 +35,9 @@
     .cover img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; transition: transform 220ms ease; }
     .cover-shade { position: absolute; inset: 0; z-index: 1; display: block; border-radius: inherit; background: linear-gradient(to bottom, #000 0, rgba(0, 0, 0, .92) 4px, rgba(0, 0, 0, .58) 14%, transparent 34%, transparent 58%, rgba(0, 0, 0, .58) 78%, rgba(0, 0, 0, .92) calc(100% - 4px), #000 100%); opacity: 0; pointer-events: none; transition: opacity 180ms ease; }
     .cover figcaption { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; justify-content: space-between; padding: var(--cover-pad-top) var(--cover-pad-x) var(--cover-pad-bottom); color: white; font: 600 var(--cover-text-size)/1.2 system-ui, sans-serif; opacity: 0; transition: opacity 180ms ease; pointer-events: none; }
-    .cover-top, .cover-bottom { display: flex; align-items: center; justify-content: space-between; gap: var(--cover-text-gap); min-height: var(--cover-line-height); text-shadow: 0 1px 3px rgba(0, 0, 0, .85); }
+    .cover-top, .cover-bottom { display: flex; justify-content: space-between; gap: var(--cover-text-gap); min-height: var(--cover-line-height); text-shadow: 0 1px 3px rgba(0, 0, 0, .85); }
+    .cover-top { align-items: flex-start; }
+    .cover-bottom { align-items: flex-end; }
     .cover-bottom span:first-child { overflow: hidden; white-space: nowrap; }
     .cover-top span:last-child, .cover-bottom span:last-child { flex: 0 0 auto; text-align: right; }
     .cover:not(.suppressed):hover, .cover.active, .cover:focus-visible { z-index: 1; transform: scale(1.04); box-shadow: 0 14px 30px rgba(0, 0, 0, .55); }
@@ -54,7 +56,7 @@
       #sort-name { grid-column: 3; }
       .toolbar > button, .toolbar-group-controls > button { flex: initial; }
       .toolbar-group-controls { display: contents; }
-      .cover-size-controls { width: auto; min-width: 0; }
+      .cover-size-controls { width: 34px; min-width: 0; justify-self: center; }
       main, .platform-grid { grid-template-columns: repeat(var(--mobile-columns), minmax(0, 1fr)); gap: var(--cover-gap); padding: 14px; }
       .platform-group .platform-grid { padding: 10px 0 4px; }
       .platform-group h2 { font-size: 17px; }
@@ -3640,10 +3642,10 @@
       const width = visibleCard ? visibleCard.getBoundingClientRect().width : coverSize;
       const scale = width / 170;
       const padX = Math.min(14, Math.max(8, Math.round(14 * scale)));
-      const padTop = Math.min(13, Math.max(7, Math.round(13 * scale)));
-      const padBottom = Math.min(15, Math.max(8, Math.round(15 * scale)));
+      const padTop = Math.min(13, Math.max(4, Math.round(13 * scale)));
+      const padBottom = Math.min(15, Math.max(5, Math.round(15 * scale)));
       const gap = Math.min(10, Math.max(5, Math.round(width * 0.059)));
-      const lineHeight = Math.min(20, Math.max(11, Math.round(width * 0.118)));
+      const lineHeight = Math.min(20, Math.max(9, Math.round(width * 0.118)));
       const coverGap = mobileQuery.matches ? Math.min(14, Math.max(8, Math.round(width * 0.06))) : Math.min(18, Math.max(9, Math.round(width * 0.09)));
       const available = Math.max(1, width - padX * 2);
       let size = Math.min(15, Math.max(8, Math.round(width * 0.075)));
