@@ -7,9 +7,8 @@
   <style>
     * { box-sizing: border-box; }
     html, body { min-height: 100%; background: #000; }
-    body { --cover-size: 170px; margin: 0; color: white; font-family: system-ui, sans-serif; }
-    .toolbar { position: sticky; z-index: 2; top: 0; display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 18px; background: rgba(0, 0, 0, .9); backdrop-filter: blur(12px); transform: translateY(0); transition: transform 180ms ease; }
-    .toolbar.hidden { transform: translateY(-110%); }
+    body { --cover-size: 170px; --mobile-columns: 2; margin: 0; color: white; font-family: system-ui, sans-serif; }
+    .toolbar { position: sticky; z-index: 2; top: 0; display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 18px; background: rgba(0, 0, 0, .9); backdrop-filter: blur(12px); transform: translateY(0); will-change: transform; }
     button, input { min-height: 42px; border: 1px solid #202024; border-radius: 7px; color: #c9c9ce; background: rgba(18, 18, 20, .72); font: inherit; }
     button { padding: 9px 14px; cursor: pointer; }
     button:disabled { border-color: #141416; color: #4d4d55; background: rgba(12, 12, 14, .72); cursor: default; }
@@ -43,7 +42,7 @@
       button { flex: 1 1 auto; padding-inline: 10px; }
       .cover-size-controls { flex: 0 0 34px; }
       .search-box { flex-basis: 100%; order: -1; }
-      main, .platform-grid { gap: 14px; padding: 14px; }
+      main, .platform-grid { grid-template-columns: repeat(var(--mobile-columns), minmax(0, 1fr)); gap: 14px; padding: 14px; }
       .platform-group .platform-grid { padding: 10px 0 4px; }
       .platform-group h2 { font-size: 17px; }
       .cover { border-radius: 10px; }
@@ -1777,12 +1776,18 @@
     let comparisonStatus = '';
     let comparisonRequest = 0;
     let lastScrollY = window.scrollY;
+    let toolbarOffset = 0;
     let coverResizeTimer = 0;
     const coverSizeStorageKey = 'playnite-gallery-cover-size';
+    const mobileColumnsStorageKey = 'playnite-gallery-mobile-columns';
+    const mobileQuery = window.matchMedia('(max-width: 600px)');
     const minCoverSize = 125;
     const maxCoverSize = 300;
     const coverSizeStep = 30;
+    const minMobileColumns = 1;
+    const maxMobileColumns = 6;
     let coverSize = loadCoverSize();
+    let mobileColumns = loadMobileColumns();
 
     function clampCoverSize(value) {
       const size = Number(value);
@@ -1798,7 +1803,24 @@
     }
 
     function loadCoverSize() {
-      return getStoredCoverSize() || (window.matchMedia('(max-width: 600px)').matches ? minCoverSize : 170);
+      return getStoredCoverSize() || 170;
+    }
+
+    function clampMobileColumns(value) {
+      const columns = Number(value);
+      return Number.isFinite(columns) ? Math.min(maxMobileColumns, Math.max(minMobileColumns, Math.round(columns))) : null;
+    }
+
+    function getStoredMobileColumns() {
+      try {
+        return clampMobileColumns(localStorage.getItem(mobileColumnsStorageKey));
+      } catch (_) {
+        return null;
+      }
+    }
+
+    function loadMobileColumns() {
+      return getStoredMobileColumns() || 2;
     }
 
     function saveCoverSize() {
@@ -1809,12 +1831,36 @@
       }
     }
 
-    function applyCoverSize(save = false) {
-      coverSmaller.disabled = coverSize <= minCoverSize;
-      coverLarger.disabled = coverSize >= maxCoverSize;
+    function saveMobileColumns() {
+      try {
+        localStorage.setItem(mobileColumnsStorageKey, String(mobileColumns));
+      } catch (_) {
+        // Browser settings may block local storage.
+      }
+    }
+
+    function updateCoverButtons() {
+      if (mobileQuery.matches) {
+        coverLarger.disabled = mobileColumns <= minMobileColumns;
+        coverSmaller.disabled = mobileColumns >= maxMobileColumns;
+      } else {
+        coverSmaller.disabled = coverSize <= minCoverSize;
+        coverLarger.disabled = coverSize >= maxCoverSize;
+      }
+    }
+
+    function applyCoverLayout(save = false) {
+      updateCoverButtons();
       document.body.classList.add('resizing-covers');
       document.body.style.setProperty('--cover-size', `${coverSize}px`);
-      if (save) saveCoverSize();
+      document.body.style.setProperty('--mobile-columns', String(mobileColumns));
+      if (save) {
+        if (mobileQuery.matches) {
+          saveMobileColumns();
+        } else {
+          saveCoverSize();
+        }
+      }
       clearTimeout(coverResizeTimer);
       coverResizeTimer = setTimeout(() => document.body.classList.remove('resizing-covers'), 120);
     }
@@ -1841,6 +1887,12 @@
         .replace(/\s+/g, ' ');
     }
 
+    function titleTokens(value) {
+      return normalizeTitle(value)
+        .split(' ')
+        .filter(token => token && !['the', 'a', 'an'].includes(token));
+    }
+
     function similarity(left, right) {
       if (left === right) return 1;
       if (!left.length || !right.length) return 0;
@@ -1861,11 +1913,22 @@
     }
 
     function titlesMatch(left, right) {
-      const a = normalizeTitle(left);
-      const b = normalizeTitle(right);
+      const aTokens = titleTokens(left);
+      const bTokens = titleTokens(right);
+      const a = aTokens.join(' ');
+      const b = bTokens.join(' ');
       if (a === b) return true;
-      if (Math.min(a.length, b.length) < 8 || a.split(' ')[0] !== b.split(' ')[0]) return false;
-      return similarity(a, b) >= .9;
+      if (!a || !b || Math.min(a.length, b.length) < 10) return false;
+      if (aTokens[0] !== bTokens[0]) return false;
+      if (Math.abs(a.length - b.length) / Math.max(a.length, b.length) > .18) return false;
+      if (Math.abs(aTokens.length - bTokens.length) > 1) return false;
+
+      const shorterTokens = aTokens.length <= bTokens.length ? aTokens : bTokens;
+      const longerTokens = aTokens.length > bTokens.length ? aTokens : bTokens;
+      const sharedTokens = shorterTokens.filter(token => longerTokens.includes(token)).length;
+      if (sharedTokens / Math.max(longerTokens.length, 1) < .85) return false;
+
+      return similarity(a, b) >= .94;
     }
 
     function parseGalleryUrl(value) {
@@ -2009,13 +2072,21 @@
     groupPlatform.addEventListener('click', () => setGroupMode('platform'));
 
     coverLarger.addEventListener('click', () => {
-      coverSize = Math.min(maxCoverSize, coverSize + coverSizeStep);
-      applyCoverSize(true);
+      if (mobileQuery.matches) {
+        mobileColumns = Math.max(minMobileColumns, mobileColumns - 1);
+      } else {
+        coverSize = Math.min(maxCoverSize, coverSize + coverSizeStep);
+      }
+      applyCoverLayout(true);
     });
 
     coverSmaller.addEventListener('click', () => {
-      coverSize = Math.max(minCoverSize, coverSize - coverSizeStep);
-      applyCoverSize(true);
+      if (mobileQuery.matches) {
+        mobileColumns = Math.min(maxMobileColumns, mobileColumns + 1);
+      } else {
+        coverSize = Math.max(minCoverSize, coverSize - coverSizeStep);
+      }
+      applyCoverLayout(true);
     });
 
     document.querySelector('#sort-last-played').addEventListener('click', event => {
@@ -2070,15 +2141,22 @@
 
     window.addEventListener('scroll', () => {
       const currentScrollY = window.scrollY;
-      if (currentScrollY > lastScrollY && currentScrollY > 120) {
-        toolbar.classList.add('hidden');
-      } else if (currentScrollY < lastScrollY) {
-        toolbar.classList.remove('hidden');
+      const toolbarHeight = toolbar.offsetHeight || 1;
+      const delta = currentScrollY - lastScrollY;
+      if (currentScrollY <= 0) {
+        toolbarOffset = 0;
+      } else {
+        toolbarOffset = Math.min(toolbarHeight, Math.max(0, toolbarOffset + delta));
       }
+      toolbar.style.transform = `translateY(-${toolbarOffset}px)`;
       lastScrollY = Math.max(0, currentScrollY);
     }, { passive: true });
 
-    applyCoverSize();
+    if (mobileQuery.addEventListener) {
+      mobileQuery.addEventListener('change', () => applyCoverLayout());
+    }
+
+    applyCoverLayout();
     render();
   </script>
 </body>
