@@ -40,7 +40,7 @@
     .cover-top, .cover-bottom { display: flex; align-items: center; justify-content: space-between; gap: var(--cover-text-gap); min-height: var(--cover-line-height); text-shadow: 0 1px 3px rgba(0, 0, 0, .85); }
     .cover-bottom span:first-child { overflow: hidden; white-space: nowrap; }
     .cover-top span:last-child, .cover-bottom span:last-child { flex: 0 0 auto; text-align: right; }
-    .cover:not(.suppressed):hover, .cover.active, .cover:focus-visible { z-index: 1; transform: translateY(-5px) scale(1.04); box-shadow: 0 14px 30px rgba(0, 0, 0, .55); }
+    .cover:not(.suppressed):hover, .cover.active, .cover:focus-visible { z-index: 1; transform: scale(1.04); box-shadow: 0 14px 30px rgba(0, 0, 0, .55); }
     .cover:not(.suppressed):hover img, .cover.active img, .cover:focus-visible img { transform: scale(1.05); }
     .cover:not(.suppressed):hover::before, .cover:not(.suppressed):hover::after, .cover.active::before, .cover.active::after, .cover:focus-visible::before, .cover:focus-visible::after, .cover:not(.suppressed):hover figcaption, .cover.active figcaption, .cover:focus-visible figcaption { opacity: 1; }
     .cover:focus-visible { box-shadow: 0 0 0 3px white; }
