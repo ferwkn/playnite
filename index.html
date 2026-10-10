@@ -10,11 +10,11 @@
     body { --cover-size: 170px; --mobile-columns: 2; --cover-text-size: 15px; --cover-pad-top: 13px; --cover-pad-x: 14px; --cover-pad-bottom: 15px; --cover-text-gap: 10px; --cover-line-height: 20px; margin: 0; color: white; font-family: system-ui, sans-serif; }
     .toolbar { position: sticky; z-index: 2; top: 0; display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 18px; background: rgba(0, 0, 0, .9); backdrop-filter: blur(12px); transform: translateY(0); will-change: transform; }
     button, input { min-height: 42px; border: 1px solid #202024; border-radius: 7px; color: #c9c9ce; background: rgba(18, 18, 20, .72); font: inherit; }
-    button { padding: 9px 14px; cursor: pointer; }
-    .toolbar > button, .toolbar-group-controls > button { flex: 0 1 auto; min-width: 0; white-space: nowrap; }
+    button { padding: 9px 14px; cursor: pointer; text-align: center; }
+    .toolbar > button, .toolbar-group-controls > button { flex: 1 1 118px; min-width: 0; white-space: nowrap; }
     .toolbar > button, .toolbar-group-controls > button { padding-inline: clamp(8px, 1.25vw, 14px); }
     button:disabled { border-color: #141416; color: #4d4d55; background: rgba(12, 12, 14, .72); cursor: default; }
-    .search-box { position: relative; flex: 1 1 240px; min-width: 160px; }
+    .search-box { position: relative; flex: 2 1 260px; min-width: 160px; }
     .search-box input { width: 100%; padding: 9px 42px 9px 12px; }
     .clear-search { position: absolute; top: 50%; right: 5px; display: none; width: 32px; min-height: 32px; padding: 0; border: 0; border-radius: 50%; color: #57575d; background: #18181c; transform: translateY(-50%); }
     .clear-search::before, .clear-search::after { position: absolute; top: 50%; left: 50%; width: 12px; height: 1px; content: ''; background: currentColor; transform-origin: center; }
@@ -24,7 +24,7 @@
     .clear-search.visible { display: flex; }
     input::placeholder { color: #707078; }
     button:not(:disabled):hover, button:focus-visible, button[aria-pressed="true"], input:focus-visible { border-color: #484850; color: white; background: #18181c; outline: none; }
-    .toolbar-group-controls { display: flex; flex: 0 1 auto; flex-wrap: nowrap; gap: 8px; min-width: min-content; }
+    .toolbar-group-controls { display: flex; flex: 2 1 330px; flex-wrap: nowrap; gap: 8px; min-width: min(100%, 300px); }
     .cover-size-controls { display: flex; flex: 0 0 34px; flex-direction: column; gap: 3px; width: 34px; }
     .cover-size-controls button { min-height: 19px; height: 19px; padding: 0; border-radius: 6px; font-size: 14px; line-height: 1; }
     main, .platform-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(var(--cover-size), 1fr)); gap: 22px; padding: 22px; }
@@ -47,7 +47,7 @@
     body.resizing-covers .cover, body.resizing-covers .cover img, body.resizing-covers .cover::before, body.resizing-covers .cover::after, body.resizing-covers .cover figcaption { transition: none; }
     .empty { grid-column: 1 / -1; padding: 50px 18px; color: #aaaab2; text-align: center; }
     @media (max-width: 900px) {
-      .toolbar > button, .toolbar-group-controls > button { font-size: 14px; padding-inline: 9px; }
+      .toolbar > button, .toolbar-group-controls > button { flex-basis: 110px; font-size: 14px; padding-inline: 9px; }
     }
     @media (max-width: 600px) {
       .toolbar { padding: 10px; }
