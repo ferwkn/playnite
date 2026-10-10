@@ -1828,25 +1828,39 @@
       return Math.max(1, gallery.clientWidth - padding);
     }
 
+    function getDesktopGridGap() {
+      const styles = getComputedStyle(gallery);
+      return parseFloat(styles.columnGap || styles.gap) || 0;
+    }
+
     function getDesktopColumnCount(size) {
-      return Math.max(1, Math.floor(getDesktopGridWidth() / Math.max(size, 1)));
+      const gap = getDesktopGridGap();
+      return Math.max(1, Math.floor((getDesktopGridWidth() + gap) / (Math.max(size, 1) + gap)));
+    }
+
+    function getDesktopMinColumnCount() {
+      return getDesktopColumnCount(maxCoverSize);
+    }
+
+    function getDesktopMaxColumnCount() {
+      return getDesktopColumnCount(minCoverSize);
     }
 
     function getDesktopSizeForColumnCount(columns) {
-      const size = Math.floor(getDesktopGridWidth() / Math.max(columns, 1));
+      const gap = getDesktopGridGap();
+      const width = getDesktopGridWidth();
+      const target = Math.max(1, columns);
+      const minimumForTarget = Math.floor((width + gap) / (target + 1) - gap) + 1;
+      const maximumForTarget = Math.floor((width + gap) / target - gap);
+      const size = Math.floor((Math.max(minimumForTarget, 1) + Math.max(maximumForTarget, 1)) / 2);
       return Math.min(maxCoverSize, Math.max(minCoverSize, size));
     }
 
     function changeDesktopColumns(direction) {
       const currentColumns = getDesktopColumnCount(coverSize);
       let nextColumns = direction > 0 ? currentColumns - 1 : currentColumns + 1;
-      nextColumns = Math.max(1, nextColumns);
-      const nextSize = getDesktopSizeForColumnCount(nextColumns);
-      if (nextSize === coverSize) {
-        coverSize = direction > 0 ? maxCoverSize : minCoverSize;
-      } else {
-        coverSize = nextSize;
-      }
+      nextColumns = Math.min(getDesktopMaxColumnCount(), Math.max(getDesktopMinColumnCount(), nextColumns));
+      coverSize = getDesktopSizeForColumnCount(nextColumns);
     }
 
     function saveCoverSize() {
@@ -1870,8 +1884,9 @@
         coverLarger.disabled = mobileColumns <= minMobileColumns;
         coverSmaller.disabled = mobileColumns >= maxMobileColumns;
       } else {
-        coverSmaller.disabled = coverSize <= minCoverSize;
-        coverLarger.disabled = coverSize >= maxCoverSize;
+        const currentColumns = getDesktopColumnCount(coverSize);
+        coverLarger.disabled = currentColumns <= getDesktopMinColumnCount();
+        coverSmaller.disabled = currentColumns >= getDesktopMaxColumnCount();
       }
     }
 
