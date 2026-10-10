@@ -7,11 +7,11 @@
   <style>
     * { box-sizing: border-box; }
     html, body { min-height: 100%; background: #000; }
-    body { --cover-size: 170px; --mobile-columns: 2; --cover-text-size: 15px; --cover-pad-top: 13px; --cover-pad-x: 14px; --cover-pad-bottom: 15px; --cover-text-gap: 10px; --cover-line-height: 20px; margin: 0; color: white; font-family: system-ui, sans-serif; }
+    body { --cover-size: 170px; --mobile-columns: 2; --toolbar-font-size: 15px; --cover-text-size: 15px; --cover-pad-top: 13px; --cover-pad-x: 14px; --cover-pad-bottom: 15px; --cover-text-gap: 10px; --cover-line-height: 20px; margin: 0; color: white; font-family: system-ui, sans-serif; }
     .toolbar { position: sticky; z-index: 2; top: 0; display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 18px; background: rgba(0, 0, 0, .9); backdrop-filter: blur(12px); transform: translateY(0); will-change: transform; }
     button, input { min-height: 42px; border: 1px solid #202024; border-radius: 7px; color: #c9c9ce; background: rgba(18, 18, 20, .72); font: inherit; }
     button { padding: 9px 14px; cursor: pointer; text-align: center; }
-    .toolbar > button, .toolbar-group-controls > button { flex: 1 1 118px; min-width: 0; white-space: nowrap; }
+    .toolbar > button, .toolbar-group-controls > button { flex: 1 1 118px; min-width: 0; overflow: hidden; text-overflow: clip; white-space: nowrap; font-size: var(--toolbar-font-size); }
     .toolbar > button, .toolbar-group-controls > button { padding-inline: clamp(8px, 1.25vw, 14px); }
     button:disabled { border-color: #141416; color: #4d4d55; background: rgba(12, 12, 14, .72); cursor: default; }
     .search-box { position: relative; flex: 2 1 260px; min-width: 160px; }
@@ -3064,6 +3064,7 @@
     const groupPlatform = document.querySelector('#group-platform');
     const coverLarger = document.querySelector('#cover-larger');
     const coverSmaller = document.querySelector('#cover-smaller');
+    const toolbarTextButtons = [...toolbar.querySelectorAll('button')].filter(button => !button.classList.contains('clear-search') && !button.closest('.cover-size-controls'));
     let cards = localCards;
     let sortKey = 'name';
     let sortDirection = 1;
@@ -3075,6 +3076,7 @@
     let lastScrollY = window.scrollY;
     let toolbarOffset = 0;
     let coverResizeTimer = 0;
+    let toolbarTextSizeFrame = 0;
     let suppressToolbarScrollUntil = 0;
     const textMeasure = document.createElement('canvas').getContext('2d');
     const coverSizeStorageKey = 'playnite-gallery-cover-size';
@@ -3189,12 +3191,27 @@
       }
     }
  
+
+    function updateToolbarTextSize() {
+      const maxSize = 15;
+      const minSize = 11;
+      for (let size = maxSize; size >= minSize; size--) {
+        document.body.style.setProperty('--toolbar-font-size', `${size}px`);
+        const fits = toolbarTextButtons.every(button => button.scrollWidth <= button.clientWidth + 1);
+        if (fits) return;
+      }
+    }
+
+    function scheduleToolbarTextSize() {
+      cancelAnimationFrame(toolbarTextSizeFrame);
+      toolbarTextSizeFrame = requestAnimationFrame(updateToolbarTextSize);
+    }
     function updateCoverTextSize() {
       const visibleCard = cards.find(card => card.isConnected && card.offsetParent !== null) || localCards[0];
       const width = visibleCard ? visibleCard.getBoundingClientRect().width : coverSize;
-      const padX = Math.min(14, Math.max(7, Math.round(width * 0.082)));
-      const padTop = Math.min(13, Math.max(6, Math.round(width * 0.076)));
-      const padBottom = Math.min(15, Math.max(7, Math.round(width * 0.088)));
+      const padX = 14;
+      const padTop = 13;
+      const padBottom = 15;
       const gap = Math.min(10, Math.max(5, Math.round(width * 0.059)));
       const lineHeight = Math.min(20, Math.max(11, Math.round(width * 0.118)));
       const available = Math.max(1, width - padX * 2);
@@ -3394,6 +3411,7 @@
     }
 
     function render() {
+      scheduleToolbarTextSize();
       if (comparisonStatus) {
         gallery.replaceChildren();
         const status = document.createElement('p');
@@ -3544,6 +3562,8 @@
     });
 
     localCards.forEach(card => card.addEventListener('mouseleave', () => card.classList.remove('suppressed')));
+
+    window.addEventListener('resize', scheduleToolbarTextSize, { passive: true });
 
     window.addEventListener('scroll', () => {
       const currentScrollY = window.scrollY;
