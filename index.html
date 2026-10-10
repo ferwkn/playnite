@@ -1783,7 +1783,6 @@
     const mobileQuery = window.matchMedia('(max-width: 600px)');
     const minCoverSize = 125;
     const maxCoverSize = 300;
-    const coverSizeStep = 30;
     const minMobileColumns = 1;
     const maxMobileColumns = 6;
     let coverSize = loadCoverSize();
@@ -1821,6 +1820,33 @@
 
     function loadMobileColumns() {
       return getStoredMobileColumns() || 2;
+    }
+
+    function getDesktopGridWidth() {
+      const styles = getComputedStyle(gallery);
+      const padding = parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
+      return Math.max(1, gallery.clientWidth - padding);
+    }
+
+    function getDesktopColumnCount(size) {
+      return Math.max(1, Math.floor(getDesktopGridWidth() / Math.max(size, 1)));
+    }
+
+    function getDesktopSizeForColumnCount(columns) {
+      const size = Math.floor(getDesktopGridWidth() / Math.max(columns, 1));
+      return Math.min(maxCoverSize, Math.max(minCoverSize, size));
+    }
+
+    function changeDesktopColumns(direction) {
+      const currentColumns = getDesktopColumnCount(coverSize);
+      let nextColumns = direction > 0 ? currentColumns - 1 : currentColumns + 1;
+      nextColumns = Math.max(1, nextColumns);
+      const nextSize = getDesktopSizeForColumnCount(nextColumns);
+      if (nextSize === coverSize) {
+        coverSize = direction > 0 ? maxCoverSize : minCoverSize;
+      } else {
+        coverSize = nextSize;
+      }
     }
 
     function saveCoverSize() {
@@ -2075,7 +2101,7 @@
       if (mobileQuery.matches) {
         mobileColumns = Math.max(minMobileColumns, mobileColumns - 1);
       } else {
-        coverSize = Math.min(maxCoverSize, coverSize + coverSizeStep);
+        changeDesktopColumns(1);
       }
       applyCoverLayout(true);
     });
@@ -2084,7 +2110,7 @@
       if (mobileQuery.matches) {
         mobileColumns = Math.min(maxMobileColumns, mobileColumns + 1);
       } else {
-        coverSize = Math.max(minCoverSize, coverSize - coverSizeStep);
+        changeDesktopColumns(-1);
       }
       applyCoverLayout(true);
     });
