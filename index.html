@@ -48,12 +48,13 @@
       .toolbar > button, .toolbar-group-controls > button { flex-basis: 110px; padding-inline: 9px; }
     }
     @media (max-width: 600px) {
-      .toolbar { padding: 10px; }
-      button { flex: 1 1 auto; padding-inline: 10px; }
-      .toolbar-group-controls { flex: 1 1 100%; }
-      .toolbar-group-controls > button { flex: 1 1 0; }
-      .cover-size-controls { flex: 0 0 34px; }
-      .search-box { flex-basis: 100%; order: -1; }
+      .toolbar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 10px; }
+      button { width: 100%; min-width: 0; padding-inline: 8px; }
+      .search-box { grid-column: 1 / 3; min-width: 0; }
+      #sort-name { grid-column: 3; }
+      .toolbar > button, .toolbar-group-controls > button { flex: initial; }
+      .toolbar-group-controls { display: contents; }
+      .cover-size-controls { width: auto; min-width: 0; }
       main, .platform-grid { grid-template-columns: repeat(var(--mobile-columns), minmax(0, 1fr)); gap: var(--cover-gap); padding: 14px; }
       .platform-group .platform-grid { padding: 10px 0 4px; }
       .platform-group h2 { font-size: 17px; }
@@ -3637,9 +3638,10 @@
     function updateCoverTextSize() {
       const visibleCard = cards.find(card => card.isConnected && card.offsetParent !== null) || localCards[0];
       const width = visibleCard ? visibleCard.getBoundingClientRect().width : coverSize;
-      const padX = 14;
-      const padTop = 13;
-      const padBottom = 15;
+      const scale = width / 170;
+      const padX = Math.min(14, Math.max(8, Math.round(14 * scale)));
+      const padTop = Math.min(13, Math.max(7, Math.round(13 * scale)));
+      const padBottom = Math.min(15, Math.max(8, Math.round(15 * scale)));
       const gap = Math.min(10, Math.max(5, Math.round(width * 0.059)));
       const lineHeight = Math.min(20, Math.max(11, Math.round(width * 0.118)));
       const coverGap = mobileQuery.matches ? Math.min(14, Math.max(8, Math.round(width * 0.06))) : Math.min(18, Math.max(9, Math.round(width * 0.09)));
