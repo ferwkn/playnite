@@ -3065,6 +3065,7 @@
     let lastScrollY = window.scrollY;
     let toolbarOffset = 0;
     let coverResizeTimer = 0;
+    let suppressToolbarScrollUntil = 0;
     const coverSizeStorageKey = 'playnite-gallery-cover-size';
     const mobileColumnsStorageKey = 'playnite-gallery-mobile-columns';
     const mobileQuery = window.matchMedia('(max-width: 600px)');
@@ -3179,6 +3180,7 @@
 
     function applyCoverLayout(save = false) {
       updateCoverButtons();
+      suppressToolbarScrollUntil = performance.now() + 220;
       document.body.classList.add('resizing-covers');
       document.body.style.setProperty('--cover-size', `${coverSize}px`);
       document.body.style.setProperty('--mobile-columns', String(mobileColumns));
@@ -3191,6 +3193,9 @@
       }
       clearTimeout(coverResizeTimer);
       coverResizeTimer = setTimeout(() => document.body.classList.remove('resizing-covers'), 120);
+      requestAnimationFrame(() => {
+        lastScrollY = Math.max(0, window.scrollY);
+      });
     }
 
     function compareCards(a, b) {
@@ -3494,6 +3499,10 @@
 
     window.addEventListener('scroll', () => {
       const currentScrollY = window.scrollY;
+      if (performance.now() < suppressToolbarScrollUntil) {
+        lastScrollY = Math.max(0, currentScrollY);
+        return;
+      }
       const toolbarHeight = toolbar.offsetHeight || 1;
       const delta = currentScrollY - lastScrollY;
       if (currentScrollY <= 0) {
