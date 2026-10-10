@@ -31,7 +31,7 @@
     .cover { position: relative; z-index: 0; margin: 0; overflow: hidden; border-radius: 14px; background: #080808; aspect-ratio: 2 / 3; outline: none; isolation: isolate; contain: layout paint; content-visibility: auto; contain-intrinsic-size: 300px 450px; transition: transform 220ms ease, box-shadow 220ms ease; }
     .cover img { position: absolute; inset: -1px; width: calc(100% + 2px); height: calc(100% + 2px); display: block; object-fit: cover; transition: transform 220ms ease; }
     .cover::before, .cover::after { position: absolute; left: 0; right: 0; z-index: 1; content: ''; pointer-events: none; opacity: 0; transition: opacity 180ms ease; }
-    .cover::before { top: -1px; height: calc(34% + 2px); border-radius: inherit; background: linear-gradient(to bottom, #000 0, rgba(0, 0, 0, .88) 2px, rgba(0, 0, 0, .58) 36%, transparent); }
+    .cover::before { top: -3px; left: -3px; right: -3px; height: calc(34% + 6px); background: linear-gradient(to bottom, #000 0, rgba(0, 0, 0, .92) 4px, rgba(0, 0, 0, .58) 38%, transparent); }
     .cover::after { bottom: 0; height: 42%; background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, .58) 48%, rgba(0, 0, 0, .88)); }
     .cover figcaption { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; justify-content: space-between; padding: 13px 14px 15px; color: white; font: 600 15px/1.2 system-ui, sans-serif; opacity: 0; transition: opacity 180ms ease; pointer-events: none; }
     .cover-top, .cover-bottom { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 20px; text-shadow: 0 1px 3px rgba(0, 0, 0, .85); }
@@ -60,7 +60,7 @@
 <body>
   <nav class="toolbar" aria-label="Gallery controls">
     <div class="search-box">
-      <input id="search" type="search" placeholder="Search all 422 games..." aria-label="Search games by name">
+      <input id="search" type="search" placeholder="Search all 424 games..." aria-label="Search games by name">
       <button id="clear-search" class="clear-search" type="button" aria-label="Clear search" title="Clear search"></button>
     </div>
     <button id="sort-name" type="button">Name: A-Z</button>
@@ -101,6 +101,13 @@
        <figcaption>
          <span class="cover-top"><span>2006</span><span>0h 9m</span></span>
          <span class="cover-bottom"><span>Mostly Positive</span><span>77%</span></span>
+       </figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Advance Wars 1+2: Re-Boot Camp" data-sort-name="Advance Wars 01+02: Re-Boot Camp" data-playtime="0" data-last-played="0" data-platform="Nintendo Switch" data-year="2023" data-rating="0" aria-label="Advance Wars 1+2: Re-Boot Camp, played Not played, platform Nintendo Switch">
+      <img src="covers/71bc746a0dff4d81b86370a41e697bb6.webp?v=68c9da3bfa03946a" alt="Advance Wars 1+2: Re-Boot Camp" loading="lazy" decoding="async">
+       <figcaption>
+         <span class="cover-top"><span>2023</span><span>Not played</span></span>
+         <span class="cover-bottom"><span>Mixed</span><span></span></span>
        </figcaption>
     </figure>
     <figure class="cover" tabindex="0" data-name="The Adventures of Elliot: The Millennium Tales " data-sort-name="Adventures of Elliot: The Millennium Tales " data-playtime="127" data-last-played="639271084746200000" data-platform="PC (Windows)" data-year="2026" data-rating="77" aria-label="The Adventures of Elliot: The Millennium Tales , played 0h 2m, platform PC (Windows)">
@@ -2208,6 +2215,13 @@
        <figcaption>
          <span class="cover-top"><span>2020</span><span>2h 15m</span></span>
          <span class="cover-bottom"><span>Very Positive</span><span>89%</span></span>
+       </figcaption>
+    </figure>
+    <figure class="cover" tabindex="0" data-name="Sakura Wars" data-sort-name="Sakura Wars" data-playtime="0" data-last-played="0" data-platform="Sony PlayStation 4" data-year="2019" data-rating="71" aria-label="Sakura Wars, played Not played, platform Sony PlayStation 4">
+      <img src="covers/aa69093d5667411db4ff5aab1f13d137.webp?v=7c74e161d69e00c8" alt="Sakura Wars" loading="lazy" decoding="async">
+       <figcaption>
+         <span class="cover-top"><span>2019</span><span>Not played</span></span>
+         <span class="cover-bottom"><span>Mostly Positive</span><span>71%</span></span>
        </figcaption>
     </figure>
     <figure class="cover" tabindex="0" data-name="Samurai Maiden" data-sort-name="Samurai Maiden" data-playtime="2803" data-last-played="638480220677290000" data-platform="PC (Windows)" data-year="2022" data-rating="57" aria-label="Samurai Maiden, played 0h 46m, platform PC (Windows)">
