@@ -38,6 +38,7 @@
     .cover-top, .cover-bottom { display: flex; justify-content: space-between; gap: var(--cover-text-gap); min-height: var(--cover-line-height); text-shadow: 0 1px 3px rgba(0, 0, 0, .85); }
     .cover-top { align-items: flex-start; }
     .cover-bottom { align-items: flex-end; }
+    .cover-bottom span { line-height: 1.18; padding-bottom: 1px; }
     .cover-bottom span:first-child { overflow: hidden; white-space: nowrap; }
     .cover-top span:last-child, .cover-bottom span:last-child { flex: 0 0 auto; text-align: right; }
     .cover:not(.suppressed):hover, .cover.active, .cover:focus-visible { z-index: 1; transform: scale(1.04); box-shadow: 0 14px 30px rgba(0, 0, 0, .55); }
